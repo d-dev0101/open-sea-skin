@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+.playwright-cli/
+pnpm-lock.yaml
+.cache/
+output/playwright/
+release/
+test-results/
+playwright-report/
+docs/screenshots/*.actual.png

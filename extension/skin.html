@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Open Sea Skin</title>
+<link rel="stylesheet" href="./styles.css" />
+<style>
+  /* bare background mode: transparent page, ocean fades in under the host */
+  html, body { background: transparent; }
+  body > canvas {
+    opacity: 0;
+    transition: opacity 1.4s ease;
+  }
+  body.ready > canvas { opacity: 1; }
+  #vignette {
+    opacity: 0;
+    transition: opacity 1.4s ease;
+  }
+  body.ready #vignette { opacity: 1; }
+</style>
+</head>
+<body>
+  <div id="vignette" aria-hidden="true"></div>
+  <script type="module" src="./ocean.js?skin=1"></script>
+</body>
+</html>

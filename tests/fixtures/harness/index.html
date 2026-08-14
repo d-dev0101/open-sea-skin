@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeepSeek Harness · Open Sea acceptance fixture</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E">
+  <style>
+    :root { --dsw-alias-bg-base:#fff; --dsw-alias-bg-layer-1:#f7f8fa; --dsw-specific-sidebar-fill:#f5f6f8; color-scheme:light; }
+    * { box-sizing:border-box; }
+    html,body { width:100%; height:100%; margin:0; overflow:hidden; font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:#17202a; }
+    body { background:var(--dsw-alias-bg-base); }
+    .shell { position:relative; z-index:1; display:grid; grid-template-columns:264px 1fr 300px; gap:12px; height:100%; padding:12px; }
+    .sidebar,.conversation,.details { min-width:0; border:1px solid rgba(30,50,70,.12); box-shadow:0 14px 40px rgba(10,24,40,.08); }
+    .sidebar { display:flex; flex-direction:column; padding:18px; border-radius:18px; background:var(--dsw-specific-sidebar-fill); }
+    .conversation,.details { border-radius:18px; background:var(--dsw-alias-bg-layer-1); }
+    .brand { font-weight:700; letter-spacing:.02em; }
+    .brand small { display:block; margin-top:2px; font-weight:500; color:#587080; }
+    .history { display:grid; gap:10px; margin-top:34px; }
+    .history div { padding:9px 10px; border-radius:9px; background:rgba(255,255,255,.42); }
+    .settings { margin-top:auto; display:flex; align-items:center; gap:8px; }
+    .settings button { width:38px; height:38px; border:1px solid rgba(30,50,70,.14); border-radius:10px; background:rgba(255,255,255,.5); cursor:pointer; }
+    .conversation { display:flex; flex-direction:column; padding:24px 28px; }
+    .top { display:flex; justify-content:space-between; align-items:center; }
+    .model { padding:7px 12px; border-radius:99px; background:rgba(255,255,255,.5); }
+    .welcome { margin:auto; width:min(620px,90%); }
+    .welcome h1 { margin:0 0 12px; font-size:34px; letter-spacing:-.04em; }
+    .welcome p { color:#4c6270; }
+    .prompt { margin-top:28px; min-height:110px; padding:18px; border-radius:16px; background:rgba(255,255,255,.54); box-shadow:0 10px 30px rgba(10,24,40,.08); }
+    .details { padding:22px; }
+    .details h2 { margin:0 0 20px; font-size:14px; }
+    .metric { margin:14px 0; padding:12px; border-radius:12px; background:rgba(255,255,255,.42); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <aside class="sidebar pI_x6G_sidebarCol">
+      <div class="brand">deepseek <small>HARNESS</small></div>
+      <div class="history"><div>Open Sea release</div><div>Renderer audit</div><div>Harness integration</div></div>
+      <div class="settings" data-slot="sidebar.settings"><button data-testid="settings-trigger" aria-label="Settings">⚙</button><span>Settings</span></div>
+    </aside>
+    <section class="conversation wSkVaW_root">
+      <div class="top"><strong>New task</strong><span class="model">DeepSeek · Chat</span></div>
+      <div class="welcome"><h1>What are we building?</h1><p>The Open Sea WebGPU skin is running behind the complete DeepSeek Harness shell.</p><div class="prompt">Ask DeepSeek to work on your project…</div></div>
+    </section>
+    <aside class="details hHd-Xa_root"><h2>Task details</h2><div class="metric">Context<br><strong>Open Sea Skin</strong></div><div class="metric">Renderer<br><strong>WebGPU · TSL</strong></div></aside>
+  </main>
+</body>
+</html>

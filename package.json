@@ -1,0 +1,25 @@
+{
+  "name": "open-sea-skin",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Open Sea WebGPU new-tab extension and DeepSeek Harness skin",
+  "scripts": {
+    "build": "node scripts/build-runtime.mjs",
+    "check:generated": "node scripts/build-runtime.mjs --check",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm run check:generated && npm test",
+    "package:extension": "bash scripts/package-extension.sh",
+    "test:browser": "node scripts/browser-acceptance.mjs",
+    "capture": "node scripts/capture-gallery.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "gifenc": "^1.0.3",
+    "playwright": "^1.55.0",
+    "pngjs": "^7.0.0"
+  },
+  "license": "MIT"
+}
