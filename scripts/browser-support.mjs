@@ -91,7 +91,12 @@ export function watchPageErrors(page, label) {
   const failures = []
   page.on('pageerror', error => failures.push(`${label} pageerror: ${error.message}`))
   page.on('console', message => {
-    if (message.type() === 'error') failures.push(`${label} console: ${message.text()}`)
+    const text = message.text()
+    const expectedWebGPUShutdown = text.includes('THREE.WebGPURenderer: WebGPU Device Lost:')
+      && text.includes('Reason: destroyed')
+    if (message.type() === 'error' && !expectedWebGPUShutdown) {
+      failures.push(`${label} console: ${text}`)
+    }
   })
   return failures
 }
