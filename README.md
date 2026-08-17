@@ -4,8 +4,31 @@
 
 A self-contained WebGPU ocean for new tabs and DeepSeek Harness. It keeps the
 original five-wave Gerstner/TSL look, adds a translucent Harness theme, and is
-available as a Chrome/Edge extension, a one-command static installer, or a
-native Harness client plugin.
+available as a one-line DSH plugin, Chrome/Edge extension, one-command static
+installer, or native Harness source integration.
+
+![Open Sea for DeepSeek Harness](docs/marketplace/open-sea-harness-cover.png)
+
+## Recommended — install as a DSH plugin
+
+Install the complete local-only ocean runtime and lower-left quick controls
+directly from GitHub:
+
+```sh
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.0'
+```
+
+Restart `dsh web`, then use **Skin settings** at the lower left to adjust wave
+size, daylight, 40% glass opacity, and the automatic day/night cycle. Remove it
+with:
+
+```sh
+dsh plugin --profile web remove open-sea-skin
+```
+
+This package is tested with DeepSeek Harness `0.1.0-rc.6`. Use the source
+integration below only when you also want the controls embedded inside the
+native General settings page.
 
 ## Gallery
 

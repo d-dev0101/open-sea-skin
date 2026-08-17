@@ -37,6 +37,17 @@ test('every install path is generated from the canonical renderer', async () => 
   const core = await text('shared/skin-core.js')
   assert.ok(extension.includes(core))
   assert.ok(native.includes(core))
+  assert.ok((await text('plugin/client.js')).includes(core))
+})
+
+test('the repository root is an installable DeepSeek Harness bundle', async () => {
+  const pkg = JSON.parse(await text('package.json'))
+  assert.deepEqual(pkg.dsh.bundle, { patch: './cordis.patch.yml' })
+  assert.deepEqual(pkg.dsh.client, { inject: [], platform: 'web' })
+  assert.equal(pkg.main, 'plugin/index.js')
+  assert.equal(pkg.exports['./client'], './plugin/client.js')
+  assert.match(await text('cordis.patch.yml'), /id: open-sea-skin[\s\S]*name: open-sea-skin/)
+  assert.match(await text('plugin/client.js'), /__ModuleLoader__\.load\(\{ id: "open-sea-skin"/)
 })
 
 test('vendored three.js is local, patched and licensed', async () => {

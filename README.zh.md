@@ -4,7 +4,28 @@
 
 把实时 WebGPU 海洋同时带到浏览器新标签页和 DeepSeek Harness。保留五组
 Gerstner 波与 TSL 海面视觉，增加半透明玻璃界面，并提供浏览器扩展、无需编译的
-dist 安装脚本，以及真正接入 Harness slots/settings 的原生客户端插件。
+dist 安装脚本、可一行安装的 DSH 插件，以及真正接入 Harness slots/settings
+的原生源码集成。
+
+![Open Sea for DeepSeek Harness](docs/marketplace/open-sea-harness-cover.png)
+
+## 推荐：作为 DSH 插件安装
+
+直接从 GitHub 安装完整的本地海洋运行时与左下角快捷控制：
+
+```sh
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.0'
+```
+
+重启 `dsh web` 后，点击左下角的**皮肤设置**即可调节波浪大小、日光、40%
+玻璃不透明度和自动昼夜循环。卸载命令：
+
+```sh
+dsh plugin --profile web remove open-sea-skin
+```
+
+该安装包已在 DeepSeek Harness `0.1.0-rc.6` 实测通过。如果还希望控制项原生
+嵌入「通用设置」页面，再使用后文的源码集成方式。
 
 ## 效果图
 

@@ -1,0 +1,6 @@
+# DeepSeek Harness bundle layer. Installing this repository with
+# `dsh plugin --profile web add github:d-dev0101/open-sea-skin` adds the Host
+# route and the matching browser module without modifying Harness source.
+- insert:
+    - id: open-sea-skin
+      name: open-sea-skin

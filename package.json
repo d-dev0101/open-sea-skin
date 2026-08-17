@@ -1,12 +1,55 @@
 {
   "name": "open-sea-skin",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
-  "description": "Open Sea WebGPU new-tab extension and DeepSeek Harness skin",
+  "description": "Realtime WebGPU ocean skin for DeepSeek Harness, Chrome, and Edge",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-dev0101/open-sea-skin.git"
+  },
+  "homepage": "https://github.com/d-dev0101/open-sea-skin#readme",
+  "bugs": "https://github.com/d-dev0101/open-sea-skin/issues",
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "theme",
+    "skin",
+    "webgpu",
+    "ocean"
+  ],
+  "main": "plugin/index.js",
+  "exports": {
+    ".": "./plugin/index.js",
+    "./client": "./plugin/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "plugin/index.js",
+    "plugin/client.js",
+    "cordis.patch.yml",
+    "native-dist/loader.js",
+    "native-dist/ocean.js",
+    "native-dist/skin.html",
+    "native-dist/styles.css",
+    "native-dist/vendor/**/*",
+    "LICENSE",
+    "README.md",
+    "README.zh.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  },
   "scripts": {
-    "build": "node scripts/build-runtime.mjs",
-    "check:generated": "node scripts/build-runtime.mjs --check",
+    "build": "node scripts/build-runtime.mjs && node scripts/build-dsh-bundle.mjs",
+    "check:generated": "node scripts/build-runtime.mjs --check && node scripts/build-dsh-bundle.mjs --check",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run check:generated && npm test",
     "package:extension": "bash scripts/package-extension.sh",
