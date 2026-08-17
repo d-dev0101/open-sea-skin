@@ -17,7 +17,7 @@ await mkdir(output, { recursive: true })
 
 const BASELINE = Object.freeze({ sea: 56, time: 55, glass: 40 })
 const GIF_VIEWPORT = Object.freeze({ width: 1440, height: 900 })
-const GIF_WIDTH = 1200
+const GIF_WIDTH = 1160
 const GIF_FPS = 8
 
 async function openSettings(page) {
@@ -75,7 +75,7 @@ async function captureGif(page, name, steps, applyStep) {
 
     const filter = [
       `fps=${GIF_FPS},scale=${GIF_WIDTH}:-2:flags=lanczos,split[gif_base][palette_source]`,
-      '[palette_source]palettegen=max_colors=128:stats_mode=diff[palette]',
+      '[palette_source]palettegen=max_colors=96:stats_mode=diff[palette]',
       '[gif_base][palette]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle',
     ].join(';')
     const encoded = spawnSync('ffmpeg', [
@@ -256,6 +256,6 @@ for (const name of [
 ]) {
   const details = await stat(resolve(output, name))
   assert.ok(details.size > 50_000, `${name} is unexpectedly small`)
-  assert.ok(details.size < 15_000_000, `${name} is too large for a practical README (${details.size} bytes)`)
+  assert.ok(details.size < 10_000_000, `${name} exceeds GitHub's inline GIF budget (${details.size} bytes)`)
   console.log(`✓ ${name} (${(details.size / 1_048_576).toFixed(2)} MiB)`)
 }
