@@ -68,7 +68,8 @@ dsh plugin --profile web remove open-sea-skin
 ## 安装方式二：Harness dist 注入（无需编译源码）
 
 可以在**任意目录**执行。命令会把固定版本 `v1.2.0` 下载到临时目录，运行安装器
-后自动清理下载内容：
+后自动清理下载内容。**执行前先停止 Harness**；执行完成后重新运行 `dsh web`，
+保持该终端进程运行，再刷新浏览器：
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash
@@ -97,6 +98,9 @@ curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/instal
 [查看引导脚本源码](install.sh)。脚本只删除自己的标记块和 `open-sea-skin/`
 目录，不会用旧备份覆盖 Harness 后续更新。克隆安装、自动定位和恢复细节见
 [native-dist/README.md](native-dist/README.md)。
+
+如果安装或卸载后出现 **Failed to load plugins**，先确认 `dsh web` 是否仍在运行。
+静态安装器只修改前端文件，不会代替用户启动或维持 Harness 服务进程。
 
 ## Harness 原生源码插件
 

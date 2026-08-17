@@ -139,7 +139,8 @@ done
 if [ "$DRY_RUN" -eq 1 ]; then
   echo "✓ Dry run complete; no files changed."
 elif [ "$MODE" = "uninstall" ]; then
-  echo "✓ Open Sea Skin was removed."
+  echo "✓ Open Sea Skin was removed. Restart Harness, keep its server running, then reload the browser."
 else
-  echo "✓ Open Sea Skin is installed. Refresh Harness; run with --update after Harness upgrades."
+  echo "✓ Open Sea Skin is installed. Restart Harness, keep its server running, then reload the browser."
+  echo "  Run with --update after Harness upgrades."
 fi

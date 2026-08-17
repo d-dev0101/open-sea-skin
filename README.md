@@ -76,7 +76,8 @@ with `chrome.storage.sync`.
 
 Run this from **any directory**. It downloads the pinned `v1.2.0` source archive
 to a temporary directory, runs the installer, and removes the download when it
-finishes:
+finishes. **Stop Harness before running it**, then start `dsh web` again, keep
+that terminal process running, and reload the browser:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash
@@ -107,6 +108,10 @@ that this repository already exists locally. You can [inspect the bootstrap
 script](install.sh) before running it. See
 [native-dist/README.md](native-dist/README.md) for clone-based installation,
 detection, and recovery details.
+
+If the browser says **Failed to load plugins** immediately after installation
+or removal, first confirm that `dsh web` is still running. The static installer
+changes files only; it does not start or keep the Harness server alive.
 
 ## Native Harness source plugin
 

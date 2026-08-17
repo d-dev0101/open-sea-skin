@@ -4,6 +4,11 @@ This path is for users who run a prebuilt Harness and do not want to compile a
 client plugin. The installer copies this directory to the frontend as
 `open-sea-skin/` and inserts one marked deferred script before `</head>`.
 
+Stop Harness before install, update, or uninstall. When the command finishes,
+start Harness again (`dsh web` for CLI users), keep that process running, and
+then reload the browser. A stopped server can leave an already-open browser on
+the **Failed to load plugins** screen even though the frontend files are valid.
+
 From any directory, use the GitHub bootstrap:
 
 ```sh

@@ -5,6 +5,20 @@ set -euo pipefail
 OPEN_SEA_VERSION="${OPEN_SEA_VERSION:-v1.2.0}"
 OPEN_SEA_ARCHIVE_URL="${OPEN_SEA_ARCHIVE_URL:-https://github.com/d-dev0101/open-sea-skin/archive/refs/tags/${OPEN_SEA_VERSION}.tar.gz}"
 
+REQUESTED_MODE="install"
+SHOW_RUNTIME_NOTICE=1
+for argument in "$@"; do
+  case "$argument" in
+    --update) REQUESTED_MODE="update" ;;
+    --uninstall) REQUESTED_MODE="uninstall" ;;
+    --dry-run|-h|--help) SHOW_RUNTIME_NOTICE=0 ;;
+  esac
+done
+
+if [ "$SHOW_RUNTIME_NOTICE" -eq 1 ]; then
+  echo "ℹ Stop Harness before changing its static frontend files."
+fi
+
 for required_command in curl tar mktemp; do
   if ! command -v "$required_command" >/dev/null 2>&1; then
     echo "✗ Required command not found: $required_command" >&2
@@ -37,3 +51,11 @@ if [ -z "$INSTALLER" ]; then
 fi
 
 bash "$INSTALLER" "$@"
+
+if [ "$SHOW_RUNTIME_NOTICE" -eq 1 ]; then
+  if [ "$REQUESTED_MODE" = "uninstall" ]; then
+    echo "ℹ Open Sea is removed. Start Harness again (CLI: dsh web), keep that process running, then reload the browser."
+  else
+    echo "ℹ Start Harness again (CLI: dsh web), keep that process running, then reload the browser."
+  fi
+fi

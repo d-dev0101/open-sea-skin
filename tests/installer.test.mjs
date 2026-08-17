@@ -67,7 +67,8 @@ test('static installer is repeatable and preserves unrelated Harness updates', a
   assert.match(html, /Harness upgraded/)
   assert.match(html, /name="fixture"/)
 
-  run('--uninstall', '--dist', dist)
+  const uninstallOutput = run('--uninstall', '--dist', dist)
+  assert.match(uninstallOutput, /Restart Harness/)
   html = await readFile(index, 'utf8')
   assert.doesNotMatch(html, /open-sea-skin/)
   assert.match(html, /Harness upgraded/)
@@ -98,7 +99,8 @@ test('GitHub bootstrap works from an unrelated directory and forwards installer 
   await stat(resolve(dist, 'open-sea-skin/loader.js'))
   assert.match(await readFile(resolve(dist, 'index.html'), 'utf8'), /open-sea-skin:begin/)
 
-  runBootstrap(archive, unrelatedCwd, '--uninstall', '--dist', dist)
+  const uninstallOutput = runBootstrap(archive, unrelatedCwd, '--uninstall', '--dist', dist)
+  assert.match(uninstallOutput, /Start Harness again/)
   await assert.rejects(stat(resolve(dist, 'open-sea-skin')))
   assert.doesNotMatch(await readFile(resolve(dist, 'index.html'), 'utf8'), /open-sea-skin/)
 })
