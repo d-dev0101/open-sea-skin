@@ -33,6 +33,7 @@
     "native-dist/skin.html",
     "native-dist/styles.css",
     "native-dist/vendor/**/*",
+    "CHANGELOG.md",
     "LICENSE",
     "README.md",
     "README.zh.md",
