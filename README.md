@@ -28,7 +28,8 @@ dsh plugin --profile web remove open-sea-skin
 
 This package is tested with DeepSeek Harness `0.1.0-rc.6`. Use the source
 integration below only when you also want the controls embedded inside the
-native General settings page.
+native General settings page. See the [DSH installation and troubleshooting
+guide](docs/dsh-plugin.md) for verification and recovery details.
 
 ## Gallery
 

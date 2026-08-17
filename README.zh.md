@@ -25,7 +25,8 @@ dsh plugin --profile web remove open-sea-skin
 ```
 
 该安装包已在 DeepSeek Harness `0.1.0-rc.6` 实测通过。如果还希望控制项原生
-嵌入「通用设置」页面，再使用后文的源码集成方式。
+嵌入「通用设置」页面，再使用后文的源码集成方式。安装验证与排障方法见
+[DSH 插件安装指南](docs/dsh-plugin.md)。
 
 ## 效果图
 
