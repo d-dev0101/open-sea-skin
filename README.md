@@ -7,19 +7,32 @@ original five-wave Gerstner/TSL look, adds a translucent Harness theme, and is
 available as a Chrome/Edge extension, a one-command static installer, or a
 native Harness client plugin.
 
-![Open Sea inside DeepSeek Harness](docs/screenshots/harness-open-sea-overview.png)
-
 ## Gallery
 
-| Native quick controls | Wide dark Settings regression |
-| --- | --- |
-| ![Skin settings at the lower left](docs/screenshots/harness-quick-controls.png) | ![Settings stays above the composer](docs/screenshots/harness-settings-wide-dark.png) |
+Every animation below is recorded from the native DeepSeek Harness integration
+at **40% glass opacity**. The overview baseline is wave size **56** and daylight
+**Afternoon (55)**.
 
-| Calm sea | Sunset | High sea |
-| --- | --- | --- |
-| ![Calm sea](docs/screenshots/harness-calm-sea.png) | ![Sunset](docs/screenshots/harness-sunset.png) | ![High sea](docs/screenshots/harness-high-sea.png) |
+### 1 — Dark Harness overview
 
-![Adjusting daylight and sea state](docs/screenshots/open-sea-controls.gif)
+![Open Sea inside DeepSeek Harness in dark mode](docs/screenshots/harness-dark-overview.gif)
+
+### 2 — Light Harness overview
+
+![Open Sea inside DeepSeek Harness in light mode](docs/screenshots/harness-light-overview.gif)
+
+### 3 — Adjusting wave size
+
+Daylight stays at Afternoon (55) while the wave control moves from moderate to
+calm, through high sea, and back to the baseline of 56.
+
+![Adjusting wave size in DeepSeek Harness](docs/screenshots/harness-wave-control.gif)
+
+### 4 — Daylight to sunset
+
+Wave size stays at 56 while daylight moves smoothly from Midday to Dusk.
+
+![Adjusting daylight from midday to sunset](docs/screenshots/harness-daylight-sunset.gif)
 
 ## Install option 1 — Chrome or Edge extension
 
@@ -126,8 +139,9 @@ npm run test:browser
 
 The launcher uses a persistent profile, `--load-extension`, and
 `ignoreDefaultArgs: ['--disable-extensions']`, which is required because branded
-Chrome 137+ removed the old extension-loading path. Screenshots and the README
-GIF are regenerated with `npm run capture`.
+Chrome 137+ removed the old extension-loading path. The four full-width README
+GIFs are regenerated from a running native Harness with `npm run capture`;
+FFmpeg is required for palette-optimized output.
 
 ## Privacy and permissions
 

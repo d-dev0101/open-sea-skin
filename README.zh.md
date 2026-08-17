@@ -6,19 +6,30 @@
 Gerstner 波与 TSL 海面视觉，增加半透明玻璃界面，并提供浏览器扩展、无需编译的
 dist 安装脚本，以及真正接入 Harness slots/settings 的原生客户端插件。
 
-![DeepSeek Harness 完整海洋皮肤](docs/screenshots/harness-open-sea-overview.png)
-
 ## 效果图
 
-| 左下角原生快捷面板 | 超宽深色设置页层级修复 |
-| --- | --- |
-| ![左下角皮肤设置](docs/screenshots/harness-quick-controls.png) | ![设置页始终盖住输入框](docs/screenshots/harness-settings-wide-dark.png) |
+以下动图全部来自真实 DeepSeek Harness 原生插件，统一使用 **40% 玻璃不透明度**。
+全景基准参数为波浪大小 **56**、日光 **下午（55）**。
 
-| 平静海面 | 夕阳 | 大浪 |
-| --- | --- | --- |
-| ![平静海面](docs/screenshots/harness-calm-sea.png) | ![夕阳](docs/screenshots/harness-sunset.png) | ![大浪](docs/screenshots/harness-high-sea.png) |
+### 1 — 深色 Harness 全景
 
-![拖动日光与海浪调节](docs/screenshots/open-sea-controls.gif)
+![DeepSeek Harness 深色模式完整海洋皮肤](docs/screenshots/harness-dark-overview.gif)
+
+### 2 — 浅色 Harness 全景
+
+![DeepSeek Harness 浅色模式完整海洋皮肤](docs/screenshots/harness-light-overview.gif)
+
+### 3 — 调整波浪大小
+
+日光固定为下午（55），波浪从中等变为平静，再升至大浪，最后回到基准值 56。
+
+![在 DeepSeek Harness 中调整波浪大小](docs/screenshots/harness-wave-control.gif)
+
+### 4 — 从白天调到夕阳
+
+波浪固定为 56，日光从正午平滑变化到黄昏。
+
+![在 DeepSeek Harness 中从白天调整到夕阳](docs/screenshots/harness-daylight-sunset.gif)
 
 ## 安装方式一：Chrome / Edge 扩展
 
@@ -120,7 +131,8 @@ npm run test:browser
 
 测试使用持久化浏览器目录、`--load-extension`，并设置
 `ignoreDefaultArgs: ['--disable-extensions']`。这是 Chrome 137+ 环境加载未打包
-扩展所需方式。`npm run capture` 会重新生成 README 中的 PNG 与 GIF。
+扩展所需方式。`npm run capture` 会从正在运行的原生 Harness 重新录制四张全宽
+README 动图，并通过 FFmpeg 生成统一调色板的优化 GIF。
 
 ## 隐私与权限
 

@@ -1,22 +1,24 @@
 import assert from 'node:assert/strict'
-import { mkdtemp, mkdir, stat, writeFile, rm } from 'node:fs/promises'
+import { spawnSync } from 'node:child_process'
+import { mkdtemp, mkdir, stat, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import gifenc from 'gifenc'
-import { PNG } from 'pngjs'
 import { chromium } from 'playwright'
 import {
-  chromiumArgs, findChromeForTesting, setRange, waitForOcean, watchPageErrors,
+  chromiumArgs, findChromeForTesting, waitForOcean, watchPageErrors,
 } from './browser-support.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const { GIFEncoder, applyPalette, quantize } = gifenc
 const output = resolve(root, 'docs/screenshots')
-const extension = resolve(root, 'extension')
 const harnessUrl = process.env.OSS_HARNESS_URL || 'http://127.0.0.1:3080'
 const chrome = await findChromeForTesting(chromium.executablePath())
 await mkdir(output, { recursive: true })
+
+const BASELINE = Object.freeze({ sea: 56, time: 55, glass: 40 })
+const GIF_VIEWPORT = Object.freeze({ width: 1440, height: 900 })
+const GIF_WIDTH = 1200
+const GIF_FPS = 8
 
 async function openSettings(page) {
   let dialog = page.getByRole('dialog', { name: /^(设置|Settings)$/ })
@@ -37,14 +39,57 @@ async function closeSettings(dialog) {
   await dialog.waitFor({ state: 'hidden' })
 }
 
-async function setSkin(section, { sea, time, glass }) {
-  const ranges = section.locator('input[type="range"]')
-  // Playwright's fill emits trusted events through React's controlled-input
-  // value tracker; direct DOM assignment would be ignored by this UI.
+async function openQuickControls(page) {
+  const button = page.getByRole('button', { name: /皮肤设置|Skin settings/, exact: true })
+  await button.waitFor()
+  await button.click()
+  const panel = page.getByRole('dialog', { name: /皮肤设置|Skin settings/, exact: true })
+  await panel.waitFor()
+  assert.equal(await panel.locator('input[type="range"]').count(), 3, 'quick controls must expose three ranges')
+  return panel
+}
+
+async function setQuickSkin(page, panel, { sea, time, glass }) {
+  const ranges = panel.locator('input[type="range"]')
   if (sea !== undefined) await ranges.nth(0).fill(String(sea))
   if (time !== undefined) await ranges.nth(1).fill(String(time))
   if (glass !== undefined) await ranges.nth(2).fill(String(glass))
-  await section.page().waitForTimeout(180)
+  await page.waitForTimeout(70)
+}
+
+function interpolate(from, to, count) {
+  return Array.from({ length: count }, (_, index) => (
+    Math.round(from + (to - from) * (index / Math.max(1, count - 1)))
+  ))
+}
+
+async function captureGif(page, name, steps, applyStep) {
+  const frames = await mkdtemp(resolve(tmpdir(), `open-sea-${name.replace(/\.gif$/, '')}-`))
+  try {
+    for (const [index, step] of steps.entries()) {
+      await applyStep(step, index)
+      await page.waitForTimeout(55)
+      const frame = `frame-${String(index).padStart(3, '0')}.png`
+      await page.screenshot({ path: resolve(frames, frame) })
+    }
+
+    const filter = [
+      `fps=${GIF_FPS},scale=${GIF_WIDTH}:-2:flags=lanczos,split[gif_base][palette_source]`,
+      '[palette_source]palettegen=max_colors=128:stats_mode=diff[palette]',
+      '[gif_base][palette]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle',
+    ].join(';')
+    const encoded = spawnSync('ffmpeg', [
+      '-y', '-hide_banner', '-loglevel', 'error',
+      '-framerate', String(GIF_FPS),
+      '-i', resolve(frames, 'frame-%03d.png'),
+      '-vf', filter,
+      '-loop', '0',
+      resolve(output, name),
+    ], { encoding: 'utf8' })
+    assert.equal(encoded.status, 0, `ffmpeg failed for ${name}:\n${encoded.stderr}`)
+  } finally {
+    await rm(frames, { recursive: true, force: true })
+  }
 }
 
 async function state(page) {
@@ -68,8 +113,18 @@ async function rpc(page, method, payload) {
   return response.result.value
 }
 
+async function applyBaselineSettings(page) {
+  await rpc(page, 'settings.update', {
+    ns: 'ui-open-sea-skin',
+    patch: { enabled: true, ...BASELINE, autoCycle: false, quality: 'auto' },
+  })
+}
+
 async function verifyHarnessChrome(page) {
   await page.setViewportSize({ width: 2048, height: 1024 })
+  await applyBaselineSettings(page)
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await waitForOcean(page)
   const quickButton = page.getByRole('button', { name: /皮肤设置|Skin settings/, exact: true })
   await quickButton.waitFor()
   await quickButton.click()
@@ -77,14 +132,14 @@ async function verifyHarnessChrome(page) {
   await quickPanel.waitFor()
   const quickRanges = quickPanel.locator('input[type="range"]')
   assert.equal(await quickRanges.count(), 3, 'sidebar skin settings must expose three ranges')
-  await quickRanges.nth(0).fill('61')
-  await quickRanges.nth(1).fill('12')
-  await quickRanges.nth(2).fill('64')
+  await quickRanges.nth(0).fill(String(BASELINE.sea))
+  await quickRanges.nth(1).fill(String(BASELINE.time))
+  await quickRanges.nth(2).fill(String(BASELINE.glass))
   await page.waitForTimeout(220)
   let current = await state(page)
-  assert.ok(Math.abs(current.sea - 1.165) < 0.03, JSON.stringify(current))
-  assert.ok(Math.abs(current.daylight - 12) < 0.1, JSON.stringify(current))
-  await page.screenshot({ path: resolve(output, 'harness-quick-controls.png') })
+  assert.ok(Math.abs(current.sea - 1.09) < 0.03, JSON.stringify(current))
+  assert.ok(Math.abs(current.daylight - BASELINE.time) < 0.1, JSON.stringify(current))
+  assert.equal(current.manualTimeOfDay, true, JSON.stringify(current))
   await page.keyboard.press('Escape')
   await quickPanel.waitFor({ state: 'hidden' })
 
@@ -92,7 +147,10 @@ async function verifyHarnessChrome(page) {
   await waitForOcean(page)
   const persisted = await openSettings(page)
   const persistedRanges = persisted.section.locator('input[type="range"]')
-  assert.deepEqual(await persistedRanges.evaluateAll(inputs => inputs.map(input => Number(input.value))), [61, 12, 64])
+  assert.deepEqual(
+    await persistedRanges.evaluateAll(inputs => inputs.map(input => Number(input.value))),
+    [BASELINE.sea, BASELINE.time, BASELINE.glass],
+  )
   await closeSettings(persisted.dialog)
 
   await rpc(page, 'settings.update', { ns: 'ui-theme', patch: { preference: 'dark' } })
@@ -115,124 +173,89 @@ async function verifyHarnessChrome(page) {
     return dialog instanceof HTMLElement && top instanceof Element && dialog.contains(top)
   }, { x: (overlap.left + overlap.right) / 2, y: (overlap.top + overlap.bottom) / 2 })
   assert.equal(dialogOwnsOverlap, true, 'settings dialog must paint above the conversation composer')
-  await page.screenshot({ path: resolve(output, 'harness-settings-wide-dark.png') })
   await closeSettings(controls.dialog)
   await rpc(page, 'settings.update', { ns: 'ui-theme', patch: { preference: 'system' } })
 }
 
+async function prepareGalleryPanel(page, preference) {
+  await applyBaselineSettings(page)
+  await rpc(page, 'settings.update', { ns: 'ui-theme', patch: { preference } })
+  await page.setViewportSize(GIF_VIEWPORT)
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await waitForOcean(page)
+  const panel = await openQuickControls(page)
+  await setQuickSkin(page, panel, BASELINE)
+  await page.waitForTimeout(400)
+  return panel
+}
+
 async function captureHarness() {
   const browser = await chromium.launch({ executablePath: chrome, headless: false, args: chromiumArgs() })
-  const page = await browser.newPage({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 })
+  const page = await browser.newPage({ viewport: GIF_VIEWPORT, deviceScaleFactor: 1 })
   const failures = watchPageErrors(page, 'native Harness')
   try {
     await page.goto(harnessUrl, { waitUntil: 'domcontentloaded' })
     assert.equal(await page.title(), 'DeepSeek Harness')
     await waitForOcean(page)
     await verifyHarnessChrome(page)
-    await page.setViewportSize({ width: 1440, height: 960 })
 
-    let controls = await openSettings(page)
-    await setSkin(controls.section, { sea: 52, time: 16, glass: 62 })
-    let current = await state(page)
-    assert.ok(Math.abs(current.sea - 1.03) < 0.03, JSON.stringify(current))
-    assert.ok(Math.abs(current.daylight - 16) < 0.1, JSON.stringify(current))
-    await page.screenshot({ path: resolve(output, 'harness-open-sea-overview.png') })
-    await closeSettings(controls.dialog)
+    let panel = await prepareGalleryPanel(page, 'dark')
+    await captureGif(page, 'harness-dark-overview.gif', Array.from({ length: 28 }), async () => {})
+    await page.keyboard.press('Escape')
+    await panel.waitFor({ state: 'hidden' })
 
-    controls = await openSettings(page)
-    await setSkin(controls.section, { sea: 8, time: 64, glass: 62 })
-    await closeSettings(controls.dialog)
-    await page.waitForTimeout(350)
-    await page.screenshot({ path: resolve(output, 'harness-calm-sea.png') })
+    panel = await prepareGalleryPanel(page, 'light')
+    await captureGif(page, 'harness-light-overview.gif', Array.from({ length: 28 }), async () => {})
+    await page.keyboard.press('Escape')
+    await panel.waitFor({ state: 'hidden' })
 
-    controls = await openSettings(page)
-    await setSkin(controls.section, { sea: 42, time: 7, glass: 58 })
-    await closeSettings(controls.dialog)
-    await page.waitForTimeout(350)
-    await page.screenshot({ path: resolve(output, 'harness-sunset.png') })
-
-    controls = await openSettings(page)
-    await setSkin(controls.section, { sea: 94, time: 46, glass: 62 })
-    await closeSettings(controls.dialog)
-    await page.waitForTimeout(350)
-    await page.screenshot({ path: resolve(output, 'harness-high-sea.png') })
-
-    await page.setViewportSize({ width: 960, height: 640 })
-    controls = await openSettings(page)
-    const frames = []
-    const sequence = [
-      { sea: 24, time: 58 }, { sea: 30, time: 48 }, { sea: 36, time: 38 },
-      { sea: 42, time: 28 }, { sea: 48, time: 18 }, { sea: 54, time: 10 },
-      { sea: 62, time: 7 }, { sea: 72, time: 7 }, { sea: 84, time: 7 },
-      { sea: 94, time: 7 }, { sea: 94, time: 16 }, { sea: 84, time: 26 },
-      { sea: 72, time: 36 }, { sea: 60, time: 46 }, { sea: 48, time: 56 },
-      { sea: 36, time: 64 }, { sea: 28, time: 58 }, { sea: 24, time: 58 },
+    panel = await prepareGalleryPanel(page, 'dark')
+    const waveSequence = [
+      ...Array(3).fill(BASELINE.sea),
+      ...interpolate(BASELINE.sea, 16, 7).slice(1),
+      ...interpolate(16, 92, 14).slice(1),
+      ...interpolate(92, BASELINE.sea, 8).slice(1),
+      ...Array(4).fill(BASELINE.sea),
     ]
-    for (const values of sequence) {
-      await setSkin(controls.section, values)
-      frames.push(await page.screenshot())
-    }
-    const gif = GIFEncoder()
-    for (const [index, frame] of frames.entries()) {
-      const image = PNG.sync.read(frame)
-      const palette = quantize(image.data, 128, { format: 'rgb444' })
-      const indexed = applyPalette(image.data, palette, 'rgb444')
-      gif.writeFrame(indexed, image.width, image.height, {
-        palette,
-        delay: index === frames.length - 1 ? 700 : 130,
-        repeat: 0,
-      })
-    }
-    gif.finish()
-    await writeFile(resolve(output, 'open-sea-controls.gif'), gif.bytes())
+    await captureGif(page, 'harness-wave-control.gif', waveSequence, async sea => {
+      await setQuickSkin(page, panel, { sea })
+    })
+    await page.keyboard.press('Escape')
+    await panel.waitFor({ state: 'hidden' })
 
-    await setSkin(controls.section, { sea: 45, time: 55, glass: 72 })
+    panel = await prepareGalleryPanel(page, 'dark')
+    const daylightSequence = [
+      ...Array(4).fill(70),
+      ...interpolate(70, 7, 22).slice(1),
+      ...Array(5).fill(7),
+    ]
+    await captureGif(page, 'harness-daylight-sunset.gif', daylightSequence, async time => {
+      await setQuickSkin(page, panel, { time })
+    })
+
+    await setQuickSkin(page, panel, BASELINE)
+    await page.keyboard.press('Escape')
+    await panel.waitFor({ state: 'hidden' })
+    await rpc(page, 'settings.update', {
+      ns: 'ui-open-sea-skin',
+      patch: { enabled: true, sea: 45, time: 55, glass: 72, autoCycle: true, quality: 'auto' },
+    })
+    await rpc(page, 'settings.update', { ns: 'ui-theme', patch: { preference: 'system' } })
     assert.deepEqual(failures, [])
   } finally {
     await browser.close()
   }
 }
 
-async function captureNewTab() {
-  const profile = await mkdtemp(resolve(tmpdir(), 'open-sea-gallery-extension-'))
-  const context = await chromium.launchPersistentContext(profile, {
-    executablePath: chrome,
-    headless: false,
-    viewport: { width: 1440, height: 960 },
-    ignoreDefaultArgs: ['--disable-extensions'],
-    args: [
-      ...chromiumArgs(),
-      `--disable-extensions-except=${extension}`,
-      `--load-extension=${extension}`,
-    ],
-  })
-  try {
-    const page = context.pages()[0] ?? await context.newPage()
-    const failures = watchPageErrors(page, 'extension new tab')
-    await page.goto('chrome://newtab/')
-    await page.locator('body.ready').waitFor({ timeout: 45_000 })
-    await page.locator('canvas').waitFor({ state: 'visible' })
-    await setRange(page.locator('#sea-state'), 58)
-    await setRange(page.locator('#time-of-day'), 17)
-    await page.waitForTimeout(350)
-    await page.screenshot({ path: resolve(output, 'extension-new-tab.png') })
-    assert.deepEqual(failures, [])
-  } finally {
-    await context.close()
-    await rm(profile, { recursive: true, force: true })
-  }
-}
-
 console.log(`Chrome for Testing: ${chrome}`)
 console.log(`Harness: ${harnessUrl}`)
 await captureHarness()
-await captureNewTab()
 for (const name of [
-  'harness-settings-wide-dark.png', 'harness-quick-controls.png',
-  'harness-open-sea-overview.png', 'harness-calm-sea.png', 'harness-sunset.png',
-  'harness-high-sea.png', 'extension-new-tab.png', 'open-sea-controls.gif',
+  'harness-dark-overview.gif', 'harness-light-overview.gif',
+  'harness-wave-control.gif', 'harness-daylight-sunset.gif',
 ]) {
   const details = await stat(resolve(output, name))
   assert.ok(details.size > 50_000, `${name} is unexpectedly small`)
+  assert.ok(details.size < 15_000_000, `${name} is too large for a practical README (${details.size} bytes)`)
   console.log(`✓ ${name} (${(details.size / 1_048_576).toFixed(2)} MiB)`)
 }
