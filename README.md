@@ -15,24 +15,24 @@ at **40% glass opacity**. The overview baseline is wave size **56** and daylight
 
 ### 1 — Dark Harness overview
 
-![Open Sea inside DeepSeek Harness in dark mode](docs/screenshots/harness-dark-overview.gif)
+![Open Sea inside DeepSeek Harness in dark mode](docs/screenshots/harness-dark-overview-40.gif)
 
 ### 2 — Light Harness overview
 
-![Open Sea inside DeepSeek Harness in light mode](docs/screenshots/harness-light-overview.gif)
+![Open Sea inside DeepSeek Harness in light mode](docs/screenshots/harness-light-overview-40.gif)
 
 ### 3 — Adjusting wave size
 
 Daylight stays at Afternoon (55) while the wave control moves from moderate to
 calm, through high sea, and back to the baseline of 56.
 
-![Adjusting wave size in DeepSeek Harness](docs/screenshots/harness-wave-control.gif)
+![Adjusting wave size in DeepSeek Harness](docs/screenshots/harness-wave-control-40.gif)
 
 ### 4 — Daylight to sunset
 
 Wave size stays at 56 while daylight moves smoothly from Midday to Dusk.
 
-![Adjusting daylight from midday to sunset](docs/screenshots/harness-daylight-sunset.gif)
+![Adjusting daylight from midday to sunset](docs/screenshots/harness-daylight-sunset-40.gif)
 
 ## Install option 1 — Chrome or Edge extension
 

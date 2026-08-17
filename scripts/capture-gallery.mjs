@@ -200,12 +200,12 @@ async function captureHarness() {
     await verifyHarnessChrome(page)
 
     let panel = await prepareGalleryPanel(page, 'dark')
-    await captureGif(page, 'harness-dark-overview.gif', Array.from({ length: 28 }), async () => {})
+    await captureGif(page, 'harness-dark-overview-40.gif', Array.from({ length: 28 }), async () => {})
     await page.keyboard.press('Escape')
     await panel.waitFor({ state: 'hidden' })
 
     panel = await prepareGalleryPanel(page, 'light')
-    await captureGif(page, 'harness-light-overview.gif', Array.from({ length: 28 }), async () => {})
+    await captureGif(page, 'harness-light-overview-40.gif', Array.from({ length: 28 }), async () => {})
     await page.keyboard.press('Escape')
     await panel.waitFor({ state: 'hidden' })
 
@@ -217,7 +217,7 @@ async function captureHarness() {
       ...interpolate(92, BASELINE.sea, 8).slice(1),
       ...Array(4).fill(BASELINE.sea),
     ]
-    await captureGif(page, 'harness-wave-control.gif', waveSequence, async sea => {
+    await captureGif(page, 'harness-wave-control-40.gif', waveSequence, async sea => {
       await setQuickSkin(page, panel, { sea })
     })
     await page.keyboard.press('Escape')
@@ -229,7 +229,7 @@ async function captureHarness() {
       ...interpolate(70, 7, 22).slice(1),
       ...Array(5).fill(7),
     ]
-    await captureGif(page, 'harness-daylight-sunset.gif', daylightSequence, async time => {
+    await captureGif(page, 'harness-daylight-sunset-40.gif', daylightSequence, async time => {
       await setQuickSkin(page, panel, { time })
     })
 
@@ -251,8 +251,8 @@ console.log(`Chrome for Testing: ${chrome}`)
 console.log(`Harness: ${harnessUrl}`)
 await captureHarness()
 for (const name of [
-  'harness-dark-overview.gif', 'harness-light-overview.gif',
-  'harness-wave-control.gif', 'harness-daylight-sunset.gif',
+  'harness-dark-overview-40.gif', 'harness-light-overview-40.gif',
+  'harness-wave-control-40.gif', 'harness-daylight-sunset-40.gif',
 ]) {
   const details = await stat(resolve(output, name))
   assert.ok(details.size > 50_000, `${name} is unexpectedly small`)

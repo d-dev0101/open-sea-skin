@@ -2,10 +2,10 @@
 
 Committed README media:
 
-- `harness-dark-overview.gif` — native Harness dark-mode overview.
-- `harness-light-overview.gif` — native Harness light-mode overview.
-- `harness-wave-control.gif` — wave-size control from calm to high sea.
-- `harness-daylight-sunset.gif` — daylight control from midday to dusk.
+- `harness-dark-overview-40.gif` — native Harness dark-mode overview.
+- `harness-light-overview-40.gif` — native Harness light-mode overview.
+- `harness-wave-control-40.gif` — wave-size control from calm to high sea.
+- `harness-daylight-sunset-40.gif` — daylight control from midday to dusk.
 
 Regenerate the complete set with `npm run capture`. Capture uses Chrome for
 Testing, a 1440×900 Harness viewport, local assets, and deterministic settings.

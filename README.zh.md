@@ -13,23 +13,23 @@ dist 安装脚本，以及真正接入 Harness slots/settings 的原生客户端
 
 ### 1 — 深色 Harness 全景
 
-![DeepSeek Harness 深色模式完整海洋皮肤](docs/screenshots/harness-dark-overview.gif)
+![DeepSeek Harness 深色模式完整海洋皮肤](docs/screenshots/harness-dark-overview-40.gif)
 
 ### 2 — 浅色 Harness 全景
 
-![DeepSeek Harness 浅色模式完整海洋皮肤](docs/screenshots/harness-light-overview.gif)
+![DeepSeek Harness 浅色模式完整海洋皮肤](docs/screenshots/harness-light-overview-40.gif)
 
 ### 3 — 调整波浪大小
 
 日光固定为下午（55），波浪从中等变为平静，再升至大浪，最后回到基准值 56。
 
-![在 DeepSeek Harness 中调整波浪大小](docs/screenshots/harness-wave-control.gif)
+![在 DeepSeek Harness 中调整波浪大小](docs/screenshots/harness-wave-control-40.gif)
 
 ### 4 — 从白天调到夕阳
 
 波浪固定为 56，日光从正午平滑变化到黄昏。
 
-![在 DeepSeek Harness 中从白天调整到夕阳](docs/screenshots/harness-daylight-sunset.gif)
+![在 DeepSeek Harness 中从白天调整到夕阳](docs/screenshots/harness-daylight-sunset-40.gif)
 
 ## 安装方式一：Chrome / Edge 扩展
 
