@@ -74,10 +74,12 @@ with `chrome.storage.sync`.
 
 ## Install option 2 — Harness static build (no source compilation)
 
-Clone this repository, then run:
+Run this from **any directory**. It downloads the pinned `v1.2.0` source archive
+to a temporary directory, runs the installer, and removes the download when it
+finishes:
 
 ```sh
-bash native-dist/install-skin.sh
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash
 ```
 
 The script finds a built/installed Harness frontend, makes a local backup,
@@ -85,18 +87,26 @@ copies the self-contained assets, and injects one marked loader block. If
 automatic detection cannot find the frontend, pass it explicitly:
 
 ```sh
-bash native-dist/install-skin.sh --dist /absolute/path/to/apps/web/dist
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --dist /absolute/path/to/apps/web/dist
 ```
 
-Re-run `bash native-dist/install-skin.sh --update` **after every Harness
-upgrade**. Remove only Open Sea's marker and assets with:
+Re-run the bootstrap with `--update` **after every Harness upgrade**:
 
 ```sh
-bash native-dist/install-skin.sh --uninstall
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --update
 ```
 
-See [native-dist/README.md](native-dist/README.md) for detection and recovery
-details.
+Remove only Open Sea's marker and assets with:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --uninstall
+```
+
+The command is safe to copy while your terminal is in `~`; it does not assume
+that this repository already exists locally. You can [inspect the bootstrap
+script](install.sh) before running it. See
+[native-dist/README.md](native-dist/README.md) for clone-based installation,
+detection, and recovery details.
 
 ## Native Harness source plugin
 

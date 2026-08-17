@@ -67,33 +67,36 @@ dsh plugin --profile web remove open-sea-skin
 
 ## 安装方式二：Harness dist 注入（无需编译源码）
 
-克隆本仓库后执行：
+可以在**任意目录**执行。命令会把固定版本 `v1.2.0` 下载到临时目录，运行安装器
+后自动清理下载内容：
 
 ```sh
-bash native-dist/install-skin.sh
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash
 ```
 
 脚本会自动寻找已构建/已安装的 Harness 前端，先备份 `index.html`，再复制本地
 资源并注入一段带标记的加载代码。找不到时可显式指定：
 
 ```sh
-bash native-dist/install-skin.sh --dist /绝对路径/apps/web/dist
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --dist /绝对路径/apps/web/dist
 ```
 
 **每次 Harness 升级后必须重跑**：
 
 ```sh
-bash native-dist/install-skin.sh --update
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --update
 ```
 
 安全卸载：
 
 ```sh
-bash native-dist/install-skin.sh --uninstall
+curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --uninstall
 ```
 
-脚本只删除自己的标记块和 `open-sea-skin/` 目录，不会用旧备份覆盖 Harness
-后续更新。自动定位和恢复细节见 [native-dist/README.md](native-dist/README.md)。
+这条命令在终端位于 `~` 时也能直接复制执行，不要求用户预先克隆仓库。运行前可
+[查看引导脚本源码](install.sh)。脚本只删除自己的标记块和 `open-sea-skin/`
+目录，不会用旧备份覆盖 Harness 后续更新。克隆安装、自动定位和恢复细节见
+[native-dist/README.md](native-dist/README.md)。
 
 ## Harness 原生源码插件
 

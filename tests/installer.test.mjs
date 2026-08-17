@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdtemp, mkdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { cp, mkdtemp, mkdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -8,6 +8,7 @@ import test from 'node:test'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const installer = resolve(root, 'native-dist/install-skin.sh')
+const bootstrapInstaller = resolve(root, 'install.sh')
 const sourceInstaller = resolve(root, 'harness-plugin/install-into-harness.sh')
 
 function run(...args) {
@@ -20,6 +21,28 @@ function runSourceInstaller(harness) {
   const result = spawnSync('bash', [sourceInstaller, harness], { cwd: root, encoding: 'utf8' })
   assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`)
   return result.stdout
+}
+
+function runBootstrap(archive, cwd, ...args) {
+  const result = spawnSync('bash', [bootstrapInstaller, ...args], {
+    cwd,
+    encoding: 'utf8',
+    env: { ...process.env, OPEN_SEA_ARCHIVE_FILE: archive },
+  })
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`)
+  return result.stdout
+}
+
+async function createSourceArchive(fixture) {
+  const archiveRoot = resolve(fixture, 'archive/open-sea-skin-1.2.0')
+  await mkdir(archiveRoot, { recursive: true })
+  await cp(resolve(root, 'native-dist'), resolve(archiveRoot, 'native-dist'), { recursive: true })
+  const archive = resolve(fixture, 'open-sea-skin.tar.gz')
+  const result = spawnSync('tar', ['-czf', archive, '-C', resolve(fixture, 'archive'), 'open-sea-skin-1.2.0'], {
+    encoding: 'utf8',
+  })
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`)
+  return archive
 }
 
 test('static installer is repeatable and preserves unrelated Harness updates', async () => {
@@ -59,6 +82,25 @@ test('dry-run discovers an explicit dist without changing it', async () => {
   const output = run('--dry-run', '--dist', fixture)
   assert.match(output, /Dry run complete/)
   assert.equal(await readFile(resolve(fixture, 'index.html'), 'utf8'), before)
+})
+
+test('GitHub bootstrap works from an unrelated directory and forwards installer options', async () => {
+  const fixture = await mkdtemp(resolve(tmpdir(), 'open-sea-bootstrap-'))
+  const unrelatedCwd = resolve(fixture, 'unrelated-working-directory')
+  const dist = resolve(fixture, 'dist')
+  await mkdir(unrelatedCwd)
+  await mkdir(dist)
+  await writeFile(resolve(dist, 'index.html'), '<html><head></head><body>Harness</body></html>')
+  const archive = await createSourceArchive(fixture)
+
+  const output = runBootstrap(archive, unrelatedCwd, '--dist', dist)
+  assert.match(output, /Open Sea Skin is installed/)
+  await stat(resolve(dist, 'open-sea-skin/loader.js'))
+  assert.match(await readFile(resolve(dist, 'index.html'), 'utf8'), /open-sea-skin:begin/)
+
+  runBootstrap(archive, unrelatedCwd, '--uninstall', '--dist', dist)
+  await assert.rejects(stat(resolve(dist, 'open-sea-skin')))
+  assert.doesNotMatch(await readFile(resolve(dist, 'index.html'), 'utf8'), /open-sea-skin/)
 })
 
 test('native source installer is repeatable and preserves overlay stacking', async () => {
