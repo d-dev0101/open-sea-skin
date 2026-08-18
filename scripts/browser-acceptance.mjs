@@ -12,11 +12,14 @@ import {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const extension = resolve(root, 'extension')
 const fixture = resolve(root, 'tests/fixtures/harness')
+const genericFixture = resolve(root, 'tests/fixtures/generic')
+const existingNewTabExtension = resolve(root, 'tests/fixtures/existing-newtab-extension')
 const chrome = await findChromeForTesting(chromium.executablePath())
 const headless = process.env.OSS_HEADLESS === '1'
 
 async function extensionAcceptance() {
   const server = await serveDirectory(fixture)
+  const genericServer = await serveDirectory(genericFixture)
   const profile = await mkdtemp(resolve(tmpdir(), 'open-sea-extension-profile-'))
   const context = await chromium.launchPersistentContext(profile, {
     executablePath: chrome,
@@ -25,8 +28,8 @@ async function extensionAcceptance() {
     ignoreDefaultArgs: ['--disable-extensions'],
     args: [
       ...chromiumArgs(),
-      `--disable-extensions-except=${extension}`,
-      `--load-extension=${extension}`,
+      `--disable-extensions-except=${extension},${existingNewTabExtension}`,
+      `--load-extension=${extension},${existingNewTabExtension}`,
     ],
   })
   try {
@@ -57,19 +60,25 @@ async function extensionAcceptance() {
     assert.equal(await page.locator('#__open-sea-skin-panel__-time-range').inputValue(), '18')
     assert.equal(await page.locator('#__open-sea-skin-panel__-glass-range').inputValue(), '65')
 
+    const genericPage = await context.newPage()
+    const genericFailures = watchPageErrors(genericPage, 'generic-localhost')
+    await genericPage.goto(genericServer.url, { waitUntil: 'domcontentloaded' })
+    await genericPage.waitForTimeout(500)
+    assert.equal(await genericPage.locator('#__open-sea-skin__').count(), 0)
+    assert.equal(await genericPage.locator('#__open-sea-skin-btn__').count(), 0)
+    await genericPage.close()
+
     const newTab = await context.newPage()
-    const newTabFailures = watchPageErrors(newTab, 'new-tab')
     await newTab.goto('chrome://newtab/')
-    await newTab.locator('body.ready').waitFor({ timeout: 45_000 })
-    await newTab.locator('canvas').waitFor({ state: 'visible' })
-    assert.equal(await newTab.locator('#sea-state').inputValue(), '45')
-    assert.match(new URL(newTab.url()).protocol, /^chrome-extension:$/)
+    await newTab.locator('#existing-newtab-home').waitFor()
+    assert.match(await newTab.locator('#existing-newtab-home').textContent(), /existing new-tab home/)
     await newTab.close()
 
-    assert.deepEqual([...failures, ...newTabFailures], [])
+    assert.deepEqual([...failures, ...genericFailures], [])
   } finally {
     await context.close()
     await server.close()
+    await genericServer.close()
     await rm(profile, { recursive: true, force: true })
   }
 }
@@ -122,6 +131,6 @@ async function staticDistAcceptance() {
 
 console.log(`Chrome for Testing: ${chrome}`)
 await extensionAcceptance()
-console.log('✓ Extension new tab, Harness injection, live controls and persistence')
+console.log('✓ Harness-only extension, existing new-tab home/local apps untouched, live controls and persistence')
 await staticDistAcceptance()
 console.log('✓ Static Harness install, live controls, persistence and uninstall')

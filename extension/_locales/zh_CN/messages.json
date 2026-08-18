@@ -1,8 +1,8 @@
 {
   "extensionName": { "message": "Open Sea 海洋皮肤" },
-  "extensionDescription": { "message": "把 WebGPU 实时海洋变成新标签页和 DeepSeek Harness 背景。自适应画质、资源全本地、零数据收集。" },
+  "extensionDescription": { "message": "仅为本机 DeepSeek Harness 页面添加 WebGPU 实时海洋背景。自适应画质、资源全本地、零数据收集。" },
   "tagline": { "message": "WebGPU 实时海洋背景 · 皮肤插件" },
   "toggleLabel": { "message": "界面海洋背景" },
   "toggleDescription": { "message": "DeepSeek Harness（127.0.0.1 / localhost）" },
-  "note": { "message": "新标签页使用完整 Open Sea 场景。Harness 所在标签页隐藏后，海洋会自动暂停。" }
+  "note": { "message": "只修改经过识别的 DeepSeek Harness 页面；新标签页和其他本地网站保持原样。" }
 }

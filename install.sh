@@ -2,7 +2,7 @@
 # Download a pinned Open Sea source archive and run the static Harness installer.
 set -euo pipefail
 
-OPEN_SEA_VERSION="${OPEN_SEA_VERSION:-v1.2.0}"
+OPEN_SEA_VERSION="${OPEN_SEA_VERSION:-v1.2.1}"
 OPEN_SEA_ARCHIVE_URL="${OPEN_SEA_ARCHIVE_URL:-https://github.com/d-dev0101/open-sea-skin/archive/refs/tags/${OPEN_SEA_VERSION}.tar.gz}"
 
 REQUESTED_MODE="install"

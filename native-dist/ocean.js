@@ -7,7 +7,7 @@
 //  distance-gated fragment work, no MSAA, low-power adapter in skin mode.
 //
 //  Runs in two modes:
-//    - full page (new tab): panel, sliders, loader, error states
+//    - full page showcase: panel, sliders, loader, error states
 //    - skin mode (?skin=1): bare ocean behind the host UI, auto time-of-day
 // ============================================================================
 

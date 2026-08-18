@@ -1,8 +1,8 @@
 {
   "extensionName": { "message": "Open Sea Skin" },
-  "extensionDescription": { "message": "A realtime WebGPU ocean for new tabs and the DeepSeek Harness background. Adaptive quality, local assets, no data collection." },
+  "extensionDescription": { "message": "A realtime WebGPU ocean background exclusively for local DeepSeek Harness pages. Adaptive quality, local assets, no data collection." },
   "tagline": { "message": "Realtime WebGPU ocean · UI skin" },
   "toggleLabel": { "message": "Ocean background" },
   "toggleDescription": { "message": "DeepSeek Harness on 127.0.0.1 or localhost" },
-  "note": { "message": "New tabs use the full Open Sea scene. The Harness background pauses when its tab is hidden." }
+  "note": { "message": "Only verified DeepSeek Harness pages are changed. New tabs and other local websites stay untouched." }
 }

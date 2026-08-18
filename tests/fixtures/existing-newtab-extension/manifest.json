@@ -1,0 +1,8 @@
+{
+  "manifest_version": 3,
+  "name": "Existing New Tab Home",
+  "version": "1.0.0",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  }
+}

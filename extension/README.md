@@ -1,18 +1,22 @@
 # Open Sea Skin — WebGPU 实时海洋皮肤（Chrome / Edge 扩展）
 
-把「Open Sea」实时海洋做成两层皮肤：
-
-1. **新标签页**：打开新标签 = 完整海洋体验（面板、SEA STATE / TIME OF DAY 滑块、DRIFT、FPS）。
-2. **界面背景皮肤**：在 DeepSeek Harness 界面（`http://127.0.0.1/*`、`http://localhost/*`）背后垫上海洋，并把界面面板变成半透明玻璃。弹出菜单里一键开关。
+只为 DeepSeek Harness 添加「Open Sea」实时海洋背景：在本机 Harness 界面
+（`http://127.0.0.1/*`、`http://localhost/*`）背后渲染海洋，并把界面面板变成
+半透明玻璃。扩展不会接管新标签页、修改浏览器主页或影响用户已有的新标签页扩展，
+也不会修改其他本地网站。
 
 ## 安装（直接启用）
 
 1. 打开 Chrome/Edge：地址栏输入 `chrome://extensions`（Edge 是 `edge://extensions`）。
 2. 右上角打开 **开发者模式**。
-3. 点 **加载已解压的扩展程序**，选择本文件夹 `open-sea-extension`。
-4. 完成。开一个新标签页即可看到海洋；刷新 127.0.0.1:3080 的界面即可看到背景皮肤。
+3. 点 **加载已解压的扩展程序**，选择本仓库的 `extension` 文件夹。
+4. 完成。打开或刷新 `127.0.0.1:3080` 的 DeepSeek Harness 即可看到背景皮肤。
 
-关闭皮肤：点工具栏的扩展图标 → 弹窗里关掉「界面海洋背景」；不想接管新标签页则直接停用/移除扩展。
+关闭皮肤：点工具栏的扩展图标 → 弹窗里关掉「界面海洋背景」。
+
+扩展虽然需要覆盖 `127.0.0.1` 和 `localhost` 的不同端口，但注入前会验证 Harness
+标题、`#root` 节点和服务端注入的 `window.__DSH_BOOT__` 标记。三项同时满足才会
+启动海洋，因此普通本地开发页面保持原样。
 
 ## 与原始站点版的区别（占用优化）
 
@@ -38,11 +42,10 @@
 
 ## 文件说明
 
-- `newtab.html` — 新标签页（完整 UI）
 - `skin.html` — 无 UI 背景页（皮肤 iframe）
 - `ocean.js` — 共享优化引擎（`?skin=1` 切换皮肤模式）
 - `styles.css` — 共享样式（字体已本地化，零网络请求）
-- `content.js` — 界面皮肤注入（玻璃令牌覆盖 + iframe）
+- `content.js` — Harness 身份校验与皮肤注入（玻璃令牌覆盖 + iframe）
 - `popup.html` / `popup.js` — 皮肤开关
 - `vendor/` — 本地化并压缩过的 three.js 0.178（webgpu/tsl/addons）+ Geist 字体
 

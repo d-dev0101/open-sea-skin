@@ -7,7 +7,7 @@ route. It does not modify the Harness checkout.
 ## Install a release
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.0'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.1'
 dsh web
 ```
 

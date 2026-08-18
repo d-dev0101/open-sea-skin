@@ -22,7 +22,8 @@ test('the MV3 manifest keeps the minimum local-only permission surface', async (
   assert.deepEqual(manifest.host_permissions, ['http://127.0.0.1/*', 'http://localhost/*'])
   assert.equal(manifest.content_scripts[0].all_frames, false)
   assert.ok(manifest.web_accessible_resources[0].resources.includes('skin.html'))
-  assert.ok(manifest.chrome_url_overrides.newtab)
+  assert.equal(manifest.chrome_url_overrides, undefined)
+  assert.equal(manifest.action.default_popup, 'popup.html')
 })
 
 test('every install path is generated from the canonical renderer', async () => {
@@ -77,6 +78,13 @@ test('shared controller retains duplicate guards, a11y and resilient anchors', a
     'MutationObserver',
     'prefers-reduced-motion',
   ]) assert.ok(core.includes(required), required)
+})
+
+test('the browser extension injects only into a verified Harness page', async () => {
+  const entry = await text('shared/extension-entry.js')
+  assert.match(entry, /document\.title !== 'DeepSeek Harness'/)
+  assert.match(entry, /document\.getElementById\('root'\)/)
+  assert.ok(entry.includes('window\\.__DSH_BOOT__'))
 })
 
 test('renderer contains the promised performance and security policies', async () => {

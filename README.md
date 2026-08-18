@@ -2,9 +2,9 @@
 
 [中文](README.zh.md) · [Architecture](docs/architecture.md) · [Release guide](docs/releasing.md)
 
-A self-contained WebGPU ocean for new tabs and DeepSeek Harness. It keeps the
-original five-wave Gerstner/TSL look, adds a translucent Harness theme, and is
-available as a one-line DSH plugin, Chrome/Edge extension, one-command static
+A self-contained WebGPU ocean skin for DeepSeek Harness. It keeps the original
+five-wave Gerstner/TSL look, adds a translucent Harness theme, and is available
+as a one-line DSH plugin, Harness-only Chrome/Edge extension, one-command static
 installer, or native Harness source integration.
 
 ![Open Sea for DeepSeek Harness](docs/marketplace/open-sea-harness-cover.png)
@@ -15,7 +15,7 @@ Install the complete local-only ocean runtime and lower-left quick controls
 directly from GitHub:
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.0'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.1'
 ```
 
 Restart `dsh web`, then use **Skin settings** at the lower left to adjust wave
@@ -65,16 +65,19 @@ Wave size stays at 56 while daylight moves smoothly from Midday to Dusk.
 2. Open `chrome://extensions` (Edge: `edge://extensions`) and enable
    **Developer mode**.
 3. Select **Load unpacked** and choose this repository's `extension/` folder.
-4. Open a new tab for the full ocean. Open Harness on `127.0.0.1` or
-   `localhost` for the glass background skin.
+4. Open DeepSeek Harness on `127.0.0.1` or `localhost`, then reload it once.
 
-Use the toolbar popup to disable only the Harness skin. The lower-left wave
-button opens sea-state, daylight, and glass-opacity controls. Values are saved
-with `chrome.storage.sync`.
+The extension does **not** replace Chrome or Edge's new-tab page, change the
+browser homepage, or interfere with an existing new-tab extension. It verifies
+the Harness title, root, and server-injected boot marker before changing a page,
+so other local development sites also remain untouched. Use the toolbar popup
+to disable the Harness skin. The lower-left wave button opens sea-state,
+daylight, and glass-opacity controls. Values are saved with
+`chrome.storage.sync`.
 
 ## Install option 2 — Harness static build (no source compilation)
 
-Run this from **any directory**. It downloads the pinned `v1.2.0` source archive
+Run this from **any directory**. It downloads the pinned `v1.2.1` source archive
 to a temporary directory, runs the installer, and removes the download when it
 finishes. **Stop Harness before running it**, then start `dsh web` again, keep
 that terminal process running, and reload the browser:

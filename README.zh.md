@@ -2,10 +2,10 @@
 
 [English](README.md) · [技术架构](docs/architecture.md) · [发布说明](docs/releasing.md)
 
-把实时 WebGPU 海洋同时带到浏览器新标签页和 DeepSeek Harness。保留五组
-Gerstner 波与 TSL 海面视觉，增加半透明玻璃界面，并提供浏览器扩展、无需编译的
-dist 安装脚本、可一行安装的 DSH 插件，以及真正接入 Harness slots/settings
-的原生源码集成。
+为 DeepSeek Harness 加上实时 WebGPU 海洋皮肤。保留五组 Gerstner 波与 TSL
+海面视觉，增加半透明玻璃界面，并提供只作用于 Harness 的浏览器扩展、无需编译
+的 dist 安装脚本、可一行安装的 DSH 插件，以及真正接入 Harness
+slots/settings 的原生源码集成。
 
 ![Open Sea for DeepSeek Harness](docs/marketplace/open-sea-harness-cover.png)
 
@@ -14,7 +14,7 @@ dist 安装脚本、可一行安装的 DSH 插件，以及真正接入 Harness s
 直接从 GitHub 安装完整的本地海洋运行时与左下角快捷控制：
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.0'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.1'
 ```
 
 重启 `dsh web` 后，点击左下角的**皮肤设置**即可调节波浪大小、日光、40%
@@ -59,15 +59,17 @@ dsh plugin --profile web remove open-sea-skin
 2. 打开 `chrome://extensions`（Edge 为 `edge://extensions`），开启右上角
    **开发者模式**。
 3. 点击**加载已解压的扩展程序**，选择本仓库的 `extension/` 文件夹。
-4. 新建标签页可看到完整海洋；打开 `127.0.0.1` 或 `localhost` 上的 Harness
-   即可看到玻璃海洋背景。
+4. 打开 `127.0.0.1` 或 `localhost` 上的 DeepSeek Harness，再刷新一次页面。
 
-工具栏弹窗可以只关闭 Harness 皮肤。左下角的波浪图标可调波浪、日光和玻璃
+扩展**不会接管 Chrome / Edge 新标签页**，不会修改浏览器主页，也不会影响用户
+原来安装的新标签页扩展。它会同时验证 Harness 的页面标题、根节点和服务端启动
+标记，只有确认是真正的 DeepSeek Harness 后才注入皮肤，其他本地开发网站也不会
+被修改。工具栏弹窗可关闭 Harness 皮肤；左下角的波浪图标可调波浪、日光和玻璃
 不透明度，数值会保存到 `chrome.storage.sync`。
 
 ## 安装方式二：Harness dist 注入（无需编译源码）
 
-可以在**任意目录**执行。命令会把固定版本 `v1.2.0` 下载到临时目录，运行安装器
+可以在**任意目录**执行。命令会把固定版本 `v1.2.1` 下载到临时目录，运行安装器
 后自动清理下载内容。**执行前先停止 Harness**；执行完成后重新运行 `dsh web`，
 保持该终端进程运行，再刷新浏览器：
 
