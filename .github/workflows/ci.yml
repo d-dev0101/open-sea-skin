@@ -22,7 +22,7 @@ jobs:
       - run: npm run package:extension
       - name: Cache Chrome for Testing
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
