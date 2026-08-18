@@ -1,6 +1,6 @@
 # Open Sea 海洋皮肤
 
-[English](README.md) · [技术架构](docs/architecture.md) · [发布说明](docs/releasing.md)
+[交互式官网](https://d-dev0101.github.io/open-sea-skin/) · [English](README.md) · [技术架构](docs/architecture.md) · [发布说明](docs/releasing.md)
 
 为 DeepSeek Harness 加上实时 WebGPU 海洋皮肤。保留五组 Gerstner 波与 TSL
 海面视觉，增加半透明玻璃界面，并提供只作用于 Harness 的浏览器扩展、无需编译

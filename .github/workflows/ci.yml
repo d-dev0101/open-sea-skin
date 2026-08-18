@@ -23,3 +23,5 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Browser acceptance
         run: xvfb-run -a npm run test:browser
+      - name: Website acceptance
+        run: OSS_HEADLESS=1 npm run test:website

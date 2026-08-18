@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN" data-ui-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#061116">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'">
+  <meta name="description" content="Open Sea：为 DeepSeek Harness 打造的可调节 WebGPU 实时海洋皮肤。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Open Sea · DeepSeek Harness 海洋皮肤">
+  <meta property="og:description" content="亲手调节波浪、日光与界面通透度，体验真正运行的 WebGPU 海洋皮肤。">
+  <meta property="og:image" content="https://d-dev0101.github.io/open-sea-skin/og.png">
+  <meta property="og:url" content="https://d-dev0101.github.io/open-sea-skin/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Open Sea · DeepSeek Harness 海洋皮肤">
+  <meta name="twitter:description" content="亲手调节波浪、日光与界面通透度。">
+  <meta name="twitter:image" content="https://d-dev0101.github.io/open-sea-skin/og.png">
+  <title>Open Sea · DeepSeek Harness 海洋皮肤</title>
+  <link rel="icon" href="./icon48.png" type="image/png">
+  <link rel="stylesheet" href="./site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
+
+  <header class="site-nav" aria-label="Main navigation">
+    <a class="brand" href="#top" aria-label="Open Sea home">
+      <span class="brand-mark" aria-hidden="true">≋</span>
+      <span>OPEN SEA</span>
+      <small>FOR HARNESS</small>
+    </a>
+    <nav class="nav-links" aria-label="Page sections">
+      <a href="#features" data-i18n="navFeatures">特色</a>
+      <a href="#gallery" data-i18n="navGallery">实拍</a>
+      <a href="#install" data-i18n="navInstall">安装</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="language-toggle" id="language-toggle" type="button" aria-label="Switch language">EN</button>
+      <a class="nav-github" href="https://github.com/d-dev0101/open-sea-skin" target="_blank" rel="noreferrer">
+        <span data-i18n="source">源代码</span><span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="ocean-fallback" aria-hidden="true"></div>
+      <iframe id="ocean-frame" class="ocean-frame" title="Interactive Open Sea WebGPU ocean" tabindex="-1" aria-hidden="true"></iframe>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="chart-lines" aria-hidden="true"></div>
+
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span><span data-i18n="eyebrow">DEEPSEEK HARNESS · 实时海洋皮肤</span></div>
+        <h1 id="hero-title" data-i18n="heroTitle">让 Harness<br>拥有自己的海平线</h1>
+        <p data-i18n="heroBody">不是壁纸，而是一片会随你调节的 WebGPU 海洋。拖动右侧控制台，亲手改变波浪、日光与界面通透度。</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="#install"><span data-i18n="installNow">立即安装</span><span aria-hidden="true">↓</span></a>
+          <a class="quiet-action" href="#gallery"><span data-i18n="seeReal">查看真实 Harness 实拍</span><span aria-hidden="true">↘</span></a>
+        </div>
+        <div class="hero-meta" aria-label="Project highlights">
+          <span>WEBGPU + TSL</span>
+          <span data-i18n="localOnly">资源全本地</span>
+          <span data-i18n="noTracking">零数据收集</span>
+        </div>
+      </div>
+
+      <section class="control-dock" aria-label="Live ocean controls">
+        <div class="dock-heading">
+          <div>
+            <span class="dock-index">LIVE / 01</span>
+            <h2 data-i18n="labTitle">潮汐实验台</h2>
+          </div>
+          <span class="renderer-status" id="renderer-status"><i></i><span data-i18n="rendererLoading">正在连接海面</span></span>
+        </div>
+
+        <div class="presets" role="group" aria-label="Ocean presets">
+          <button type="button" data-preset="calm"><span>01</span><b data-i18n="calm">平静</b></button>
+          <button type="button" data-preset="sunset"><span>02</span><b data-i18n="sunset">夕阳</b></button>
+          <button type="button" data-preset="high"><span>03</span><b data-i18n="highSea">高海况</b></button>
+        </div>
+
+        <label class="control-line" for="sea-state">
+          <span><b data-i18n="waves">波浪大小</b><small data-i18n="wavesNote">从镜面到涌浪</small></span>
+          <output id="sea-output" for="sea-state">56</output>
+        </label>
+        <input class="range" id="sea-state" type="range" min="0" max="100" value="56" aria-label="Wave size">
+
+        <label class="control-line" for="daylight">
+          <span><b data-i18n="daylight">日光</b><small data-i18n="daylightNote">正午到黄昏</small></span>
+          <output id="day-output" for="daylight">下午</output>
+        </label>
+        <input class="range sunset-range" id="daylight" type="range" min="0" max="100" value="55" aria-label="Daylight">
+
+        <label class="control-line" for="transparency">
+          <span><b data-i18n="transparency">界面通透度</b><small data-i18n="transparencyNote">让海洋浮现</small></span>
+          <output id="transparency-output" for="transparency">64%</output>
+        </label>
+        <input class="range" id="transparency" type="range" min="20" max="86" value="64" aria-label="Interface transparency">
+
+        <div class="dock-footer">
+          <span data-i18n="uiMode">界面模式</span>
+          <div class="theme-toggle" role="group" aria-label="Interface theme">
+            <button type="button" class="active" data-theme-choice="dark" data-i18n="dark">深色</button>
+            <button type="button" data-theme-choice="light" data-i18n="light">浅色</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="harness-window" aria-label="Interactive DeepSeek Harness preview">
+        <div class="harness-topbar">
+          <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="harness-address">127.0.0.1:3080</span>
+          <span class="window-mode"><i></i><span data-i18n="livePreview">实时预览</span></span>
+        </div>
+        <div class="harness-shell">
+          <aside class="demo-sidebar">
+            <div class="demo-logo"><span>◒</span><b>deepseek</b><small>HARNESS</small></div>
+            <button class="demo-new" type="button" tabindex="-1"><span>⊕</span><span data-i18n="newTask">新任务</span></button>
+            <p class="demo-caption" data-i18n="workspace">工作区</p>
+            <div class="demo-workspace"><span class="folder">▱</span><b>deepseek</b></div>
+            <ul class="demo-list" aria-hidden="true"><li class="selected">Open Sea website</li><li>Harness ocean skin</li><li>Gallery capture</li></ul>
+            <div class="demo-settings"><span>⚙</span><span data-i18n="settings">设置</span><span class="skin-chip">≋</span></div>
+          </aside>
+          <div class="demo-conversation">
+            <div class="demo-conversation-top"><b data-i18n="taskTitle">打造一片可交互的海</b><span data-i18n="modelMode">标准模式⌄</span></div>
+            <div class="demo-welcome">
+              <div class="whale" aria-hidden="true">◒</div>
+              <h3 data-i18n="welcome">探索未至之境</h3>
+              <p data-i18n="welcomeBody">Open Sea 让 DeepSeek Harness 的工作空间随海况与光线呼吸。</p>
+            </div>
+            <div class="demo-composer"><span data-i18n="composer">描述你想构建的内容</span><div><b>＋</b><span>Workspace Write⌄</span><span class="send">↑</span></div></div>
+          </div>
+          <aside class="demo-details">
+            <span class="detail-index">SEA / STATE</span>
+            <h3 data-i18n="detailsTitle">当前环境</h3>
+            <dl><div><dt data-i18n="rendering">渲染</dt><dd>WebGPU</dd></div><div><dt data-i18n="privacy">隐私</dt><dd data-i18n="local">本地</dd></div><div><dt data-i18n="fps">帧率</dt><dd>60 / 30 / 20</dd></div></dl>
+          </aside>
+        </div>
+      </section>
+
+      <div class="hero-coordinate" aria-hidden="true">31°13′N · 121°28′E / OCEAN RUNTIME</div>
+      <a class="scroll-cue" href="#features"><span data-i18n="scroll">继续探索</span><i></i></a>
+    </section>
+
+    <section class="signal-strip" aria-label="Key facts">
+      <div><span>01</span><b data-i18n="factOne">只作用于 Harness</b><small data-i18n="factOneBody">不接管新标签页</small></div>
+      <div><span>02</span><b data-i18n="factTwo">五组 Gerstner 波</b><small>THREE.JS · TSL</small></div>
+      <div><span>03</span><b data-i18n="factThree">自适应性能</b><small>60 / 30 / 20 FPS</small></div>
+      <div><span>04</span><b data-i18n="factFour">可逆安装</b><small data-i18n="factFourBody">三种安装方式</small></div>
+    </section>
+
+    <section class="feature-section section-shell" id="features" aria-labelledby="features-title">
+      <div class="section-heading reveal">
+        <span class="section-number">02 / WHY OPEN SEA</span>
+        <h2 id="features-title" data-i18n="featuresTitle">一片真正属于<br>工作流的海</h2>
+        <p data-i18n="featuresBody">它不是覆盖在界面上的视频。海面、天空、太阳和反射由 GPU 实时生成，控制变化会立刻反馈到你的工作空间。</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-large reveal">
+          <span class="feature-code">A · LIVE</span>
+          <h3 data-i18n="featureLive">实时，而非循环素材</h3>
+          <p data-i18n="featureLiveBody">五组 Gerstner 涌浪、解析法线、FBM 微表面、浪尖泡沫与 Fresnel 天空反射，共享同一组日光参数。</p>
+          <div class="wave-diagram" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-code">B · NATIVE</span>
+          <h3 data-i18n="featureHarness">为 Harness 而生</h3>
+          <p data-i18n="featureHarnessBody">左下角快捷控制、设置页原生入口、对话框层级修复，以及只识别真正 Harness 页面的浏览器扩展。</p>
+        </article>
+        <article class="feature-card accent-card reveal">
+          <span class="feature-code">C · QUIET</span>
+          <h3 data-i18n="featureQuiet">安静地运行</h3>
+          <p data-i18n="featureQuietBody">隐藏标签页自动暂停，动态分辨率和低端设备降级，让海洋成为氛围，而不是负担。</p>
+        </article>
+        <article class="feature-wide reveal">
+          <div><span class="feature-code">D · LOCAL</span><h3 data-i18n="featureLocal">没有遥测，也没有远程代码</h3></div>
+          <p data-i18n="featureLocalBody">three.js、TSL、字体和全部着色器随包本地提供。扩展只请求本机 Harness 地址与设置存储权限。</p>
+          <span class="privacy-seal"><i></i>0 BYTES COLLECTED</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="gallery-section section-shell" id="gallery" aria-labelledby="gallery-title">
+      <div class="section-heading gallery-heading reveal">
+        <span class="section-number">03 / FIELD RECORDINGS</span>
+        <h2 id="gallery-title" data-i18n="galleryTitle">来自真实 Harness<br>的海况记录</h2>
+        <p data-i18n="galleryBody">以下全部在 DeepSeek Harness 中录制，玻璃不透明度统一为 40%。不是概念图，也不是后期合成。</p>
+      </div>
+      <div class="gallery-grid">
+        <figure class="gallery-item gallery-dark reveal">
+          <img src="./media/harness-dark-overview-40.gif" loading="lazy" alt="Open Sea in DeepSeek Harness dark mode">
+          <figcaption><span>01 · DARK CURRENT</span><b data-i18n="galleryDark">深色全景</b></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-light reveal">
+          <img src="./media/harness-light-overview-40.gif" loading="lazy" alt="Open Sea in DeepSeek Harness light mode">
+          <figcaption><span>02 · PALE WATER</span><b data-i18n="galleryLight">浅色全景</b></figcaption>
+        </figure>
+        <figure class="gallery-item reveal">
+          <img src="./media/harness-wave-control-40.gif" loading="lazy" alt="Adjusting wave size in DeepSeek Harness">
+          <figcaption><span>03 · SEA STATE</span><b data-i18n="galleryWaves">调节波浪</b></figcaption>
+        </figure>
+        <figure class="gallery-item reveal">
+          <img src="./media/harness-daylight-sunset-40.gif" loading="lazy" alt="Adjusting daylight to sunset in DeepSeek Harness">
+          <figcaption><span>04 · GOLDEN HOUR</span><b data-i18n="gallerySunset">从白天到夕阳</b></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="install-section section-shell" id="install" aria-labelledby="install-title">
+      <div class="section-heading install-heading reveal">
+        <span class="section-number">04 / INSTALLATION</span>
+        <h2 id="install-title" data-i18n="installTitle">把海带回<br>你的 Harness</h2>
+        <p data-i18n="installBody">推荐使用 DSH 插件安装；浏览器扩展适合不修改 Harness 的用户，静态安装器用于打包环境。</p>
+      </div>
+      <div class="install-grid">
+        <article class="install-card recommended reveal">
+          <div class="install-card-head"><span>01</span><strong data-i18n="recommended">推荐</strong></div>
+          <h3>DSH Plugin</h3>
+          <p data-i18n="dshBody">一行命令安装完整本地运行时与左下角快捷控制。</p>
+          <div class="code-line"><code>dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.1'</code><button type="button" data-copy="dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.1'" data-i18n-aria="copy" aria-label="复制命令">COPY</button></div>
+          <small data-i18n="restart">安装后重新启动 dsh web</small>
+        </article>
+        <article class="install-card reveal">
+          <div class="install-card-head"><span>02</span><strong>CHROME / EDGE</strong></div>
+          <h3 data-i18n="browserExtension">浏览器扩展</h3>
+          <p data-i18n="browserBody">只为经过识别的 Harness 页面换肤，不会接管新标签页或影响其他本地网站。</p>
+          <a class="download-link" href="https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.1/open-sea-skin-extension-v1.2.1.zip"><span data-i18n="downloadZip">下载 v1.2.1 ZIP</span><span>↓</span></a>
+        </article>
+        <article class="install-card reveal">
+          <div class="install-card-head"><span>03</span><strong>STATIC DIST</strong></div>
+          <h3 data-i18n="oneCommand">一键静态安装</h3>
+          <p data-i18n="staticBody">从任意目录运行；自动备份、可重复更新、可安全卸载。</p>
+          <div class="code-line"><code>curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash</code><button type="button" data-copy="curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash" data-i18n-aria="copy" aria-label="复制命令">COPY</button></div>
+        </article>
+      </div>
+      <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="closing-section">
+      <div class="closing-ocean" aria-hidden="true"></div>
+      <div class="closing-copy reveal">
+        <span>OPEN SOURCE · MIT</span>
+        <h2 data-i18n="closingTitle">工作可以很深，<br>界面不必沉重。</h2>
+        <p data-i18n="closingBody">Open Sea 免费、开源、本地优先。欢迎把它带进你的 Harness，也欢迎一起把这片海做得更好。</p>
+        <div class="closing-actions">
+          <a class="primary-action" href="https://github.com/d-dev0101/open-sea-skin" target="_blank" rel="noreferrer"><span data-i18n="visitGitHub">前往 GitHub</span><span>↗</span></a>
+          <a class="quiet-action" href="https://github.com/d-dev0101/open-sea-skin/releases/tag/v1.2.1"><span data-i18n="viewRelease">查看最新 Release</span><span>→</span></a>
+        </div>
+      </div>
+      <div class="closing-mark" aria-hidden="true">≋</div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="#top"><span class="brand-mark">≋</span><span>OPEN SEA</span><small>FOR HARNESS</small></a>
+    <p>© 2026 d-dev0101 · MIT LICENSE</p>
+    <div><a href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/privacy.md" data-i18n="privacyPolicy">隐私</a><a href="https://github.com/d-dev0101/open-sea-skin/issues" data-i18n="issues">问题反馈</a></div>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

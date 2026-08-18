@@ -1,6 +1,6 @@
 # Open Sea Skin
 
-[中文](README.zh.md) · [Architecture](docs/architecture.md) · [Release guide](docs/releasing.md)
+[Interactive website](https://d-dev0101.github.io/open-sea-skin/) · [中文](README.zh.md) · [Architecture](docs/architecture.md) · [Release guide](docs/releasing.md)
 
 A self-contained WebGPU ocean skin for DeepSeek Harness. It keeps the original
 five-wave Gerstner/TSL look, adds a translucent Harness theme, and is available

@@ -7,4 +7,5 @@ output/playwright/
 release/
 test-results/
 playwright-report/
+pages-dist/
 docs/screenshots/*.actual.png

@@ -87,6 +87,21 @@ test('the browser extension injects only into a verified Harness page', async ()
   assert.ok(entry.includes('window\\.__DSH_BOOT__'))
 })
 
+test('the GitHub Pages website is an interactive local-only product demo', async () => {
+  const html = await text('website/index.html')
+  const app = await text('website/app.js')
+  const workflow = await text('.github/workflows/pages.yml')
+  for (const id of ['ocean-frame', 'sea-state', 'daylight', 'transparency']) {
+    assert.match(html, new RegExp(`id="${id}"`), id)
+  }
+  assert.match(app, /type: 'oss-set'/)
+  assert.match(app, /parentOrigin: location\.origin/)
+  assert.match(app, /navigator\.clipboard/)
+  assert.match(workflow, /actions\/deploy-pages@v4/)
+  assert.deepEqual(await bytes('pages-dist/ocean.js'), await bytes('shared/ocean.js'))
+  assert.deepEqual(await bytes('pages-dist/styles.css'), await bytes('shared/styles.css'))
+})
+
 test('renderer contains the promised performance and security policies', async () => {
   const ocean = await text('shared/ocean.js')
   for (const required of [

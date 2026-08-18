@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/d-dev0101/open-sea-skin.git"
   },
-  "homepage": "https://github.com/d-dev0101/open-sea-skin#readme",
+  "homepage": "https://d-dev0101.github.io/open-sea-skin/",
   "bugs": "https://github.com/d-dev0101/open-sea-skin/issues",
   "keywords": [
     "deepseek-harness",
@@ -50,11 +50,13 @@
   },
   "scripts": {
     "build": "node scripts/build-runtime.mjs && node scripts/build-dsh-bundle.mjs",
+    "build:site": "node scripts/build-pages.mjs",
     "check:generated": "node scripts/build-runtime.mjs --check && node scripts/build-dsh-bundle.mjs --check",
     "test": "node --test tests/*.test.mjs",
-    "check": "npm run check:generated && npm test",
+    "check": "npm run build:site && npm run check:generated && npm test",
     "package:extension": "bash scripts/package-extension.sh",
     "test:browser": "node scripts/browser-acceptance.mjs",
+    "test:website": "node scripts/website-acceptance.mjs",
     "capture": "node scripts/capture-gallery.mjs"
   },
   "engines": {
