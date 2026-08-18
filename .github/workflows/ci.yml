@@ -11,8 +11,6 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      OSS_CHROME_BIN: /usr/bin/google-chrome
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -22,8 +20,15 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run package:extension
-      - name: Hosted Chrome
-        run: google-chrome --version
+      - name: Cache Chrome for Testing
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+      - name: Install Chrome for Testing
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
       - name: Browser acceptance
         run: xvfb-run -a npm run test:browser
       - name: Website acceptance
