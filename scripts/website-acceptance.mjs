@@ -56,9 +56,11 @@ try {
   assert.equal(await page.locator('html').evaluate(element => element.style.getPropertyValue('--glass-alpha')), '0.26')
   assert.equal(await page.locator('html').evaluate(element => element.style.getPropertyValue('--capture-opacity')), '0.66')
 
+  await captures.evaluateAll(elements => {
+    for (const element of elements) element.style.transition = 'none'
+  })
   await page.locator('[data-theme-choice="light"]').click()
   assert.equal(await page.locator('html').getAttribute('data-ui-theme'), 'light')
-  await page.waitForTimeout(500)
   assert.equal(await page.locator('.harness-capture-dark').evaluate(element => getComputedStyle(element).opacity), '0')
   assert.equal(await page.locator('.harness-capture-light').evaluate(element => getComputedStyle(element).opacity), '0.66')
   await page.locator('#language-toggle').click()
