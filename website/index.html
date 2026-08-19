@@ -24,7 +24,13 @@
 
   <header class="site-nav" aria-label="Main navigation">
     <a class="brand" href="#top" aria-label="Open Sea home">
-      <span class="brand-mark" aria-hidden="true">≋</span>
+      <span class="brand-mark" aria-hidden="true">
+        <svg class="brand-symbol" viewBox="0 0 48 48" focusable="false">
+          <path d="M10 17.5c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+          <path d="M10 24c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+          <path d="M10 30.5c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+        </svg>
+      </span>
       <span>OPEN SEA</span>
       <small>FOR HARNESS</small>
     </a>
@@ -36,7 +42,10 @@
     <div class="nav-actions">
       <button class="language-toggle" id="language-toggle" type="button" aria-label="Switch language">EN</button>
       <a class="nav-github" href="https://github.com/d-dev0101/open-sea-skin" target="_blank" rel="noreferrer">
-        <span data-i18n="source">源代码</span><span aria-hidden="true">↗</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.17.55-.39 0-.19-.01-.83-.01-1.5-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.2-3.64-.9-3.64-4.01 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.5 7.5 0 0 1 8 3.99c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.81-3.65 4.01.29.25.54.74.54 1.5 0 1.08-.01 1.95-.01 2.22 0 .22.15.47.55.39A8.04 8.04 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"></path>
+        </svg>
+        <span data-i18n="source">源代码</span>
       </a>
     </div>
   </header>
@@ -105,35 +114,17 @@
         </div>
       </section>
 
-      <section class="harness-window" aria-label="Interactive DeepSeek Harness preview">
+      <section class="harness-window" aria-label="Real DeepSeek Harness recording with adjustable transparency">
         <div class="harness-topbar">
-          <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="capture-identity"><i></i><span data-i18n="realCapture">真实 Harness 实录</span></span>
           <span class="harness-address">127.0.0.1:3080</span>
-          <span class="window-mode"><i></i><span data-i18n="livePreview">实时预览</span></span>
+          <span class="capture-glass"><span data-i18n="captureGlass">通透度</span><output id="capture-opacity-output">64%</output></span>
         </div>
-        <div class="harness-shell">
-          <aside class="demo-sidebar">
-            <div class="demo-logo"><span>◒</span><b>deepseek</b><small>HARNESS</small></div>
-            <button class="demo-new" type="button" tabindex="-1"><span>⊕</span><span data-i18n="newTask">新任务</span></button>
-            <p class="demo-caption" data-i18n="workspace">工作区</p>
-            <div class="demo-workspace"><span class="folder">▱</span><b>deepseek</b></div>
-            <ul class="demo-list" aria-hidden="true"><li class="selected">Open Sea website</li><li>Harness ocean skin</li><li>Gallery capture</li></ul>
-            <div class="demo-settings"><span>⚙</span><span data-i18n="settings">设置</span><span class="skin-chip">≋</span></div>
-          </aside>
-          <div class="demo-conversation">
-            <div class="demo-conversation-top"><b data-i18n="taskTitle">打造一片可交互的海</b><span data-i18n="modelMode">标准模式⌄</span></div>
-            <div class="demo-welcome">
-              <div class="whale" aria-hidden="true">◒</div>
-              <h3 data-i18n="welcome">探索未至之境</h3>
-              <p data-i18n="welcomeBody">Open Sea 让 DeepSeek Harness 的工作空间随海况与光线呼吸。</p>
-            </div>
-            <div class="demo-composer"><span data-i18n="composer">描述你想构建的内容</span><div><b>＋</b><span>Workspace Write⌄</span><span class="send">↑</span></div></div>
-          </div>
-          <aside class="demo-details">
-            <span class="detail-index">SEA / STATE</span>
-            <h3 data-i18n="detailsTitle">当前环境</h3>
-            <dl><div><dt data-i18n="rendering">渲染</dt><dd>WebGPU</dd></div><div><dt data-i18n="privacy">隐私</dt><dd data-i18n="local">本地</dd></div><div><dt data-i18n="fps">帧率</dt><dd>60 / 30 / 20</dd></div></dl>
-          </aside>
+        <div class="harness-capture-stage">
+          <img class="harness-capture harness-capture-dark" src="./media/harness-dark-overview-40.gif" alt="Real Open Sea skin running in DeepSeek Harness dark mode" draggable="false">
+          <img class="harness-capture harness-capture-light" src="./media/harness-light-overview-40.gif" alt="Real Open Sea skin running in DeepSeek Harness light mode" draggable="false">
+          <div class="capture-glass-layer" aria-hidden="true"></div>
+          <div class="capture-status" aria-hidden="true"><i></i><span>REAL HARNESS · 40% GLASS RECORDING</span></div>
         </div>
       </section>
 
@@ -246,12 +237,27 @@
           <a class="quiet-action" href="https://github.com/d-dev0101/open-sea-skin/releases/tag/v1.2.1"><span data-i18n="viewRelease">查看最新 Release</span><span>→</span></a>
         </div>
       </div>
-      <div class="closing-mark" aria-hidden="true">≋</div>
+      <div class="closing-mark" aria-hidden="true">
+        <svg class="brand-symbol" viewBox="0 0 48 48" focusable="false">
+          <path d="M10 17.5c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+          <path d="M10 24c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+          <path d="M10 30.5c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+        </svg>
+      </div>
     </section>
   </main>
 
   <footer>
-    <a class="brand footer-brand" href="#top"><span class="brand-mark">≋</span><span>OPEN SEA</span><small>FOR HARNESS</small></a>
+    <a class="brand footer-brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">
+        <svg class="brand-symbol" viewBox="0 0 48 48" focusable="false">
+          <path d="M10 17.5c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+          <path d="M10 24c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+          <path d="M10 30.5c4.5-4 9-4 13.5 0s9 4 14.5 0"></path>
+        </svg>
+      </span>
+      <span>OPEN SEA</span><small>FOR HARNESS</small>
+    </a>
     <p>© 2026 d-dev0101 · MIT LICENSE</p>
     <div><a href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/privacy.md" data-i18n="privacyPolicy">隐私</a><a href="https://github.com/d-dev0101/open-sea-skin/issues" data-i18n="issues">问题反馈</a></div>
   </footer>

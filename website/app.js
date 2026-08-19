@@ -7,7 +7,7 @@ const translations = {
     labTitle: '潮汐实验台', rendererLoading: '正在连接海面', rendererReady: '实时渲染中', rendererFallback: '静态海面模式',
     calm: '平静', sunset: '夕阳', highSea: '高海况', waves: '波浪大小', wavesNote: '从镜面到涌浪',
     daylight: '日光', daylightNote: '正午到黄昏', transparency: '界面通透度', transparencyNote: '让海洋浮现',
-    uiMode: '界面模式', dark: '深色', light: '浅色', livePreview: '实时预览', newTask: '新任务', workspace: '工作区',
+    uiMode: '界面模式', dark: '深色', light: '浅色', realCapture: '真实 Harness 实录', captureGlass: '通透度',
     settings: '设置', taskTitle: '打造一片可交互的海', modelMode: '标准模式⌄', welcome: '探索未至之境',
     welcomeBody: 'Open Sea 让 DeepSeek Harness 的工作空间随海况与光线呼吸。', composer: '描述你想构建的内容',
     detailsTitle: '当前环境', rendering: '渲染', privacy: '隐私', local: '本地', fps: '帧率', scroll: '继续探索',
@@ -37,7 +37,7 @@ const translations = {
     labTitle: 'Tidal laboratory', rendererLoading: 'Connecting ocean', rendererReady: 'Rendering live', rendererFallback: 'Static ocean mode',
     calm: 'Calm', sunset: 'Sunset', highSea: 'High sea', waves: 'Wave size', wavesNote: 'Mirror to swell',
     daylight: 'Daylight', daylightNote: 'Noon to dusk', transparency: 'UI transparency', transparencyNote: 'Reveal the ocean',
-    uiMode: 'Interface mode', dark: 'Dark', light: 'Light', livePreview: 'Live preview', newTask: 'New task', workspace: 'Workspace',
+    uiMode: 'Interface mode', dark: 'Dark', light: 'Light', realCapture: 'Real Harness recording', captureGlass: 'Transparency',
     settings: 'Settings', taskTitle: 'Build an interactive sea', modelMode: 'Standard mode⌄', welcome: 'Explore what lies beyond',
     welcomeBody: 'Open Sea lets the DeepSeek Harness workspace breathe with sea state and light.', composer: 'Describe what you want to build',
     detailsTitle: 'Current environment', rendering: 'Rendering', privacy: 'Privacy', local: 'Local', fps: 'Frame rate', scroll: 'Keep exploring',
@@ -69,6 +69,7 @@ const transparencyInput = document.getElementById('transparency');
 const seaOutput = document.getElementById('sea-output');
 const dayOutput = document.getElementById('day-output');
 const transparencyOutput = document.getElementById('transparency-output');
+const captureOpacityOutput = document.getElementById('capture-opacity-output');
 const rendererStatus = document.getElementById('renderer-status');
 const rendererStatusText = rendererStatus.querySelector('span');
 const languageToggle = document.getElementById('language-toggle');
@@ -115,11 +116,17 @@ function updateOutputs() {
   seaOutput.textContent = String(state.sea).padStart(2, '0');
   dayOutput.textContent = timeLabel(state.daylight);
   transparencyOutput.textContent = `${state.transparency}%`;
+  captureOpacityOutput.textContent = `${state.transparency}%`;
   for (const input of [seaInput, dayInput, transparencyInput]) setRangeFill(input);
 
   const glassAlpha = Math.min(0.8, Math.max(0.14, (100 - state.transparency) / 100));
   root.style.setProperty('--glass-alpha', glassAlpha.toFixed(2));
   root.style.setProperty('--glass-blur', `${Math.round(18 + state.transparency * 0.12)}px`);
+
+  const transparencyProgress = (state.transparency - 20) / 66;
+  const captureOpacity = Math.min(1, Math.max(0.58, 1 - transparencyProgress * 0.42));
+  root.style.setProperty('--capture-opacity', captureOpacity.toFixed(2));
+  root.style.setProperty('--capture-reveal', (1 - captureOpacity).toFixed(2));
 
   for (const button of document.querySelectorAll('[data-preset]')) {
     const preset = presets[button.dataset.preset];

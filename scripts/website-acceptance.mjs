@@ -32,6 +32,14 @@ try {
 
   assert.equal(await page.locator('#sea-output').textContent(), '56')
   assert.equal(await page.locator('#transparency-output').textContent(), '64%')
+  assert.equal(await page.locator('#capture-opacity-output').textContent(), '64%')
+  assert.equal(await page.locator('.nav-github svg').count(), 1)
+  assert.equal(await page.locator('.brand-mark .brand-symbol').count(), 2)
+
+  const captures = page.locator('.harness-capture')
+  assert.equal(await captures.count(), 2)
+  await page.waitForFunction(() => [...document.querySelectorAll('.harness-capture')]
+    .every(image => image.complete && image.naturalWidth > 0), undefined, { timeout: 15_000 })
 
   await page.locator('[data-preset="sunset"]').click()
   await page.waitForTimeout(250)
@@ -44,10 +52,15 @@ try {
 
   await setRange(page.locator('#transparency'), 74)
   assert.equal(await page.locator('#transparency-output').textContent(), '74%')
+  assert.equal(await page.locator('#capture-opacity-output').textContent(), '74%')
   assert.equal(await page.locator('html').evaluate(element => element.style.getPropertyValue('--glass-alpha')), '0.26')
+  assert.equal(await page.locator('html').evaluate(element => element.style.getPropertyValue('--capture-opacity')), '0.66')
 
   await page.locator('[data-theme-choice="light"]').click()
   assert.equal(await page.locator('html').getAttribute('data-ui-theme'), 'light')
+  await page.waitForTimeout(500)
+  assert.equal(await page.locator('.harness-capture-dark').evaluate(element => getComputedStyle(element).opacity), '0')
+  assert.equal(await page.locator('.harness-capture-light').evaluate(element => getComputedStyle(element).opacity), '0.66')
   await page.locator('#language-toggle').click()
   assert.match(await page.title(), /Ocean skin for DeepSeek Harness/)
   assert.equal(await page.locator('#hero-title').innerText(), 'Give Harness\nits own horizon')

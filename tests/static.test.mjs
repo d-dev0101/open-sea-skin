@@ -94,7 +94,12 @@ test('the GitHub Pages website is an interactive local-only product demo', async
   for (const id of ['ocean-frame', 'sea-state', 'daylight', 'transparency']) {
     assert.match(html, new RegExp(`id="${id}"`), id)
   }
+  assert.match(html, /class="harness-capture harness-capture-dark"/)
+  assert.match(html, /class="harness-capture harness-capture-light"/)
+  assert.match(html, /class="nav-github"[\s\S]*?<svg viewBox="0 0 16 16"/)
+  assert.doesNotMatch(html, /class="demo-(?:sidebar|conversation|details)"/)
   assert.match(app, /type: 'oss-set'/)
+  assert.match(app, /--capture-opacity/)
   assert.match(app, /parentOrigin: location\.origin/)
   assert.match(app, /navigator\.clipboard/)
   assert.match(workflow, /actions\/deploy-pages@v4/)
