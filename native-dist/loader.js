@@ -30,6 +30,10 @@
       sea: '波浪大小',
       time: '日光',
       glass: '玻璃不透明度',
+      enable: '启用海洋皮肤',
+      autoCycle: '自动昼夜循环',
+      reset: '恢复默认',
+      resetNote: '恢复全部默认设置（波浪 45 / 日光 55 / 玻璃 72 / 自动循环开）',
       note: '调节即时生效并自动保存；手动设定「日光」后会停止自动昼夜循环。',
       times: ['黄昏', '金色时刻', '下午', '正午'],
     },
@@ -39,6 +43,10 @@
       sea: 'Sea state',
       time: 'Daylight',
       glass: 'Glass opacity',
+      enable: 'Enable Open Sea skin',
+      autoCycle: 'Automatic day cycle',
+      reset: 'Reset to defaults',
+      resetNote: 'Restore all defaults (sea 45 / daylight 55 / glass 72 / auto cycle on)',
       note: 'Changes apply immediately and save automatically. Setting daylight manually stops the automatic day cycle.',
       times: ['Dusk', 'Golden hour', 'Afternoon', 'Midday'],
     },
@@ -154,6 +162,11 @@ body[data-ds-dark-theme] {
 #${IDS.panel} input[type='range']::-moz-range-track { height:3px; border-radius:2px; background:rgba(255,255,255,.2); }
 #${IDS.panel} input[type='range']::-moz-range-thumb { width:14px; height:14px; border:0; border-radius:50%; background:#8fe9e4; box-shadow:0 0 10px rgba(143,233,228,.75); }
 #${IDS.panel} .oss-note { margin-top:13px; font-size:10px; line-height:1.7; color:rgba(255,255,255,.46); }
+#${IDS.panel} .oss-switch { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+#${IDS.panel} .oss-switch label { font-size:11px; color:rgba(255,255,255,.7); }
+#${IDS.panel} .oss-switch input[type='checkbox'] { width:15px; height:15px; margin:0; accent-color:#8fe9e4; cursor:pointer; }
+#${IDS.panel} .oss-reset { width:100%; margin-top:4px; padding:7px 0; border-radius:8px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:#eef4f6; font-size:11px; cursor:pointer; transition:background .15s ease, border-color .15s ease; }
+#${IDS.panel} .oss-reset:hover { background:rgba(143,233,228,.12); border-color:rgba(143,233,228,.4); }
 @media (prefers-reduced-motion: reduce) {
   #${IDS.button}, #${IDS.panel}, #${IDS.panel} * { transition:none !important; }
 }`;
@@ -299,7 +312,10 @@ body[data-ds-dark-theme] {
         <div class="oss-row"><div class="oss-head"><label for="${IDS.panel}-sea-range">${copy.sea}</label><output class="oss-value" id="${IDS.panel}-sea" for="${IDS.panel}-sea-range"></output></div><input type="range" id="${IDS.panel}-sea-range" min="0" max="100" step="1" /></div>
         <div class="oss-row"><div class="oss-head"><label for="${IDS.panel}-time-range">${copy.time}</label><output class="oss-value" id="${IDS.panel}-time" for="${IDS.panel}-time-range"></output></div><input type="range" id="${IDS.panel}-time-range" min="0" max="100" step="1" /></div>
         <div class="oss-row"><div class="oss-head"><label for="${IDS.panel}-glass-range">${copy.glass}</label><output class="oss-value" id="${IDS.panel}-glass" for="${IDS.panel}-glass-range"></output></div><input type="range" id="${IDS.panel}-glass-range" min="40" max="90" step="1" /></div>
-        <p class="oss-note">${copy.note}</p>`;
+        <div class="oss-row oss-switch"><label for="${IDS.panel}-enabled">${copy.enable}</label><input type="checkbox" id="${IDS.panel}-enabled" /></div>
+        <div class="oss-row oss-switch"><label for="${IDS.panel}-cycle">${copy.autoCycle}</label><input type="checkbox" id="${IDS.panel}-cycle" /></div>
+        <div class="oss-row"><button type="button" class="oss-reset">${copy.reset}</button></div>
+        <p class="oss-note">${copy.resetNote}<br>${copy.note}</p>`;
 
       const host = document.body || document.documentElement;
       host.append(button, panel);
@@ -310,6 +326,9 @@ body[data-ds-dark-theme] {
       const seaOut = panel.querySelector(`#${IDS.panel}-sea`);
       const timeOut = panel.querySelector(`#${IDS.panel}-time`);
       const glassOut = panel.querySelector(`#${IDS.panel}-glass`);
+      const enabledBox = panel.querySelector(`#${IDS.panel}-enabled`);
+      const cycleBox = panel.querySelector(`#${IDS.panel}-cycle`);
+      const resetBtn = panel.querySelector('.oss-reset');
 
       const syncUi = () => {
         seaRange.value = String(state.sea);
@@ -318,6 +337,8 @@ body[data-ds-dark-theme] {
         seaOut.textContent = String(state.sea).padStart(2, '0');
         timeOut.textContent = timeLabel(copy, state.time);
         glassOut.textContent = `${state.glass}%`;
+        enabledBox.checked = state.enabled;
+        cycleBox.checked = state.autoCycle;
       };
       syncUi();
 
@@ -331,6 +352,7 @@ body[data-ds-dark-theme] {
         state.time = clamp(timeRange.value, 0, 100, DEFAULTS.time);
         state.autoCycle = false;
         timeOut.textContent = timeLabel(copy, state.time);
+        cycleBox.checked = false;
         void save({ time: state.time, autoCycle: false });
         postToOcean();
       });
@@ -339,6 +361,27 @@ body[data-ds-dark-theme] {
         glassOut.textContent = `${state.glass}%`;
         updateGlass();
         void save({ glass: state.glass });
+      });
+
+      on(enabledBox, 'change', () => {
+        state.enabled = enabledBox.checked;
+        void save({ enabled: state.enabled });
+        // Only tear down the ocean surface, never the button/panel: otherwise
+        // a disabled skin has no settings entry left to re-enable it.
+        applyEnabled();
+      });
+      on(cycleBox, 'change', () => {
+        state.autoCycle = cycleBox.checked;
+        void save({ autoCycle: state.autoCycle });
+        postToOcean();
+      });
+      on(resetBtn, 'click', () => {
+        void save({ ...DEFAULTS }).then(() => {
+          syncUi();
+          updateGlass();
+          postToOcean();
+          applyEnabled();
+        });
       });
 
       on(button, 'click', () => setPanelOpen(!panelOpen));
@@ -385,7 +428,16 @@ body[data-ds-dark-theme] {
     };
 
     const applyEnabled = () => {
-      if (!state.enabled) { unmount(); return; }
+      if (!state.enabled) {
+        // Tear down only the ocean surface (frame + glass), keeping the
+        // button/panel so the skin can be re-enabled from the same page.
+        if (ownsSurface) {
+          document.getElementById(IDS.frame)?.remove();
+          document.getElementById(IDS.glass)?.remove();
+          ownsSurface = false;
+        }
+        return;
+      }
       // The extension and both native paths intentionally share the same ids.
       // Whichever implementation mounted first owns the surface; later ones
       // leave it untouched instead of double-rendering WebGPU.
