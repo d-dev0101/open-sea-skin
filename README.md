@@ -2,6 +2,20 @@
 
 [Interactive website](https://d-dev0101.github.io/open-sea-skin/) · [中文](README.zh.md) · [Architecture](docs/architecture.md) · [Release guide](docs/releasing.md)
 
+<div align="center">
+  <h2>Before installing, preview the official website first</h2>
+  <p><strong>Open the live demo, tune the waves, sunset, and glass transparency, then install only after you like the result.</strong></p>
+  <p>
+    <a href="https://d-dev0101.github.io/open-sea-skin/">Official website</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md">Install guide</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin/releases">Releases</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin">Source code</a> ·
+    <a href="https://github.com/topics/dsh-plugin">DSH plugin directory</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin/issues">Support / Issues</a>
+  </p>
+  <p>Need login or installation help? Leave a message in <a href="https://github.com/d-dev0101/open-sea-skin/issues">Issues</a> and mention <a href="https://github.com/d-dev0101">@d-dev0101</a>.</p>
+</div>
+
 A self-contained WebGPU ocean skin for DeepSeek Harness. It keeps the original
 five-wave Gerstner/TSL look, adds a translucent Harness theme, and is available
 as a one-line DSH plugin, Harness-only Chrome/Edge extension, one-command static
