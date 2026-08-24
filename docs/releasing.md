@@ -58,10 +58,11 @@ npm publish --access public
 
 For repeatable releases, add an `NPM_TOKEN` repository secret and publish a
 GitHub Release whose tag matches the version in `package.json`. The workflow
-in `.github/workflows/npm-publish.yml` publishes only release events, never
-ordinary pushes or pull requests. After npm finishes indexing, DSH Desktop
-can install the exact published version; GitHub-tag installation remains a
-working fallback.
+in `.github/workflows/npm-publish.yml` publishes only release events or an
+explicit manual dispatch, never ordinary pushes or pull requests. The manual
+dispatch also supports publishing an already-existing release tag such as
+`v1.2.1`. After npm finishes indexing, DSH Desktop can install the exact
+published version; GitHub-tag installation remains a working fallback.
 
 ## 5. Optional Chrome Web Store submission
 
