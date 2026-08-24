@@ -41,7 +41,29 @@ Release notes should identify the tested Harness commit, describe migrations,
 and remind static-install users to run `install-skin.sh --update` after a
 Harness upgrade.
 
-## 4. Optional Chrome Web Store submission
+## 4. Publish the DSH Desktop package
+
+The repository root is also the npm package consumed by DSH Desktop's managed
+plugin installer. It is deliberately public and has `publishConfig.access`
+set to `public`; `prepublishOnly` rebuilds and verifies every generated DSH
+asset before npm accepts the package.
+
+For a manual first publish, authenticate with the npm account that owns the
+package and run:
+
+```sh
+npm login
+npm publish --access public
+```
+
+For repeatable releases, add an `NPM_TOKEN` repository secret and publish a
+GitHub Release whose tag matches the version in `package.json`. The workflow
+in `.github/workflows/npm-publish.yml` publishes only release events, never
+ordinary pushes or pull requests. After npm finishes indexing, DSH Desktop
+can install the exact published version; GitHub-tag installation remains a
+working fallback.
+
+## 5. Optional Chrome Web Store submission
 
 Upload the same extension ZIP through a Chrome Web Store developer account.
 The listing privacy answers are: no data collection or sale; no remote code;
