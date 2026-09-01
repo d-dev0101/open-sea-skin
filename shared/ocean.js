@@ -417,11 +417,11 @@ let skinTimeWindow = 0;
 let firstFrameShown = false;
 let loopStarted = false;
 
-const PIXEL_RATIO_CAP = REDUCED_MOTION ? 0.9 : LOW_END_DEVICE ? 1.0 : 1.5;
-const BASE_PIXEL_RATIO = Math.min(window.devicePixelRatio || 1, PIXEL_RATIO_CAP);
-const FRAME_RATE_CAP = REDUCED_MOTION ? 20 : LOW_END_DEVICE ? 30 : 60;
-const FRAME_MS = 1000 / FRAME_RATE_CAP;
-const TARGET_FPS = REDUCED_MOTION ? 18 : LOW_END_DEVICE ? 28 : SKIN ? 40 : 55;
+let PIXEL_RATIO_CAP = REDUCED_MOTION ? 0.9 : LOW_END_DEVICE ? 1.0 : 1.5;
+let BASE_PIXEL_RATIO = Math.min(window.devicePixelRatio || 1, PIXEL_RATIO_CAP);
+let FRAME_RATE_CAP = REDUCED_MOTION ? 20 : LOW_END_DEVICE ? 30 : 60;
+let FRAME_MS = 1000 / FRAME_RATE_CAP;
+let TARGET_FPS = REDUCED_MOTION ? 18 : LOW_END_DEVICE ? 28 : SKIN ? 40 : 55;
 const MIN_SCALE = REDUCED_MOTION ? 0.5 : SKIN ? 0.5 : 0.55;
 let renderScale = 1;
 
@@ -489,10 +489,10 @@ function animate(now) {
 }
 
 async function boot() {
-  if (!navigator.gpu) {
-    showUnavailable();
-    return;
-  }
+  // 不再预检 navigator.gpu：无 WebGPU API（低配/无显卡环境）时 three 自动
+  // 回退 WebGL2 backend（2026-08-23 冒烟测试：预检导致黑底白字异常画面，
+  // 实际 WebGL2 渲染完全可用）；两个 backend 都失败由 init() 抛出走
+  // showInitError（准确错误信息，而不是笼统的「WEBGPU UNAVAILABLE」）。
 
   try {
     // --- renderer (no MSAA; low-power adapter in skin mode) ---------------
@@ -616,7 +616,15 @@ async function boot() {
     await renderer.init();
 
     if (renderer.backend.isWebGPUBackend !== true) {
-      throw new Error('WebGPU device could not be created (WebGL fallback is not allowed).');
+      // WebGPU 不可用时 three 自动回退 WebGL2 backend：两种 backend 都允许渲染
+      // （2026-08-23 webgui 冒烟测试：用户浏览器无 WebGPU → 纯 WebGPU 检查导致初始化失败）。
+      PIXEL_RATIO_CAP = 1.0;
+      BASE_PIXEL_RATIO = Math.min(window.devicePixelRatio || 1, PIXEL_RATIO_CAP);
+      FRAME_RATE_CAP = 30;
+      FRAME_MS = 1000 / FRAME_RATE_CAP;
+      TARGET_FPS = 28;
+      renderScale = 0.6;
+      applyResolutionScale(renderScale);
     }
 
     loopStarted = true;
