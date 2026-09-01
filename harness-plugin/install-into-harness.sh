@@ -29,5 +29,5 @@ cp "$PLUGIN_ROOT/package.json" "$PLUGIN_ROOT/tsconfig.json" "$PLUGIN_ROOT/tsdown
 node "$PLUGIN_ROOT/integration/update-harness.mjs" "$HARNESS_ROOT"
 
 echo "✓ Native package copied to $TARGET"
-echo "  Next: cd '$HARNESS_ROOT' && corepack pnpm install && corepack pnpm --filter @deepseek-ai/dsh-client-ui-open-sea-skin bundle"
+echo "  Next: cd '$HARNESS_ROOT' && corepack pnpm install --no-frozen-lockfile && corepack pnpm run build"
 echo "  Run Harness from source afterward; Open Sea Skin will appear in General settings."

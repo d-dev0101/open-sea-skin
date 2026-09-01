@@ -91,7 +91,7 @@ is no analytics, telemetry, CDN, account, or data upload.
 
 ## Compatibility
 
-The native integration is verified against DeepSeek Harness commit
-`47f943859bef` (2026-08-13). If an upstream anchor changes, the installer exits
-instead of guessing. The extension and static installer remain independent of
-that source layout.
+The native integration is verified against DeepSeek Harness `0.1.2-alpha.3`,
+commit `dd6322d60` (2026-08-31). If an upstream anchor changes, the installer
+exits instead of guessing. The extension and static installer remain
+independent of that source layout.

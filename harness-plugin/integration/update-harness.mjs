@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const root = resolve(process.argv[2] || '')
@@ -9,6 +9,11 @@ function edit(relativePath, transform) {
   const before = readFileSync(path, 'utf8')
   const after = transform(before)
   if (after !== before) writeFileSync(path, after)
+}
+
+function editIfPresent(relativePath, transform) {
+  if (!existsSync(resolve(root, relativePath))) return
+  edit(relativePath, transform)
 }
 
 function insertOnce(text, marker, needle, replacement, file) {
@@ -47,8 +52,8 @@ edit('packages/client/ui-layout/src/client/AppFrame.tsx', text => {
   return insertOnce(
     text,
     "renderSlot('shell.background', {})",
-    "    >\n      <div className={css.sidebarCol}>",
-    `    >\n      <div className={css.backgroundLayer}>\n        {renderSlot('shell.background', {})}\n      </div>\n      <div className={css.sidebarCol}>`,
+    "      <div className={css.sidebarCol}>",
+    `      <div className={css.backgroundLayer}>\n        {renderSlot('shell.background', {})}\n      </div>\n      <div className={css.sidebarCol}>`,
     'ui-layout/src/client/AppFrame.tsx',
   )
 })
@@ -75,7 +80,10 @@ edit('packages/client/ui-layout/src/client/AppFrame.module.css', text => {
   )
 })
 
-edit('packages/host/apiproxy/src/api-proxy.ts', text => insertOnce(
+// Harness 0.1.2 split the old ApiProxy into domain controllers and replaced
+// this allowlist with automatic dsh.client package discovery. Older releases
+// still need the explicit namespace entry, so patch it only when present.
+editIfPresent('packages/host/apiproxy/src/api-proxy.ts', text => insertOnce(
   text,
   "'ui-open-sea-skin'",
   "'agent-loop', 'shell', 'locale', 'permission', 'ui-conversation', 'ui-theme', 'web-search-deepseek',",

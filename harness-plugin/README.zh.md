@@ -11,13 +11,12 @@ Open Sea 实时 WebGPU 海洋的 DeepSeek Harness 原生插件。Host 端注册 
 ```sh
 bash harness-plugin/install-into-harness.sh /absolute/path/to/deepseek-harness
 cd /absolute/path/to/deepseek-harness
-corepack pnpm install
-corepack pnpm --filter @deepseek-ai/dsh-client-ui-open-sea-skin bundle
+corepack pnpm install --no-frozen-lockfile
 corepack pnpm run build
 corepack pnpm dsh web
 ```
 
-安装器会把包复制到 `packages/client/ui-open-sea-skin`，并幂等地添加 Client TypeScript 聚合引用、Web bundle 依赖、Cordis 启动项、设置 Web 白名单和由 layout 拥有的 `shell.background` slot；也会迁移曾导致聊天输入框盖住设置页的旧层级规则。脚本针对 Harness 提交 `47f943859bef` （2026-08-13）；若上游接入点变化，脚本会停止并报错，不会猜测修改。
+安装器会把包复制到 `packages/client/ui-open-sea-skin`，并幂等地添加 Client TypeScript 聚合引用、Web bundle 依赖、Cordis 启动项、设置 Web 白名单和由 layout 拥有的 `shell.background` slot；也会迁移曾导致聊天输入框盖住设置页的旧层级规则。脚本已在 Harness `0.1.2-alpha.3`、提交 `dd6322d60`（2026-08-31）上验证；若上游接入点变化，脚本会停止并报错，不会猜测修改。
 
 启动后可用左下角「皮肤设置」快捷面板调波浪、日光与玻璃，也可打开「设置 → 通用设置 → 海洋皮肤」查看所有选项。手动拖动日光滑块后，自动循环会关闭，可通过复选框重新开启。
 

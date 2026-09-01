@@ -40,7 +40,7 @@ with:
 dsh plugin --profile web remove open-sea-skin
 ```
 
-This package is tested with DeepSeek Harness `0.1.0-rc.6`. Use the source
+This package is tested with DeepSeek Harness `0.1.2-alpha.3`. Use the source
 integration below only when you also want the controls embedded inside the
 native General settings page. See the [DSH installation and troubleshooting
 guide](docs/dsh-plugin.md) for verification and recovery details.
@@ -139,7 +139,7 @@ into a Harness source checkout:
 git clone https://github.com/deepseek-ai/deepseek-harness.git
 bash harness-plugin/install-into-harness.sh /absolute/path/to/deepseek-harness
 cd /absolute/path/to/deepseek-harness
-corepack pnpm install
+corepack pnpm install --no-frozen-lockfile
 corepack pnpm run build
 corepack pnpm dsh web
 ```
@@ -147,9 +147,10 @@ corepack pnpm dsh web
 Use the native **Skin settings** action at the lower left for fast adjustments,
 or open **Settings → General → Open Sea Skin** for every option. Both surfaces
 use Harness settings, locale, slots, and reversible theme-token APIs; neither
-depends on CSS-module hashes. The integration is tested against Harness commit
-`47f943859bef` (2026-08-13) and deliberately stops if upstream anchors have
-changed. More details are in [harness-plugin/README.md](harness-plugin/README.md).
+depends on CSS-module hashes. The integration is tested against Harness
+`0.1.2-alpha.3`, commit `dd6322d60` (2026-08-31), and deliberately stops if
+upstream anchors have changed. More details are in
+[harness-plugin/README.md](harness-plugin/README.md).
 
 ## What is included
 
