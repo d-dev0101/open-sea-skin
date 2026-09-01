@@ -2,6 +2,20 @@
 
 [交互式官网](https://d-dev0101.github.io/open-sea-skin/) · [English](README.md) · [技术架构](docs/architecture.md) · [发布说明](docs/releasing.md)
 
+<div align="center">
+  <h2>安装前请务必先打开官网看效果</h2>
+  <p><strong>先在官网调节海浪、夕阳和玻璃透明度，确认喜欢这个效果后再安装。</strong></p>
+  <p>
+    <a href="https://d-dev0101.github.io/open-sea-skin/">官网实时预览</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md">安装指南</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin/releases">最新版本</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin">源代码</a> ·
+    <a href="https://github.com/topics/dsh-plugin">DSH 插件目录</a> ·
+    <a href="https://github.com/d-dev0101/open-sea-skin/issues">问题反馈</a>
+  </p>
+  <p>需要登录或安装帮助？请到<a href="https://github.com/d-dev0101/open-sea-skin/issues">问题反馈</a>留言并 @<a href="https://github.com/d-dev0101">d-dev0101</a>。</p>
+</div>
+
 为 DeepSeek Harness 加上实时 WebGPU 海洋皮肤。保留五组 Gerstner 波与 TSL
 海面视觉，增加半透明玻璃界面，并提供只作用于 Harness 的浏览器扩展、无需编译
 的 dist 安装脚本、可一行安装的 DSH 插件，以及真正接入 Harness

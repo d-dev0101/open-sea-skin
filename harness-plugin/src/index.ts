@@ -8,7 +8,7 @@ import { extname, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Context } from '@deepseek-ai/cordis'
-import { settingsNamespace } from '@deepseek-ai/dsh-settings'
+import type {} from '@deepseek-ai/dsh-settings'
 import type {} from '@deepseek-ai/dsh-host-webserver'
 import { OpenSeaSettingsSchema } from './settings.ts'
 import { OPEN_SEA_SETTINGS_NAMESPACE } from './settings-contract.ts'
@@ -28,7 +28,6 @@ const ROUTE = '/open-sea-skin'
 // Normalize away URL's trailing slash so the containment check adds exactly
 // one platform separator on macOS, Linux and Windows.
 const ASSET_ROOT = resolve(fileURLToPath(new URL('../assets/', import.meta.url)))
-const SETTINGS_NAMESPACE = settingsNamespace(OPEN_SEA_SETTINGS_NAMESPACE)
 
 const MIME: Readonly<Record<string, string>> = Object.freeze({
   '.css': 'text/css; charset=utf-8',
@@ -84,7 +83,7 @@ async function serveAsset(req: IncomingMessage, res: ServerResponse): Promise<vo
  */
 export function apply(ctx: Context): void {
   ctx.inject(['settings'], (settingsCtx) => {
-    settingsCtx.settings.register(SETTINGS_NAMESPACE, OpenSeaSettingsSchema)
+    settingsCtx.settings.register(OPEN_SEA_SETTINGS_NAMESPACE, OpenSeaSettingsSchema)
   })
   ctx.inject(['webServer'], (httpCtx) => {
     httpCtx.effect(() => httpCtx.webServer.register({

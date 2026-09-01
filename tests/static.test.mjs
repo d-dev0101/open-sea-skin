@@ -43,6 +43,9 @@ test('every install path is generated from the canonical renderer', async () => 
 
 test('the repository root is an installable DeepSeek Harness bundle', async () => {
   const pkg = JSON.parse(await text('package.json'))
+  assert.equal(pkg.private, undefined)
+  assert.deepEqual(pkg.publishConfig, { access: 'public' })
+  assert.equal(pkg.publishConfig.access, 'public')
   assert.deepEqual(pkg.dsh.bundle, { patch: './cordis.patch.yml' })
   assert.deepEqual(pkg.dsh.client, { inject: [], platform: 'web' })
   assert.equal(pkg.main, 'plugin/index.js')

@@ -11,13 +11,12 @@ From the Open Sea Skin repository:
 ```sh
 bash harness-plugin/install-into-harness.sh /absolute/path/to/deepseek-harness
 cd /absolute/path/to/deepseek-harness
-corepack pnpm install
-corepack pnpm --filter @deepseek-ai/dsh-client-ui-open-sea-skin bundle
+corepack pnpm install --no-frozen-lockfile
 corepack pnpm run build
 corepack pnpm dsh web
 ```
 
-The installer copies this package to `packages/client/ui-open-sea-skin` and idempotently adds the required client aggregate reference, Web bundle dependency, Cordis row, settings exposure and layout-owned `shell.background` slot. It also migrates the earlier per-column stacking rule that could place the conversation composer above Settings. It targets the Harness client architecture at commit `47f943859bef` (2026-08-13); if those integration anchors change upstream, it stops without guessing.
+The installer copies this package to `packages/client/ui-open-sea-skin` and idempotently adds the required client aggregate reference, Web bundle dependency, Cordis row, settings exposure and layout-owned `shell.background` slot. It also migrates the earlier per-column stacking rule that could place the conversation composer above Settings. It is verified against Harness `0.1.2-alpha.3`, commit `dd6322d60` (2026-08-31); if those integration anchors change upstream, it stops without guessing.
 
 Use the lower-left **Skin settings** action for sea, daylight and glass controls, or open **Settings → General → Open Sea Skin** for every option. Manual daylight input disables the cycle until the cycle checkbox is re-enabled.
 

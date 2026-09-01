@@ -136,3 +136,32 @@ test('native source installer is repeatable and preserves overlay stacking', asy
   assert.equal((proxy.match(/ui-open-sea-skin/g) || []).length, 1)
   await stat(resolve(harness, 'packages/client/ui-open-sea-skin/src/client/OpenSeaQuickControls.tsx'))
 })
+
+test('native source installer supports Harness 0.1.2 split client services', async () => {
+  const harness = await mkdtemp(resolve(tmpdir(), 'open-sea-harness-alpha3-'))
+  const files = {
+    'AGENTS.md': '# fixture\n',
+    'packages/client/ui-layout/src/client/index.ts': `type Slots = {\n    'shell.overlay': { kind: 'list'; scope: 'root' }\n}\nconst children = {\n        'shell.overlay': { kind: 'list', scope: 'root' },\n}\n`,
+    'packages/client/ui-layout/src/client/AppFrame.tsx': `type Frame = PropsRenderSlots<'sidebar' | 'conversation' | 'details' | 'shell.overlay'>\nexport const frame = (\n    >\n      <DocumentTitle productTitle={productTitle} />\n      <div className={css.sidebarCol}>\n)\n`,
+    'packages/client/ui-layout/src/client/AppFrame.module.css': `.frame {\n  position: relative; /* anchors the drag handles, which straddle column borders */\n}\n\n.sidebarCol {\n  min-width: 0;\n}\n`,
+    'tsconfig.client.json': `{\n  "references": [\n    { "path": "./packages/client/ui-layout" },\n    { "path": "./packages/client/ui-sidebar" }\n  ]\n}\n`,
+    'packages/bundle/web-app/cordis.patch.yml': `    - id: ui-layout\n      name: '@deepseek-ai/dsh-client-ui-layout'\n\n    - id: ui-sidebar\n      name: '@deepseek-ai/dsh-client-ui-sidebar'\n`,
+    'packages/bundle/web-app/package.json': `{"dependencies":{"@deepseek-ai/dsh-client-ui-layout":"workspace:^"}}\n`,
+  }
+  for (const [relative, content] of Object.entries(files)) {
+    const target = resolve(harness, relative)
+    await mkdir(dirname(target), { recursive: true })
+    await writeFile(target, content)
+  }
+
+  runSourceInstaller(harness)
+
+  const frame = await readFile(resolve(harness, 'packages/client/ui-layout/src/client/AppFrame.tsx'), 'utf8')
+  assert.match(frame, /renderSlot\('shell\.background'/)
+  assert.match(frame, /<DocumentTitle productTitle=/)
+  const pkg = JSON.parse(await readFile(resolve(harness, 'packages/client/ui-open-sea-skin/package.json'), 'utf8'))
+  assert.ok(!pkg.dsh.client.inject.includes('@deepseek-ai/dsh-client-runtime'))
+  assert.equal(pkg.peerDependencies['@deepseek-ai/dsh-client-runtime'], undefined)
+  const tsconfig = JSON.parse(await readFile(resolve(harness, 'packages/client/ui-open-sea-skin/tsconfig.json'), 'utf8'))
+  assert.ok(!tsconfig.references.some(reference => reference.path === '../runtime'))
+})

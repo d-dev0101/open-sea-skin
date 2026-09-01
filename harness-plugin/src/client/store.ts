@@ -1,5 +1,5 @@
 /** Shared root-scoped viewing state for the background and its settings row. */
-import { defineStore, type EngineStoreHandle } from '@deepseek-ai/dsh-client-runtime/client'
+import { defineStore, type EngineStoreHandle } from '@deepseek-ai/dsh-client-store'
 import type { OpenSeaSettings } from '../settings-contract.ts'
 
 /** Reactive state mirrored from the durable settings scope. */
