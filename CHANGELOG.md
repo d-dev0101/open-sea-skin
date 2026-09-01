@@ -2,6 +2,20 @@
 
 All notable changes to Open Sea Skin are documented here.
 
+## Unreleased
+
+### Added
+
+- Quick-controls panel gains an enable toggle, an automatic day-cycle toggle,
+  and a reset-to-defaults button. Disabling the skin now only tears down the
+  ocean surface while keeping the button and panel, so the skin can always be
+  re-enabled from the same page.
+
+### Fixed
+
+- Dragging the daylight slider now unchecks the automatic day-cycle toggle to
+  match the persisted state.
+
 ## 1.2.1 — 2026-08-18
 
 ### Changed
