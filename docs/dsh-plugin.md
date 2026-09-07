@@ -7,13 +7,26 @@ route. It does not modify the Harness checkout.
 ## Install a release
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.2'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.3'
 dsh web
 ```
 
 Open Sea appears behind the Web UI. The **Skin settings** button at the lower
 left opens the wave, daylight, glass-opacity, and day-cycle controls. Settings
 are saved locally in that browser profile.
+
+## DSH Desktop
+
+In **Settings → Plugin Market → Installed**, update `open-sea-skin` to
+`1.2.3` or newer and restart Harness using the desktop Settings menu. The
+market's **Themes** tab lists this project under **Themes & Appearance**.
+If the catalog still reports `1.2.2` as current, wait for its registry refresh
+or use the `open-sea-skin@1.2.3` npm package through the market's package installer.
+
+Version `1.2.3` fixes uneven glass in Desktop's advanced and extended shells:
+all three columns share one translucent background while composers and dialogs
+retain their own fills. The browser regression fixture is based on Desktop
+Beta `2.0.5-beta.1` shell styles; it is not a full native desktop end-to-end test.
 
 ## Verify the package
 

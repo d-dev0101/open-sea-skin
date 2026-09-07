@@ -121,6 +121,30 @@ body[data-ds-dark-theme] {
   --dsw-specific-sidebar-fill: rgba(11, 15, 21, ${alpha(Math.max(0.35, dark - 0.05))}) !important;
   --dsw-specific-selector: rgba(13, 17, 23, ${alpha(dark + 0.02)}) !important;
 }
+/* DSH Desktop owns a different shell: its transparent sidebar and two
+   independently painted conversation layers otherwise produce uneven glass.
+   Paint the shared frame once. Only shell roots lose their fill; cards,
+   composer, menus and the sibling overlay keep their own theme tokens. */
+body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) .dshDesktopFrame {
+  background: var(--dsw-alias-bg-base) !important;
+}
+body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) .dshDesktopSidebarSurface {
+  --dsw-specific-sidebar-fill: transparent !important;
+}
+body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) :is(
+  .dshDesktopSidebarSurface,
+  .dshDesktopConversationSurface,
+  .dshDesktopDetailsSurface,
+  .dshDesktopMacCaptionRow,
+  .dshDesktopWindowsCaptionRow,
+  .dshDesktopConversationSurface > *,
+  .dshDesktopConversationSurface [data-phase="hero"],
+  .dshDesktopConversationSurface [data-phase="active"],
+  .dshDesktopConversationSurface [data-phase="settling"],
+  .dshDesktopDetailsSurface > *
+) {
+  background: transparent !important;
+}
 /* Legacy Harness builds: these CSS-module hashes are best-effort fallbacks. */
 .wSkVaW_root,
 .pI_x6G_sidebarCol,

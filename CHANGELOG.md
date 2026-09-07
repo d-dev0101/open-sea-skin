@@ -2,6 +2,24 @@
 
 All notable changes to Open Sea Skin are documented here.
 
+## 1.2.3 — 2026-09-07
+
+### Fixed
+
+- DSH Desktop advanced and extended layouts now paint a single shared glass
+  background. The sidebar, conversation and details panes no longer differ
+  in opacity due to transparent sidebar overrides and stacked conversation fills.
+- Composer cards and dialogs retain their own backgrounds. Disabling or
+  unloading Open Sea restores the desktop's original styles.
+
+### Tested
+
+- Desktop shell regression based on DSH Desktop Beta `2.0.5-beta.1`: 24
+  combinations of layout, native material, light/dark mode and glass opacity,
+  plus settings, text input, disable/re-enable and disposal in Chromium.
+- The old `1.2.2` bundle fails this regression: at 40% glass the sidebar's
+  effective opacity is 0%, while nested conversation fills reach 64%.
+
 ## 1.2.2 — 2026-09-01
 
 ### Added

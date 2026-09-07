@@ -28,7 +28,7 @@ slots/settings 的原生源码集成。
 直接从 GitHub 安装完整的本地海洋运行时与左下角快捷控制：
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.2'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.3'
 ```
 
 重启 `dsh web` 后，点击左下角的**皮肤设置**即可调节波浪大小、日光、40%
@@ -83,7 +83,7 @@ dsh plugin --profile web remove open-sea-skin
 
 ## 安装方式二：Harness dist 注入（无需编译源码）
 
-可以在**任意目录**执行。命令会把固定版本 `v1.2.2` 下载到临时目录，运行安装器
+可以在**任意目录**执行。命令会把固定版本 `v1.2.3` 下载到临时目录，运行安装器
 后自动清理下载内容。**执行前先停止 Harness**；执行完成后重新运行 `dsh web`，
 保持该终端进程运行，再刷新浏览器：
 

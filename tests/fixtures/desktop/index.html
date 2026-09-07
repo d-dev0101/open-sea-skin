@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Sea — DSH Desktop shell regression</title>
+  <link rel="icon" href="data:,">
+  <style>
+    /* Reduced shell fixture from anywhere-labs/dsh-desktop 2.0.5-beta.1:
+       src/client/styles.ts, extended-styles.ts and bundled Harness roots.
+       Preserve the nested fills and local sidebar token which caused #glass. */
+    * { box-sizing: border-box; }
+    html, body, #root { width:100%; height:100%; margin:0; }
+    body { --dsw-alias-bg-base:#fff; --dsw-specific-sidebar-fill:#f5f6f8; --dsw-alias-bg-layer-1:#fafafa; font:15px/1.5 system-ui,sans-serif; color:#182330; }
+    body[data-ds-dark-theme] { --dsw-alias-bg-base:#151719; --dsw-alias-bg-layer-1:#27292d; color:#eee; }
+    #root { position:relative; z-index:1; }
+    .dshDesktopFrame { position:relative; display:grid; grid-template-columns:280px minmax(0,1fr) 240px; height:100%; background:transparent; }
+    .dshDesktopSidebarSurface { --dsw-specific-sidebar-fill:transparent; position:relative; min-width:0; background:transparent; border-right:1px solid #87949c44; }
+    body:is([data-dsh-desktop-mode="extended"],[data-dsh-desktop-mode="advanced"])[data-dsh-desktop-material="off"] .dshDesktopSidebarSurface { --dsw-specific-sidebar-fill:var(--dsw-alias-bg-layer-1); background:var(--dsw-alias-bg-layer-1); }
+    .dshDesktopUpstreamSidebar { height:100%; }
+    .sidebarRoot { height:100%; display:flex; flex-direction:column; padding:24px; background:var(--dsw-specific-sidebar-fill); }
+    .dshDesktopConversationSurface { min-width:0; background:var(--dsw-alias-bg-base); }
+    .conversationRoot { background:var(--dsw-alias-bg-base); height:100%; position:relative; display:flex; flex-direction:column; }
+    .dshDesktopDetailsSurface { background:var(--dsw-alias-bg-base); border-left:1px solid #87949c44; }
+    .detailsRoot { height:100%; padding:28px; background:var(--dsw-alias-bg-base); }
+    body[data-dsh-desktop-mode="extended"] .dshDesktopFrame { background:color-mix(in srgb,var(--dsw-alias-bg-base) 18%,transparent); }
+    body[data-dsh-desktop-mode="extended"] .dshDesktopSidebarSurface { background:transparent !important; }
+    body[data-dsh-desktop-mode="extended"] .dshDesktopConversationSurface { border-top-left-radius:20px; background:var(--dsw-alias-bg-base); }
+    [data-slot="conversation"] { height:100%; }
+    .brand { font-size:22px; font-weight:650; }
+    .badge { font-size:11px; border:1px solid currentColor; padding:1px 4px; }
+    .history { display:grid; gap:24px; padding-top:42px; }
+    .settings { margin-top:auto; }
+    button { color:inherit; font:inherit; cursor:pointer; }
+    .settings button { background:transparent; border:0; padding:8px; }
+    .welcome { margin:auto; width:88%; max-width:680px; }
+    h1 { text-align:center; font-size:29px; font-weight:550; }
+    .composer { background:var(--dsw-alias-bg-layer-1); border:1px solid #87949c55; border-radius:24px; padding:22px; margin-top:30px; }
+    textarea { background:transparent; color:inherit; width:100%; height:90px; border:0; font:inherit; resize:none; }
+    .send { display:flex; justify-content:space-between; align-items:center; }
+    .send button { border:0; border-radius:50%; width:36px; height:36px; background:#6196ee; }
+    .dshDesktopOverlay { position:absolute; z-index:1000; inset:0; pointer-events:none; }
+    .dshDesktopOverlay > * { pointer-events:auto; }
+    dialog { color:inherit; border:1px solid #87949c55; border-radius:20px; padding:30px; background:var(--dsw-alias-bg-layer-1); }
+    dialog::backdrop { background:#0008; }
+  </style>
+</head>
+<body data-ds-dark-theme data-dsh-desktop-mode="advanced" data-dsh-desktop-material="transparent">
+  <div id="root">
+    <div class="dshDesktopFrame">
+      <aside class="dshDesktopSidebarSurface"><div class="dshDesktopUpstreamSidebar"><div class="sidebarRoot">
+        <div class="brand">deepseek <span class="badge">HARNESS</span></div>
+        <div class="history"><strong>＋ 新会话</strong><span>Open Sea 桌面适配</span><span>海洋、阳光与玻璃</span></div>
+        <div class="settings" data-slot="sidebar.settings"><button onclick="document.querySelector('dialog').showModal()">⚙ 设置</button></div>
+      </div></div></aside>
+      <main class="dshDesktopConversationSurface"><div data-slot="conversation"><div class="conversationRoot" data-phase="hero">
+        <div class="welcome"><h1>探索未至之境 <span class="badge">预览版</span></h1><div class="composer"><textarea placeholder="描述你想要构建的内容…"></textarea><div class="send"><span>工作区内修改</span><span>DeepSeek-V4-Pro <button aria-label="发送">↑</button></span></div></div></div>
+      </div></div></main>
+      <aside class="dshDesktopDetailsSurface"><div class="detailsRoot"><strong>详情</strong><p>Open Sea · 桌面布局回归预览</p></div></aside>
+      <div class="dshDesktopOverlay" data-shell-overlay><dialog><h2>设置</h2><p>弹窗与输入框保留独立底色。</p><button onclick="this.closest('dialog').close()">关闭</button></dialog></div>
+    </div>
+  </div>
+</body>
+</html>

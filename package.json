@@ -1,6 +1,6 @@
 {
   "name": "open-sea-skin",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "type": "module",
   "description": "Realtime WebGPU ocean skin for DeepSeek Harness on Chrome and Edge",
   "repository": {
@@ -59,6 +59,7 @@
     "check": "npm run build:site && npm run check:generated && npm test",
     "package:extension": "bash scripts/package-extension.sh",
     "test:browser": "node scripts/browser-acceptance.mjs",
+    "test:desktop": "node scripts/desktop-acceptance.mjs",
     "test:website": "node scripts/website-acceptance.mjs",
     "capture": "node scripts/capture-gallery.mjs"
   },

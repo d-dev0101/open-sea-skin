@@ -29,7 +29,7 @@ Install the complete local-only ocean runtime and lower-left quick controls
 directly from GitHub:
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.2'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.3'
 ```
 
 Restart `dsh web`, then use **Skin settings** at the lower left to adjust wave
@@ -91,7 +91,7 @@ daylight, and glass-opacity controls. Values are saved with
 
 ## Install option 2 — Harness static build (no source compilation)
 
-Run this from **any directory**. It downloads the pinned `v1.2.2` source archive
+Run this from **any directory**. It downloads the pinned `v1.2.3` source archive
 to a temporary directory, runs the installer, and removes the download when it
 finishes. **Stop Harness before running it**, then start `dsh web` again, keep
 that terminal process running, and reload the browser:

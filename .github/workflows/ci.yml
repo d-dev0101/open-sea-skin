@@ -33,3 +33,5 @@ jobs:
         run: xvfb-run -a npm run test:browser
       - name: Website acceptance
         run: OSS_HEADLESS=1 npm run test:website
+      - name: Desktop glass regression
+        run: OSS_HEADLESS=1 npm run test:desktop
