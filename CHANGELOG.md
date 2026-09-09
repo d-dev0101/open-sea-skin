@@ -2,6 +2,22 @@
 
 All notable changes to Open Sea Skin are documented here.
 
+## Unreleased
+
+### Fixed
+
+- Quick controls follow asynchronous Harness document-language changes in both
+  Chinese and English, including accessibility labels, without losing focus or
+  control state. The observer is removed on disposal. Thanks to @Max-Null for
+  reporting the issue in #6; the fix lives in the shared source and all generated
+  install targets.
+
+### Documentation
+
+- Recommend the prebuilt npm package to avoid Git transport failures during
+  installation; explain why a `git ls-remote` error is not proof of a blocked
+  build script (#8).
+
 ## 1.2.3 — 2026-09-07
 
 ### Fixed

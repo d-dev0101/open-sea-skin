@@ -43,6 +43,13 @@ async function extensionAcceptance() {
     await page.locator('#__open-sea-skin-btn__').click()
     const panel = page.locator('#__open-sea-skin-panel__.open')
     await panel.waitFor()
+    for (const [lang, title, label] of [['zh-CN', '海洋皮肤设置', '波浪大小'], ['en', 'Open Sea skin settings', 'Sea state']]) {
+      await page.evaluate((lang) => { document.documentElement.lang = lang }, lang)
+      await page.waitForFunction((title) => document.querySelector('#__open-sea-skin-btn__').title === title, title)
+      assert.equal(await panel.locator('label').first().textContent(), label)
+      assert.equal(await panel.getAttribute('aria-label'), title)
+      assert.equal(await panel.locator('input:focus').count(), 1)
+    }
     await setRange(page.locator('#__open-sea-skin-panel__-sea-range'), 82)
     await setRange(page.locator('#__open-sea-skin-panel__-time-range'), 18)
     await setRange(page.locator('#__open-sea-skin-panel__-glass-range'), 65)

@@ -26,10 +26,10 @@ installer, or native Harness source integration.
 ## Recommended — install as a DSH plugin
 
 Install the complete local-only ocean runtime and lower-left quick controls
-directly from GitHub:
+from npm (no Git checkout or install-time build required):
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.3'
+dsh plugin --profile web add open-sea-skin@1.2.3
 ```
 
 Restart `dsh web`, then use **Skin settings** at the lower left to adjust wave

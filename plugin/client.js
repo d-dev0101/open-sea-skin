@@ -204,7 +204,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
       throw new TypeError('OpenSeaSkinCore requires assetUrl() and storage adapters.');
     }
 
-    const copy = selectCopy(options.locale);
+    let copy = selectCopy(options.locale);
     let state = { ...DEFAULTS };
     let ownsSurface = false;
     let panelOpen = false;
@@ -368,6 +368,26 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
         cycleBox.checked = state.autoCycle;
       };
       syncUi();
+
+      // Harness may set lang after boot. Update only our own UI, in both
+      // directions, without replacing controls or losing focus/listeners.
+      const syncLocale = () => {
+        copy = selectCopy(options.locale);
+        button.title = copy.button;
+        button.setAttribute('aria-label', copy.button);
+        panel.setAttribute('aria-label', copy.button);
+        panel.querySelector('.oss-close').setAttribute('aria-label', copy.close);
+        for (const [suffix, key] of [['sea-range', 'sea'], ['time-range', 'time'], ['glass-range', 'glass'], ['enabled', 'enable'], ['cycle', 'autoCycle']]) {
+          panel.querySelector(`label[for="${IDS.panel}-${suffix}"]`).textContent = copy[key];
+        }
+        resetBtn.textContent = copy.reset;
+        panel.querySelector('.oss-note').replaceChildren(copy.resetNote, document.createElement('br'), copy.note);
+        timeOut.textContent = timeLabel(copy, state.time);
+      };
+      syncLocale();
+      const localeObserver = new MutationObserver(syncLocale);
+      localeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+      surfaceCleanups.push(() => localeObserver.disconnect());
 
       on(seaRange, 'input', () => {
         state.sea = clamp(seaRange.value, 0, 100, DEFAULTS.sea);

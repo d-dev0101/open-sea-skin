@@ -7,7 +7,7 @@ route. It does not modify the Harness checkout.
 ## Install a release
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.3'
+dsh plugin --profile web add open-sea-skin@1.2.3
 dsh web
 ```
 
@@ -29,6 +29,16 @@ retain their own fills. The browser regression fixture is based on Desktop
 Beta `2.0.5-beta.1` shell styles; it is not a full native desktop end-to-end test.
 
 ## Verify the package
+
+### Git install fails at `git ls-remote`
+
+Use the npm command above instead of the Git URL. The npm release already
+contains its built assets and does not need a `prepare` build. A failure at
+`git ls-remote` happens before a build starts; the generic `allowBuilds` hint
+does not establish that build permissions caused it. If npm also fails, share
+the complete error output (redact credentials and private paths). Do not
+enable arbitrary dependency build scripts or delete your Harness profile.
+
 
 The install should add an `open-sea-skin` row to the selected profile and load
 these same-origin URLs with HTTP 200 responses:

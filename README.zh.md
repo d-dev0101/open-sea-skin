@@ -25,10 +25,10 @@ slots/settings 的原生源码集成。
 
 ## 推荐：作为 DSH 插件安装
 
-直接从 GitHub 安装完整的本地海洋运行时与左下角快捷控制：
+从 npm 安装完整的本地海洋运行时与左下角快捷控制（无需 Git 下载或安装时编译）：
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.3'
+dsh plugin --profile web add open-sea-skin@1.2.3
 ```
 
 重启 `dsh web` 后，点击左下角的**皮肤设置**即可调节波浪大小、日光、40%
