@@ -2,7 +2,7 @@
 
 All notable changes to Open Sea Skin are documented here.
 
-## Unreleased
+## 1.2.4 — 2026-09-09
 
 ### Fixed
 

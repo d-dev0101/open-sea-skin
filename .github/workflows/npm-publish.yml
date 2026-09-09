@@ -8,7 +8,7 @@ on:
       tag:
         description: Git tag whose package version should be published
         required: true
-        default: v1.2.3
+        default: v1.2.4
 
 permissions:
   contents: read

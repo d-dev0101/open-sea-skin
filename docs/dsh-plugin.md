@@ -7,7 +7,7 @@ route. It does not modify the Harness checkout.
 ## Install a release
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.3
+dsh plugin --profile web add open-sea-skin@1.2.4
 dsh web
 ```
 
@@ -21,7 +21,7 @@ In **Settings → Plugin Market → Installed**, update `open-sea-skin` to
 `1.2.3` or newer and restart Harness using the desktop Settings menu. The
 market's **Themes** tab lists this project under **Themes & Appearance**.
 If the catalog still reports `1.2.2` as current, wait for its registry refresh
-or use the `open-sea-skin@1.2.3` npm package through the market's package installer.
+or use the `open-sea-skin@1.2.4` npm package through the market's package installer.
 
 Version `1.2.3` fixes uneven glass in Desktop's advanced and extended shells:
 all three columns share one translucent background while composers and dialogs
