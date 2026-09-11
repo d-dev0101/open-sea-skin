@@ -1,214 +1,206 @@
-# Open Sea Skin
-
-[Interactive website](https://d-dev0101.github.io/open-sea-skin/) · [中文](README.zh.md) · [Architecture](docs/architecture.md) · [Release guide](docs/releasing.md)
-
 <div align="center">
-  <h2>Before installing, preview the official website first</h2>
-  <p><strong>Open the live demo, tune the waves, sunset, and glass transparency, then install only after you like the result.</strong></p>
+  <img src="extension/icons/icon128.png" width="80" height="80" alt="Open Sea wave logo" />
+  <h1>Open Sea Skin · DeepSeek Harness Ocean Theme</h1>
+  <p><strong>A living ocean behind your workspace.</strong><br>实时海洋 · 夕阳光影 · 透明玻璃界面</p>
+  <p><a href="README.zh.md">简体中文</a> · <strong>English</strong></p>
   <p>
-    <a href="https://d-dev0101.github.io/open-sea-skin/">Official website</a> ·
-    <a href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md">Install guide</a> ·
-    <a href="https://github.com/d-dev0101/open-sea-skin/releases">Releases</a> ·
-    <a href="https://github.com/d-dev0101/open-sea-skin">Source code</a> ·
-    <a href="https://github.com/topics/dsh-plugin">DSH plugin directory</a> ·
-    <a href="https://github.com/d-dev0101/open-sea-skin/issues">Support / Issues</a>
+    <a href="https://github.com/d-dev0101/open-sea-skin/releases"><img src="https://img.shields.io/github/v/release/d-dev0101/open-sea-skin?color=138b8b&amp;label=GitHub%20release" alt="Latest GitHub release" /></a>
+    <a href="https://www.npmjs.com/package/open-sea-skin"><img src="https://img.shields.io/npm/v/open-sea-skin?color=138b8b&amp;label=npm" alt="Published npm version" /></a>
+    <a href="https://github.com/d-dev0101/open-sea-skin/actions/workflows/ci.yml"><img src="https://github.com/d-dev0101/open-sea-skin/actions/workflows/ci.yml/badge.svg" alt="Build and regression tests" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-138b8b" alt="MIT license" /></a>
   </p>
-  <p>Need login or installation help? Leave a message in <a href="https://github.com/d-dev0101/open-sea-skin/issues">Issues</a> and mention <a href="https://github.com/d-dev0101">@d-dev0101</a>.</p>
+  <h2>👀 Before installing, try the live website</h2>
+  <p>Move the waves. Find your sunset. Tune the glass.<br><strong>Preview the skin yourself before choosing an installation method.</strong></p>
+  <p><a href="https://d-dev0101.github.io/open-sea-skin/"><strong>🌊 Interactive demo</strong></a> · <a href="#install">📦 Install</a> · <a href="https://github.com/d-dev0101/open-sea-skin/releases">🚀 Releases</a> · <a href="https://github.com/d-dev0101/open-sea-skin/issues">💬 Get help</a></p>
 </div>
 
-A self-contained WebGPU ocean skin for DeepSeek Harness. It keeps the original
-five-wave Gerstner/TSL look, adds a translucent Harness theme, and is available
-as a one-line DSH plugin, Harness-only Chrome/Edge extension, one-command static
-installer, or native Harness source integration.
+![Open Sea dynamic ocean theme running inside DeepSeek Harness with a transparent chat interface](docs/marketplace/open-sea-harness-cover.png)
 
-![Open Sea for DeepSeek Harness](docs/marketplace/open-sea-harness-cover.png)
+**Open Sea Skin is an open-source ocean theme and appearance plugin for DeepSeek Harness (DSH).** It adds a real-time WebGPU animated background, adjustable waves, daylight-to-sunset lighting, and a translucent glass interface. Use it as a DSH plugin, a Harness-only Chrome/Edge extension, or a static frontend integration.
 
-## Recommended — install as a DSH plugin
+> Community-made, not an official DeepSeek product. This skin targets **DeepSeek Harness**, not the DeepSeek chat website. It is unrelated to the OpenSea NFT marketplace.
 
-Install the complete local-only ocean runtime and lower-left quick controls
-from npm (no Git checkout or install-time build required):
+<p align="center"><a href="#features">Features</a> · <a href="#gallery">Gallery</a> · <a href="#install">Installation</a> · <a href="#faq">FAQ</a> · <a href="#development">Development</a></p>
+
+<a id="features"></a>
+
+## ✨ Your workspace, your sea
+
+| Feature | What you can do |
+| --- | --- |
+| 🌊 Real-time ocean | Watch animated waves and reflections, rather than a looping wallpaper video. |
+| 🌅 Daylight & sunset | Set your own light or enable the twelve-minute day/night cycle. |
+| 🫧 Transparent interface | Adjust glass opacity from **40% to 90%** in light or dark Harness layouts. |
+| 🎛️ Quick controls | Change sea state, sunlight and opacity from the lower-left skin settings panel. |
+| 🏠 Your homepage stays yours | The extension does not replace new tabs or change your browser homepage. |
+| 🔒 Local assets | Ocean scripts, three.js and fonts ship with the skin; no skin analytics or runtime CDN requests. |
+| ⌨️ Thoughtful controls | Chinese/English UI, keyboard navigation, Escape to close, and reduced-motion support. |
+
+<a id="gallery"></a>
+
+## 🎬 Open Sea inside DeepSeek Harness
+
+These recordings show the native Harness integration at **40% glass opacity**. Overview settings: wave size **56**, daylight **Afternoon (55)**. The [interactive website](https://d-dev0101.github.io/open-sea-skin/) lets you try the controls before installing.
+
+### 🌙 Dark mode · an ocean behind your conversation
+
+![DeepSeek Harness dark ocean theme with transparent panels at 40 percent glass opacity](docs/screenshots/harness-dark-overview-40.gif)
+
+### ☀️ Light mode · a brighter workspace
+
+![DeepSeek Harness light ocean theme with transparent panels at 40 percent glass opacity](docs/screenshots/harness-light-overview-40.gif)
+
+### 🌊 Wave control · calm water to high sea
+
+Daylight stays at Afternoon while wave size changes, then returns to 56.
+
+![Adjusting the Open Sea wave-size slider inside DeepSeek Harness](docs/screenshots/harness-wave-control-40.gif)
+
+### 🌅 Sunlight control · midday to sunset
+
+Wave size stays at 56 while the light moves from Midday to Dusk.
+
+![Changing DeepSeek Harness ocean background lighting from daylight to sunset](docs/screenshots/harness-daylight-sunset-40.gif)
+
+<a id="install"></a>
+
+## 📦 Choose your installation
+
+**Choose one method.** Installing several at once makes updates and troubleshooting harder.
+
+| Your setup | Best starting point |
+| --- | --- |
+| Harness Web / DSH plugin installer | [DSH plugin](#dsh-plugin) |
+| Local Harness in Chrome or Edge | [Browser extension](#browser-extension) |
+| Built frontend without plugin support | [Static installer](#static-installer) |
+| Developing a Harness source integration | [Native integration guide](harness-plugin/README.md) |
+
+<a id="dsh-plugin"></a>
+
+### 1. DSH plugin
+
+**Release status, checked September 12, 2026:** GitHub **v1.2.4** is available; npm is still **1.2.3**. The language-sync fix is in v1.2.4. Do not use `open-sea-skin@1.2.4` until it appears on npm.
+
+Install the prebuilt npm version without a Git download or install-time build:
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.4
+dsh plugin --profile web add open-sea-skin@1.2.3
 ```
 
-Restart `dsh web`, then use **Skin settings** at the lower left to adjust wave
-size, daylight, 40% glass opacity, and the automatic day/night cycle. Remove it
-with:
+For the v1.2.4 language fix, install the published GitHub tag:
 
 ```sh
-dsh plugin --profile web remove open-sea-skin
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.4'
 ```
 
-This package is tested with DeepSeek Harness `0.1.2-alpha.3`. Use the source
-integration below only when you also want the controls embedded inside the
-native General settings page. See the [DSH installation and troubleshooting
-guide](docs/dsh-plugin.md) for verification and recovery details.
+Restart Harness, reload its page, then open **Skin settings** at the lower left. In DSH Desktop, use the managed plugin installer and restart from Desktop settings; available update versions depend on the catalog and installation source.
 
-## Gallery
+[Installation & troubleshooting →](docs/dsh-plugin.md)
 
-Every animation below is recorded from the native DeepSeek Harness integration
-at **40% glass opacity**. The overview baseline is wave size **56** and daylight
-**Afternoon (55)**.
+<a id="browser-extension"></a>
 
-### 1 — Dark Harness overview
+### 2. Chrome / Edge extension
 
-![Open Sea inside DeepSeek Harness in dark mode](docs/screenshots/harness-dark-overview-40.gif)
+1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.4/open-sea-skin-extension-v1.2.4.zip) and unzip it.
+2. Open `chrome://extensions` or `edge://extensions`; enable **Developer mode**.
+3. Choose **Load unpacked** and select the extracted folder containing `manifest.json`. If you cloned the repository, choose `extension/`.
+4. Open your Harness page on `127.0.0.1` or `localhost` and reload it.
 
-### 2 — Light Harness overview
+**No new-tab takeover.** The extension verifies the Harness page before injecting the ocean; other local development pages and existing homepage extensions remain untouched.
 
-![Open Sea inside DeepSeek Harness in light mode](docs/screenshots/harness-light-overview-40.gif)
+<a id="static-installer"></a>
 
-### 3 — Adjusting wave size
+### 3. Static frontend installer
 
-Daylight stays at Afternoon (55) while the wave control moves from moderate to
-calm, through high sea, and back to the baseline of 56.
-
-![Adjusting wave size in DeepSeek Harness](docs/screenshots/harness-wave-control-40.gif)
-
-### 4 — Daylight to sunset
-
-Wave size stays at 56 while daylight moves smoothly from Midday to Dusk.
-
-![Adjusting daylight from midday to sunset](docs/screenshots/harness-daylight-sunset-40.gif)
-
-## Install option 1 — Chrome or Edge extension
-
-1. Download and unzip the latest `open-sea-skin-extension-*.zip` release, or
-   clone this repository.
-2. Open `chrome://extensions` (Edge: `edge://extensions`) and enable
-   **Developer mode**.
-3. Select **Load unpacked** and choose this repository's `extension/` folder.
-4. Open DeepSeek Harness on `127.0.0.1` or `localhost`, then reload it once.
-
-The extension does **not** replace Chrome or Edge's new-tab page, change the
-browser homepage, or interfere with an existing new-tab extension. It verifies
-the Harness title, root, and server-injected boot marker before changing a page,
-so other local development sites also remain untouched. Use the toolbar popup
-to disable the Harness skin. The lower-left wave button opens sea-state,
-daylight, and glass-opacity controls. Values are saved with
-`chrome.storage.sync`.
-
-## Install option 2 — Harness static build (no source compilation)
-
-Run this from **any directory**. It downloads the pinned `v1.2.4` source archive
-to a temporary directory, runs the installer, and removes the download when it
-finishes. **Stop Harness before running it**, then start `dsh web` again, keep
-that terminal process running, and reload the browser:
+For a built Harness frontend that cannot use the plugin. **Stop Harness first.** [Inspect the script](install.sh), then run from any directory:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash
 ```
 
-The script finds a built/installed Harness frontend, makes a local backup,
-copies the self-contained assets, and injects one marked loader block. If
-automatic detection cannot find the frontend, pass it explicitly:
+Start `dsh web` again and keep it running. After a Harness frontend upgrade, rerun the command with `bash -s -- --update`. This method changes frontend files; it does not start the server.
+
+[Explicit frontend paths, backups & recovery →](native-dist/README.md)
+
+<a id="faq"></a>
+
+## 💡 Before you install
+
+<details>
+<summary><strong>Does this change my new-tab page or the DeepSeek website?</strong></summary>
+
+No. The extension targets a verified local DeepSeek Harness page. It does not replace your browser homepage or skin `chat.deepseek.com`.
+
+</details>
+
+<details>
+<summary><strong>How do I disable or uninstall the skin?</strong></summary>
+
+Turn off the skin in the quick-controls panel to keep it installed without the ocean. To remove a DSH plugin:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --dist /absolute/path/to/apps/web/dist
+dsh plugin --profile web remove open-sea-skin
 ```
 
-Re-run the bootstrap with `--update` **after every Harness upgrade**:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --update
-```
-
-Remove only Open Sea's marker and assets with:
+Restart Harness. Remove the browser extension through the browser's extensions page. For a static installation, stop Harness and run:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash -s -- --uninstall
 ```
 
-The command is safe to copy while your terminal is in `~`; it does not assume
-that this repository already exists locally. You can [inspect the bootstrap
-script](install.sh) before running it. See
-[native-dist/README.md](native-dist/README.md) for clone-based installation,
-detection, and recovery details.
+Then restart Harness. The static installer removes its own marked loader/assets, not your sessions. See the [recovery guide](native-dist/README.md) if a page fails to load.
 
-If the browser says **Failed to load plugins** immediately after installation
-or removal, first confirm that `dsh web` is still running. The static installer
-changes files only; it does not start or keep the Harness server alive.
+</details>
 
-## Native Harness source plugin
+<details>
+<summary><strong>Is every latest Harness/Desktop version tested?</strong></summary>
 
-For a first-class General-settings row and layout slot, integrate the package
-into a Harness source checkout:
+No blanket compatibility claim. Native source integration was verified against Harness `0.1.2-alpha.3`, commit `dd6322d60` (August 31, 2026). Desktop regression tests use a Chromium shell fixture based on DSH Desktop Beta `2.0.5-beta.1`, covering 24 layout/material/theme/opacity combinations—not a full native desktop end-to-end test.
 
-```sh
-git clone https://github.com/deepseek-ai/deepseek-harness.git
-bash harness-plugin/install-into-harness.sh /absolute/path/to/deepseek-harness
-cd /absolute/path/to/deepseek-harness
-corepack pnpm install --no-frozen-lockfile
-corepack pnpm run build
-corepack pnpm dsh web
-```
+If an update breaks the skin, [report your Harness version, installation method and a redacted screenshot/log](https://github.com/d-dev0101/open-sea-skin/issues).
 
-Use the native **Skin settings** action at the lower left for fast adjustments,
-or open **Settings → General → Open Sea Skin** for every option. Both surfaces
-use Harness settings, locale, slots, and reversible theme-token APIs; neither
-depends on CSS-module hashes. The integration is tested against Harness
-`0.1.2-alpha.3`, commit `dd6322d60` (2026-08-31), and deliberately stops if
-upstream anchors have changed. More details are in
-[harness-plugin/README.md](harness-plugin/README.md).
+</details>
 
-## What is included
+<details>
+<summary><strong>What about performance and privacy?</strong></summary>
 
-- WebGPU + three.js 0.178.0 + TSL, five Gerstner waves, analytic normals, FBM
-  detail, Fresnel sky reflection, sun glitter, foam, fog, sky/cloud band,
-  bloom, and ACES tone mapping.
-- A local-only runtime: three.js and Geist are vendored; the extension and
-  installers make no CDN or analytics requests.
-- 256×256 mesh (160×160 in low/reduced-motion mode), DPR cap 1.5, adaptive
-  render scale 0.5–1.0, 60/30/20 FPS caps, hidden-tab pause, distance-based
-  shader work skips, reduced skin bloom, and automatic low-end detection.
-- Twelve-minute daylight cycle; manual daylight adjustment pins the selected
-  time until automatic cycling is re-enabled.
-- Shared host controller for the extension and static installer, with only the
-  persistence adapter changing (`chrome.storage` versus `localStorage`).
-- Duplicate-render prevention across all installation methods, bilingual UI,
-  keyboard focus trapping, Escape close, ARIA labels, and
-  `prefers-reduced-motion` support.
-- A corrected layout stacking model: Settings stays above the conversation
-  composer at wide aspect ratios, while the ocean remains behind every column.
+The renderer uses adaptive resolution, hidden-tab pause and reduced-motion handling. Animated 3D rendering still uses GPU resources; try the demo on your device first.
 
-`site/` preserves the original CDN-backed showcase byte-for-byte. The optimized
-self-contained runtime has its canonical source in `shared/`; `npm run build`
-produces the three installable copies.
+The skin does not collect or transmit chat data. Extension permissions are limited to storage and the local Harness hosts. This statement describes Open Sea, not the host application's own behavior. [Privacy & permissions →](docs/privacy.md)
 
-## Development and verification
+</details>
 
-Node.js 20+ is required for repository checks:
+<a id="development"></a>
 
-```sh
-npm run build
-npm run check
-npm run package:extension
-```
+## 🛠️ Built for an open ecosystem
 
-The full browser acceptance run requires Chrome for Testing and Playwright:
+The renderer uses **WebGPU, three.js and TSL**, with five Gerstner waves, reflections, foam and sky lighting. The canonical runtime lives in `shared/`; generated plugin, extension and static-loader copies stay synchronized. `site/` preserves the original showcase.
+
+With Node.js 20+:
 
 ```sh
 npm ci
+npm run build
+npm run check
 npx playwright install chromium
 npm run test:browser
+npm run test:desktop
+npm run test:website
 ```
 
-The launcher uses a persistent profile, `--load-extension`, and
-`ignoreDefaultArgs: ['--disable-extensions']`, which is required because branded
-Chrome 137+ removed the old extension-loading path. The four full-width README
-GIFs are regenerated from a running native Harness with `npm run capture`;
-FFmpeg is required for palette-optimized output.
+| Resource | Purpose |
+| --- | --- |
+| [Architecture](docs/architecture.md) | Renderer, shared controller and installation adapters |
+| [Native source integration](harness-plugin/README.md) | Harness settings/slots integration and pinned compatibility |
+| [Release guide](docs/releasing.md) | Packaging and publishing |
+| [Changelog](CHANGELOG.md) | Fixes and version history |
+| [Contributing through Issues / PRs](https://github.com/d-dev0101/open-sea-skin/issues) | Bug reports, ideas and improvements |
+| [DSH plugin topic](https://github.com/topics/dsh-plugin) | Explore the wider community ecosystem |
 
-## Privacy and permissions
+## 🤝 Community & license
 
-Open Sea Skin collects, transmits, sells, or shares **no data**. The extension
-requests only `storage` plus access to `http://127.0.0.1/*` and
-`http://localhost/*` so it can skin a local Harness page. It has no remote host
-permission. See [docs/privacy.md](docs/privacy.md).
+Made for people who want a more personal DeepSeek Harness workspace. Feedback, bug reports and contributions are welcome. Please never post passwords, tokens or private conversations in an Issue.
 
-## License
+Project code is [MIT licensed](LICENSE). third-party code and fonts retain their own licenses; see [Third-party notices](THIRD_PARTY_NOTICES.md).
 
-Project code is [MIT licensed](LICENSE). three.js 0.178.0 remains under MIT;
-the self-hosted Geist fonts remain under SIL OFL 1.1. See
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the vendored license copies.
+<p align="center"><a href="https://d-dev0101.github.io/open-sea-skin/"><strong>🌊 Find your sea — try the live demo</strong></a></p>
