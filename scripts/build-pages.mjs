@@ -9,7 +9,7 @@ rmSync(output, { recursive: true, force: true })
 mkdirSync(output, { recursive: true })
 
 cpSync(resolve(root, 'website'), output, { recursive: true })
-cpSync(resolve(root, 'extension/skin.html'), resolve(output, 'skin.html'))
+// The website has its own loading shell; the installed skin stays unchanged.
 cpSync(resolve(root, 'shared/ocean.js'), resolve(output, 'ocean.js'))
 cpSync(resolve(root, 'shared/styles.css'), resolve(output, 'styles.css'))
 cpSync(resolve(root, 'shared/vendor'), resolve(output, 'vendor'), { recursive: true })

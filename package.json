@@ -60,7 +60,7 @@
     "package:extension": "bash scripts/package-extension.sh",
     "test:browser": "node scripts/browser-acceptance.mjs",
     "test:desktop": "node scripts/desktop-acceptance.mjs",
-    "test:website": "node scripts/website-acceptance.mjs",
+    "test:website": "node scripts/website-acceptance.mjs && node scripts/website-loading-acceptance.mjs",
     "capture": "node scripts/capture-gallery.mjs"
   },
   "engines": {

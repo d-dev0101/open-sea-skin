@@ -18,6 +18,7 @@
   <title>Open Sea · DeepSeek Harness 海洋皮肤</title>
   <link rel="icon" href="./icon48.png" type="image/png">
   <link rel="stylesheet" href="./site.css">
+  <link rel="preload" as="image" href="./ocean-preview.jpg" fetchpriority="high">
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
@@ -53,6 +54,7 @@
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="ocean-fallback" aria-hidden="true"></div>
+      <noscript><p class="ocean-noscript">当前显示静态海面预览。启用 JavaScript 即可调节实时海洋。 / Enable JavaScript for the live ocean.</p></noscript>
       <iframe id="ocean-frame" class="ocean-frame" title="Interactive Open Sea WebGPU ocean" tabindex="-1" aria-hidden="true"></iframe>
       <div class="grain" aria-hidden="true"></div>
       <div class="chart-lines" aria-hidden="true"></div>
@@ -78,8 +80,10 @@
             <span class="dock-index">LIVE / 01</span>
             <h2 data-i18n="labTitle">潮汐实验台</h2>
           </div>
-          <span class="renderer-status" id="renderer-status"><i></i><span data-i18n="rendererLoading">正在连接海面</span></span>
+          <span class="renderer-status" id="renderer-status" role="status" aria-live="polite"><i></i><span data-i18n="rendererLoading">预览海面 · 正在启动</span></span>
         </div>
+        <p class="ocean-loading-note" id="ocean-loading-note" data-i18n="loadingNote">先显示海面预览，实时波浪准备中。可以先调节参数。</p>
+        <button class="ocean-retry" id="ocean-retry" type="button" data-i18n="retryOcean" hidden>重新加载实时海洋</button>
 
         <div class="presets" role="group" aria-label="Ocean presets">
           <button type="button" data-preset="calm"><span>01</span><b data-i18n="calm">平静</b></button>
@@ -121,8 +125,8 @@
           <span class="capture-glass"><span data-i18n="captureGlass">通透度</span><output id="capture-opacity-output">64%</output></span>
         </div>
         <div class="harness-capture-stage">
-          <img class="harness-capture harness-capture-dark" src="./media/harness-dark-overview-40.gif" alt="Real Open Sea skin running in DeepSeek Harness dark mode" draggable="false">
-          <img class="harness-capture harness-capture-light" src="./media/harness-light-overview-40.gif" alt="Real Open Sea skin running in DeepSeek Harness light mode" draggable="false">
+          <img class="harness-capture harness-capture-dark" src="./harness-dark-overview-40.jpg" data-motion-src="./media/harness-dark-overview-40.gif" loading="lazy" decoding="async" alt="Real Open Sea skin running in DeepSeek Harness dark mode" draggable="false">
+          <img class="harness-capture harness-capture-light" src="./harness-light-overview-40.jpg" data-motion-src="./media/harness-light-overview-40.gif" loading="lazy" decoding="async" alt="Real Open Sea skin running in DeepSeek Harness light mode" draggable="false">
           <div class="capture-glass-layer" aria-hidden="true"></div>
           <div class="capture-status" aria-hidden="true"><i></i><span>REAL HARNESS · 40% GLASS RECORDING</span></div>
         </div>
@@ -178,19 +182,19 @@
       </div>
       <div class="gallery-grid">
         <figure class="gallery-item gallery-dark reveal">
-          <img src="./media/harness-dark-overview-40.gif" loading="lazy" alt="Open Sea in DeepSeek Harness dark mode">
+          <img src="./harness-dark-overview-40.jpg" data-motion-src="./media/harness-dark-overview-40.gif" loading="lazy" alt="Open Sea in DeepSeek Harness dark mode">
           <figcaption><span>01 · DARK CURRENT</span><b data-i18n="galleryDark">深色全景</b></figcaption>
         </figure>
         <figure class="gallery-item gallery-light reveal">
-          <img src="./media/harness-light-overview-40.gif" loading="lazy" alt="Open Sea in DeepSeek Harness light mode">
+          <img src="./harness-light-overview-40.jpg" data-motion-src="./media/harness-light-overview-40.gif" loading="lazy" alt="Open Sea in DeepSeek Harness light mode">
           <figcaption><span>02 · PALE WATER</span><b data-i18n="galleryLight">浅色全景</b></figcaption>
         </figure>
         <figure class="gallery-item reveal">
-          <img src="./media/harness-wave-control-40.gif" loading="lazy" alt="Adjusting wave size in DeepSeek Harness">
+          <img src="./harness-wave-control-40.jpg" data-motion-src="./media/harness-wave-control-40.gif" loading="lazy" alt="Adjusting wave size in DeepSeek Harness">
           <figcaption><span>03 · SEA STATE</span><b data-i18n="galleryWaves">调节波浪</b></figcaption>
         </figure>
         <figure class="gallery-item reveal">
-          <img src="./media/harness-daylight-sunset-40.gif" loading="lazy" alt="Adjusting daylight to sunset in DeepSeek Harness">
+          <img src="./harness-daylight-sunset-40.jpg" data-motion-src="./media/harness-daylight-sunset-40.gif" loading="lazy" alt="Adjusting daylight to sunset in DeepSeek Harness">
           <figcaption><span>04 · GOLDEN HOUR</span><b data-i18n="gallerySunset">从白天到夕阳</b></figcaption>
         </figure>
       </div>

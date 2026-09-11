@@ -250,7 +250,7 @@ img {
 .ocean-fallback {
   z-index: -5;
   background:
-    radial-gradient(circle at 74% 14%, rgba(255, 177, 128, 0.68), transparent 22%),
+    url('./ocean-preview.jpg') center / 100% 100% no-repeat,
     linear-gradient(180deg, #78989a 0%, #244e55 45%, #06171c 100%);
 }
 
@@ -260,7 +260,7 @@ img {
   height: 100%;
   border: 0;
   opacity: 0;
-  transition: opacity 1.3s ease;
+  transition: opacity 600ms ease;
   pointer-events: none;
 }
 
@@ -494,10 +494,31 @@ img {
   align-items: center;
   gap: 6px;
   font-family: var(--mono);
-  font-size: 7px;
+  font-size: 10px;
   letter-spacing: 0.08em;
   color: rgba(226, 246, 244, 0.5);
 }
+
+.ocean-loading-note {
+  margin: 14px 0 18px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(226, 246, 244, 0.76);
+}
+.ocean-retry {
+  margin: 0 0 18px;
+  padding: 8px 12px;
+  border: 1px solid var(--aqua);
+  color: var(--aqua);
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ocean-retry[hidden] { display: none; }
+.ocean-noscript { position: relative; margin: 100px auto 0; width: var(--shell); font-size: 14px; }
+.renderer-status:not(.ready):not(.fallback) i { animation: ocean-pulse 1.8s ease-in-out infinite; }
+@keyframes ocean-pulse { 50% { opacity: 0.35; } }
 
 .renderer-status i {
   width: 5px;

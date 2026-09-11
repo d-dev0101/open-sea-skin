@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Sea live ocean</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="modulepreload" href="./ocean.js?skin=1">
+  <link rel="modulepreload" href="./vendor/three.webgpu.js">
+  <link rel="modulepreload" href="./vendor/three.core.js">
+  <link rel="modulepreload" href="./vendor/three.tsl.js">
+  <link rel="modulepreload" href="./vendor/addons/controls/OrbitControls.js">
+  <link rel="modulepreload" href="./vendor/addons/tsl/display/BloomNode.js">
+  <style>html,body { background: transparent; } body > canvas { opacity: 1; }</style>
+</head>
+<body>
+  <div id="vignette" aria-hidden="true"></div>
+  <script type="module" src="./ocean-boot.js"></script>
+</body>
+</html>

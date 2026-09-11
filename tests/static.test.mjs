@@ -108,6 +108,11 @@ test('the GitHub Pages website is an interactive local-only product demo', async
   assert.match(workflow, /actions\/deploy-pages@v4/)
   assert.deepEqual(await bytes('pages-dist/ocean.js'), await bytes('shared/ocean.js'))
   assert.deepEqual(await bytes('pages-dist/styles.css'), await bytes('shared/styles.css'))
+  assert.deepEqual(await bytes('pages-dist/skin.html'), await bytes('website/skin.html'))
+  assert.ok((await bytes('website/ocean-preview.jpg')).length < 150_000, 'Keep the first-paint ocean small')
+  assert.match(html, /rel="preload" as="image" href="\.\/ocean-preview.jpg"/)
+  assert.doesNotMatch(html, /\ssrc="[^"]+\.gif"/, 'Full recordings must not load before the ocean')
+  assert.equal((html.match(/data-motion-src=/g) || []).length, 6)
 })
 
 test('renderer contains the promised performance and security policies', async () => {

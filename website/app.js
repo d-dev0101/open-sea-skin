@@ -4,7 +4,8 @@ const translations = {
     eyebrow: 'DEEPSEEK HARNESS · 实时海洋皮肤', heroTitle: '让 Harness<br>拥有自己的海平线',
     heroBody: '不是壁纸，而是一片会随你调节的 WebGPU 海洋。拖动右侧控制台，亲手改变波浪、日光与界面通透度。',
     installNow: '立即安装', seeReal: '查看真实 Harness 实拍', localOnly: '资源全本地', noTracking: '零数据收集',
-    labTitle: '潮汐实验台', rendererLoading: '正在连接海面', rendererReady: '实时渲染中', rendererFallback: '静态海面模式',
+    labTitle: '潮汐实验台', rendererLoading: '预览海面 · 正在启动', rendererReady: '实时渲染中', rendererFallback: '海面预览模式',
+    rendererSlow: '实时海洋准备中', loadingNote: '先显示海面预览，实时波浪准备中。可以先调节参数。', readyNote: '实时海洋已就绪。拖动滑块，探索你的海况与光线。', slowNote: '首次加载需要下载渲染资源并准备 GPU，海面就绪后会自动切换。', fallbackNote: '实时海洋暂未就绪，已保留海面预览。你可以重试，或继续查看实拍与安装说明。', retryOcean: '重新加载实时海洋',
     calm: '平静', sunset: '夕阳', highSea: '高海况', waves: '波浪大小', wavesNote: '从镜面到涌浪',
     daylight: '日光', daylightNote: '正午到黄昏', transparency: '界面通透度', transparencyNote: '让海洋浮现',
     uiMode: '界面模式', dark: '深色', light: '浅色', realCapture: '真实 Harness 实录', captureGlass: '通透度',
@@ -34,7 +35,8 @@ const translations = {
     eyebrow: 'DEEPSEEK HARNESS · REALTIME OCEAN SKIN', heroTitle: 'Give Harness<br>its own horizon',
     heroBody: 'Not a wallpaper—a WebGPU ocean that responds to you. Use the live console to shape the waves, daylight, and interface transparency.',
     installNow: 'Install now', seeReal: 'See real Harness captures', localOnly: 'All assets local', noTracking: 'Zero data collection',
-    labTitle: 'Tidal laboratory', rendererLoading: 'Connecting ocean', rendererReady: 'Rendering live', rendererFallback: 'Static ocean mode',
+    labTitle: 'Tidal laboratory', rendererLoading: 'Preview · Starting', rendererReady: 'Rendering live', rendererFallback: 'Ocean preview mode',
+    rendererSlow: 'Preparing live ocean', loadingNote: 'An ocean preview appears first. Adjust the controls while the live waves prepare.', readyNote: 'The ocean is live. Shape the waves and light with the sliders.', slowNote: 'The first visit downloads the renderer and prepares your GPU. Live waves will appear automatically.', fallbackNote: 'Live rendering is not ready. The ocean preview stays visible; retry or explore the captures and install guide.', retryOcean: 'Retry live ocean',
     calm: 'Calm', sunset: 'Sunset', highSea: 'High sea', waves: 'Wave size', wavesNote: 'Mirror to swell',
     daylight: 'Daylight', daylightNote: 'Noon to dusk', transparency: 'UI transparency', transparencyNote: 'Reveal the ocean',
     uiMode: 'Interface mode', dark: 'Dark', light: 'Light', realCapture: 'Real Harness recording', captureGlass: 'Transparency',
@@ -72,6 +74,8 @@ const transparencyOutput = document.getElementById('transparency-output');
 const captureOpacityOutput = document.getElementById('capture-opacity-output');
 const rendererStatus = document.getElementById('renderer-status');
 const rendererStatusText = rendererStatus.querySelector('span');
+const loadingNote = document.getElementById('ocean-loading-note');
+const retryOcean = document.getElementById('ocean-retry');
 const languageToggle = document.getElementById('language-toggle');
 const copyStatus = document.getElementById('copy-status');
 
@@ -161,6 +165,7 @@ function oceanUrl() {
     auto: '0',
     quality: 'auto',
     parentOrigin: location.origin,
+    attempt: String(oceanAttempt),
   });
   return `./skin.html?${query}`;
 }
@@ -169,33 +174,98 @@ function updateRendererStatus(next) {
   state.renderer = next;
   rendererStatus.classList.toggle('ready', next === 'ready');
   rendererStatus.classList.toggle('fallback', next === 'fallback');
-  const key = next === 'ready' ? 'rendererReady' : next === 'fallback' ? 'rendererFallback' : 'rendererLoading';
+  const key = { ready: 'rendererReady', fallback: 'rendererFallback', slow: 'rendererSlow', loading: 'rendererLoading' }[next];
   rendererStatusText.textContent = copy()[key];
+  loadingNote.textContent = copy()[{ ready: 'readyNote', fallback: 'fallbackNote', slow: 'slowNote', loading: 'loadingNote' }[next]];
+  retryOcean.hidden = next !== 'fallback';
 }
 
-function probeRenderer() {
-  let attempts = 0;
-  const timer = window.setInterval(() => {
-    attempts += 1;
-    try {
-      const body = oceanFrame.contentDocument?.body;
-      if (body?.classList.contains('ready')) {
-        window.clearInterval(timer);
-        oceanFrame.classList.add('ready');
-        updateRendererStatus('ready');
-        sendOceanState();
-        return;
-      }
-    } catch {
-      // Same-origin GitHub Pages and local previews are expected. Keep the
-      // static visual fallback if a host applies an unusual iframe policy.
+let oceanAttempt = 0;
+let slowTimer;
+let fallbackTimer;
+let mediaTimer;
+let mediaAllowed = false;
+const visibleMedia = new Set();
+const motionLoads = new Map();
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+// Keep the light JPEG until the full recording has decoded. Only fetch the
+// visible theme and visible gallery items, after critical ocean work finishes.
+function loadVisibleMedia() {
+  if (!mediaAllowed || reducedMotion.matches) return;
+  for (const image of visibleMedia) {
+    if (!image.dataset.motionSrc || image.dataset.motionStarted) continue;
+    if (image.classList.contains('harness-capture')
+      && !image.classList.contains(`harness-capture-${state.theme}`)) continue;
+    image.dataset.motionStarted = 'true';
+    const src = image.dataset.motionSrc;
+    if (!motionLoads.has(src)) {
+      const recording = new Image();
+      recording.fetchPriority = 'low';
+      recording.src = src;
+      motionLoads.set(src, recording.decode());
     }
-    if (attempts >= 80) {
-      window.clearInterval(timer);
-      updateRendererStatus('fallback');
-    }
-  }, 150);
+    motionLoads.get(src).then(() => {
+      if (!reducedMotion.matches) image.src = src;
+    }).catch(() => {
+      // A failed recording must not remove its usable static preview.
+      delete image.dataset.motionStarted;
+      motionLoads.delete(src);
+    });
+  }
 }
+const mediaObserver = new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) visibleMedia.add(entry.target);
+    else visibleMedia.delete(entry.target);
+  }
+  loadVisibleMedia();
+}, { rootMargin: '0px' });
+for (const image of document.querySelectorAll('[data-motion-src]')) mediaObserver.observe(image);
+
+function clearLoadingTimers() {
+  clearTimeout(slowTimer);
+  clearTimeout(fallbackTimer);
+  clearTimeout(mediaTimer);
+}
+function settleOcean(status) {
+  clearLoadingTimers();
+  updateRendererStatus(status);
+  if (status === 'ready') {
+    oceanFrame.classList.add('ready');
+    performance.mark('ocean-first-frame');
+    sendOceanState();
+  }
+  mediaTimer = setTimeout(() => {
+    mediaAllowed = true;
+    loadVisibleMedia();
+  }, 650);
+}
+function startOcean() {
+  clearLoadingTimers();
+  oceanAttempt += 1;
+  mediaAllowed = false;
+  oceanFrame.classList.remove('ready');
+  updateRendererStatus('loading');
+  // Start timing at navigation, not iframe load. Even blocked scripts get a
+  // fallback, and a frame that arrives after the deadline can still be revealed.
+  slowTimer = setTimeout(() => updateRendererStatus('slow'), 8000);
+  fallbackTimer = setTimeout(() => settleOcean('fallback'), 45000);
+  oceanFrame.src = oceanUrl();
+}
+
+window.addEventListener('message', event => {
+  if (event.origin !== location.origin || event.source !== oceanFrame.contentWindow) return;
+  if (event.data?.type !== 'oss-website-renderer' || event.data.attempt !== String(oceanAttempt)) return;
+  if (event.data.status === 'ready' || (event.data.status === 'fallback' && state.renderer !== 'ready')) {
+    settleOcean(event.data.status);
+  }
+});
+retryOcean.addEventListener('click', startOcean);
+window.addEventListener('pagehide', clearLoadingTimers);
+window.addEventListener('pageshow', event => {
+  if (event.persisted && state.renderer !== 'ready') startOcean();
+});
 
 function applyLanguage(lang) {
   state.lang = lang;
@@ -254,6 +324,7 @@ for (const button of document.querySelectorAll('[data-theme-choice]')) {
     for (const candidate of document.querySelectorAll('[data-theme-choice]')) {
       candidate.classList.toggle('active', candidate === button);
     }
+    loadVisibleMedia();
   });
 }
 
@@ -284,8 +355,4 @@ const revealObserver = new IntersectionObserver((entries) => {
 for (const element of document.querySelectorAll('.reveal')) revealObserver.observe(element);
 
 updateOutputs();
-oceanFrame.src = oceanUrl();
-oceanFrame.addEventListener('load', () => {
-  sendOceanState();
-  probeRenderer();
-}, { once: true });
+startOcean();
