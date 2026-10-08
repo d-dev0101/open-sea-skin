@@ -31,7 +31,7 @@
 | 🌊 Real-time ocean | Watch animated waves and reflections, rather than a looping wallpaper video. |
 | 🌅 Daylight & sunset | Set your own light or enable the twelve-minute day/night cycle. |
 | 🫧 Transparent interface | Adjust glass opacity from **40% to 90%** in light or dark Harness layouts. |
-| 🎛️ Quick controls | Change sea state, sunlight and opacity from the lower-left skin settings panel. |
+| 🎛️ Quick controls | Change sea state, sunlight and opacity from the lower-left skin settings panel, or freeze the whole view into a still picture with the static-scene switch. |
 | 🏠 Your homepage stays yours | The extension does not replace new tabs or change your browser homepage. |
 | 🔒 Local assets | Ocean scripts, three.js and fonts ship with the skin; no skin analytics or runtime CDN requests. |
 | ⌨️ Thoughtful controls | Chinese/English UI, keyboard navigation, Escape to close, and reduced-motion support. |

@@ -3,12 +3,13 @@
   'use strict';
   const KEYS = {
     enabled: 'ossEnabled', sea: 'ossSea', time: 'ossTime', glass: 'ossGlass', autoCycle: 'ossAutoCycle',
+    freeze: 'ossFreeze',
   };
   const read = (key, fallback) => {
     try {
       const value = localStorage.getItem(KEYS[key]);
       if (value === null) return fallback;
-      if (key === 'enabled' || key === 'autoCycle') return value !== 'false';
+      if (key === 'enabled' || key === 'autoCycle' || key === 'freeze') return value !== 'false';
       return Number(value);
     } catch { return fallback; }
   };
@@ -21,6 +22,7 @@
         time: read('time', defaults.time),
         glass: read('glass', defaults.glass),
         autoCycle: read('autoCycle', defaults.autoCycle),
+        freeze: read('freeze', defaults.freeze),
       }),
       set: async (patch) => {
         try {

@@ -2,6 +2,20 @@
 
 All notable changes to Open Sea Skin are documented here.
 
+## Unreleased
+
+### Added
+
+- Optional **static scene**: the quick-controls panel gains a 静态画面 / Static
+  scene switch that holds the waves, clouds and camera still where they are and
+  stops continuous rendering. A frozen view repaints only when the window
+  resizes, the tab returns, or a sea/daylight setting changes, so it stays
+  exactly as it was frozen instead of drifting. Off by default, so upgrading
+  keeps the animated ocean; the setting reaches all three shared-controller
+  install paths (DSH bundle, static installer, Chrome/Edge extension). The
+  native Harness source integration ships the renderer support through the
+  shared runtime but does not expose the switch in its React controls yet.
+
 ## 1.2.4 — 2026-09-09
 
 ### Fixed

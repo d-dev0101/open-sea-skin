@@ -21,6 +21,7 @@
     time: 55,
     glass: 72,
     autoCycle: true,
+    freeze: false,
   });
 
   const COPY = Object.freeze({
@@ -32,9 +33,10 @@
       glass: '玻璃不透明度',
       enable: '启用海洋皮肤',
       autoCycle: '自动昼夜循环',
+      freeze: '静态画面（冻结海面）',
       reset: '恢复默认',
-      resetNote: '恢复全部默认设置（波浪 45 / 日光 55 / 玻璃 72 / 自动循环开）',
-      note: '调节即时生效并自动保存；手动设定「日光」后会停止自动昼夜循环。',
+      resetNote: '恢复全部默认设置（波浪 45 / 日光 55 / 玻璃 72 / 自动循环开 / 静态画面关）',
+      note: '调节即时生效并自动保存；手动设定「日光」后会停止自动昼夜循环。开启「静态画面」后海浪、云与镜头全部静止，只在窗口变化或再次调节设置时重绘。',
       times: ['黄昏', '金色时刻', '下午', '正午'],
     },
     en: {
@@ -45,9 +47,10 @@
       glass: 'Glass opacity',
       enable: 'Enable Open Sea skin',
       autoCycle: 'Automatic day cycle',
+      freeze: 'Static scene (freeze the sea)',
       reset: 'Reset to defaults',
-      resetNote: 'Restore all defaults (sea 45 / daylight 55 / glass 72 / auto cycle on)',
-      note: 'Changes apply immediately and save automatically. Setting daylight manually stops the automatic day cycle.',
+      resetNote: 'Restore all defaults (sea 45 / daylight 55 / glass 72 / auto cycle on / static scene off)',
+      note: 'Changes apply immediately and save automatically. Setting daylight manually stops the automatic day cycle. A static scene holds the waves, clouds and camera still, and repaints only when the window or a setting changes.',
       times: ['Dusk', 'Golden hour', 'Afternoon', 'Midday'],
     },
   });
@@ -70,6 +73,7 @@
       time: clamp(raw.time, 0, 100, DEFAULTS.time),
       glass: clamp(raw.glass, 40, 90, DEFAULTS.glass),
       autoCycle: raw.autoCycle !== false,
+      freeze: raw.freeze === true,
     };
   }
 
@@ -235,6 +239,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
       try { targetOrigin = new URL(frame.src).origin; } catch { /* local test documents may have no absolute base URL */ }
       frame.contentWindow.postMessage({
         type: 'oss-set', sea: state.sea, t: state.time, auto: state.autoCycle,
+        freeze: state.freeze,
       }, targetOrigin);
     };
 
@@ -293,6 +298,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
         sea: String(state.sea),
         t: String(state.time),
         auto: state.autoCycle ? '1' : '0',
+        freeze: state.freeze ? '1' : '0',
         parentOrigin: location.origin,
       });
       frame.id = IDS.frame;
@@ -338,6 +344,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
         <div class="oss-row"><div class="oss-head"><label for="${IDS.panel}-glass-range">${copy.glass}</label><output class="oss-value" id="${IDS.panel}-glass" for="${IDS.panel}-glass-range"></output></div><input type="range" id="${IDS.panel}-glass-range" min="40" max="90" step="1" /></div>
         <div class="oss-row oss-switch"><label for="${IDS.panel}-enabled">${copy.enable}</label><input type="checkbox" id="${IDS.panel}-enabled" /></div>
         <div class="oss-row oss-switch"><label for="${IDS.panel}-cycle">${copy.autoCycle}</label><input type="checkbox" id="${IDS.panel}-cycle" /></div>
+        <div class="oss-row oss-switch"><label for="${IDS.panel}-freeze">${copy.freeze}</label><input type="checkbox" id="${IDS.panel}-freeze" /></div>
         <div class="oss-row"><button type="button" class="oss-reset">${copy.reset}</button></div>
         <p class="oss-note">${copy.resetNote}<br>${copy.note}</p>`;
 
@@ -352,6 +359,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
       const glassOut = panel.querySelector(`#${IDS.panel}-glass`);
       const enabledBox = panel.querySelector(`#${IDS.panel}-enabled`);
       const cycleBox = panel.querySelector(`#${IDS.panel}-cycle`);
+      const freezeBox = panel.querySelector(`#${IDS.panel}-freeze`);
       const resetBtn = panel.querySelector('.oss-reset');
 
       const syncUi = () => {
@@ -363,6 +371,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
         glassOut.textContent = `${state.glass}%`;
         enabledBox.checked = state.enabled;
         cycleBox.checked = state.autoCycle;
+        freezeBox.checked = state.freeze;
       };
       syncUi();
 
@@ -374,7 +383,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
         button.setAttribute('aria-label', copy.button);
         panel.setAttribute('aria-label', copy.button);
         panel.querySelector('.oss-close').setAttribute('aria-label', copy.close);
-        for (const [suffix, key] of [['sea-range', 'sea'], ['time-range', 'time'], ['glass-range', 'glass'], ['enabled', 'enable'], ['cycle', 'autoCycle']]) {
+        for (const [suffix, key] of [['sea-range', 'sea'], ['time-range', 'time'], ['glass-range', 'glass'], ['enabled', 'enable'], ['cycle', 'autoCycle'], ['freeze', 'freeze']]) {
           panel.querySelector(`label[for="${IDS.panel}-${suffix}"]`).textContent = copy[key];
         }
         resetBtn.textContent = copy.reset;
@@ -417,6 +426,11 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
       on(cycleBox, 'change', () => {
         state.autoCycle = cycleBox.checked;
         void save({ autoCycle: state.autoCycle });
+        postToOcean();
+      });
+      on(freezeBox, 'change', () => {
+        state.freeze = freezeBox.checked;
+        void save({ freeze: state.freeze });
         postToOcean();
       });
       on(resetBtn, 'click', () => {
@@ -535,12 +549,13 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
   'use strict';
   const KEYS = {
     enabled: 'ossEnabled', sea: 'ossSea', time: 'ossTime', glass: 'ossGlass', autoCycle: 'ossAutoCycle',
+    freeze: 'ossFreeze',
   };
   const read = (key, fallback) => {
     try {
       const value = localStorage.getItem(KEYS[key]);
       if (value === null) return fallback;
-      if (key === 'enabled' || key === 'autoCycle') return value !== 'false';
+      if (key === 'enabled' || key === 'autoCycle' || key === 'freeze') return value !== 'false';
       return Number(value);
     } catch { return fallback; }
   };
@@ -553,6 +568,7 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
         time: read('time', defaults.time),
         glass: read('glass', defaults.glass),
         autoCycle: read('autoCycle', defaults.autoCycle),
+        freeze: read('freeze', defaults.freeze),
       }),
       set: async (patch) => {
         try {

@@ -29,6 +29,7 @@
             skinTime: defaults.time,
             skinGlass: defaults.glass,
             skinAutoCycle: defaults.autoCycle,
+            skinFreeze: defaults.freeze,
           });
           return {
             enabled: stored.skinEnabled,
@@ -36,6 +37,7 @@
             time: stored.skinTime,
             glass: stored.skinGlass,
             autoCycle: stored.skinAutoCycle,
+            freeze: stored.skinFreeze,
           };
         },
         set: (patch) => chrome.storage.sync.set({
@@ -44,6 +46,7 @@
           ...(patch.time === undefined ? {} : { skinTime: patch.time }),
           ...(patch.glass === undefined ? {} : { skinGlass: patch.glass }),
           ...(patch.autoCycle === undefined ? {} : { skinAutoCycle: patch.autoCycle }),
+          ...(patch.freeze === undefined ? {} : { skinFreeze: patch.freeze }),
         }),
       },
       listen: (notify) => {
@@ -55,6 +58,7 @@
           if (changes.skinTime) patch.time = changes.skinTime.newValue;
           if (changes.skinGlass) patch.glass = changes.skinGlass.newValue;
           if (changes.skinAutoCycle) patch.autoCycle = changes.skinAutoCycle.newValue;
+          if (changes.skinFreeze) patch.freeze = changes.skinFreeze.newValue;
           if (Object.keys(patch).length > 0) notify(patch);
         };
         chrome.storage.onChanged.addListener(listener);

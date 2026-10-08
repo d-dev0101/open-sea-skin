@@ -14,13 +14,14 @@ const adapter = String.raw`
     time: 'ossTime',
     glass: 'ossGlass',
     autoCycle: 'ossAutoCycle',
+    freeze: 'ossFreeze',
   });
 
   function readSetting(key, fallback) {
     try {
       const value = localStorage.getItem(KEYS[key]);
       if (value === null) return fallback;
-      if (key === 'enabled' || key === 'autoCycle') return value !== 'false';
+      if (key === 'enabled' || key === 'autoCycle' || key === 'freeze') return value !== 'false';
       return Number(value);
     } catch {
       return fallback;
@@ -39,6 +40,7 @@ const adapter = String.raw`
           time: readSetting('time', defaults.time),
           glass: readSetting('glass', defaults.glass),
           autoCycle: readSetting('autoCycle', defaults.autoCycle),
+          freeze: readSetting('freeze', defaults.freeze),
         }),
         set: async (patch) => {
           try {

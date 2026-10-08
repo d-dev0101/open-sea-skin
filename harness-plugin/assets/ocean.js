@@ -31,6 +31,12 @@ const SKIN_TIME = SKIN_QUERY.has('t') ? Number(SKIN_QUERY.get('t')) : null;
 const SKIN_PARENT_ORIGIN = SKIN_QUERY.get('parentOrigin');
 let manualTimeOfDay = SKIN_QUERY.get('auto') === '0';
 let currentDaylight = SKIN_TIME !== null ? SKIN_TIME : 55;
+// Static-scene mode: the host page passes ?freeze=1 and can toggle it live over
+// the same postMessage channel. A frozen scene holds the wave/cloud clock, the
+// camera drift and the day cycle where they are, and repaints a frame only when
+// something actually invalidates the one it has already presented.
+let FROZEN = SKIN_QUERY.get('freeze') === '1';
+let needsRender = true;
 
 const REDUCED_MOTION = typeof matchMedia === 'function'
   && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -373,13 +379,22 @@ if (SKIN) {
     const d = ev.data;
     if (d && d.type === 'oss-set') {
       manualTimeOfDay = d.auto !== true;
+      if (typeof d.freeze === 'boolean' && d.freeze !== FROZEN) {
+        FROZEN = d.freeze;
+        // A stale delta must never leak into the first frame after a toggle.
+        lastFrameTime = performance.now();
+        lastRenderAt = 0;
+        needsRender = true;
+      }
       const sea = Number(d.sea);
       const t = Number(d.t);
       if (Number.isFinite(sea) && sea >= 0 && sea <= 100) {
         uSea.value = 0.25 + (sea / 100) * 1.5;
+        needsRender = true;
       }
       if (Number.isFinite(t) && t >= 0 && t <= 100) {
         applyTimeOfDay(t / 100);
+        needsRender = true;
       }
     }
   });
@@ -389,6 +404,7 @@ if (SKIN) {
     daylight: currentDaylight,
     elapsed: uTime.value,
     manualTimeOfDay,
+    frozen: FROZEN,
     renderScale,
     reducedMotion: REDUCED_MOTION,
     lowEndDevice: LOW_END_DEVICE,
@@ -434,6 +450,22 @@ function animate(now) {
   // high-resolution timestamp -> delta, clamped so hitches never cause jumps
   const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
   lastFrameTime = now;
+
+  // A frozen scene draws on demand only: the canvas keeps the frame it already
+  // presented, so the view stays exactly as the freeze caught it and the GPU
+  // stays idle until something invalidates that frame.
+  if (FROZEN) {
+    if (!needsRender) return;
+    if (now - lastRenderAt < FRAME_MS - 0.5) return;
+    needsRender = false;
+    lastRenderAt = now;
+    postProcessing.render();
+    if (!firstFrameShown) {
+      firstFrameShown = true;
+      revealUI();
+    }
+    return;
+  }
 
   uTime.value += dt * (REDUCED_MOTION ? 0.12 : 1);
   controls.update();
@@ -598,6 +630,7 @@ async function boot() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       applyResolutionScale(renderScale);
+      needsRender = true; // a resized canvas must be repainted even when frozen
     });
 
     // --- lifecycle: pause when the tab is hidden -------------------------------
@@ -608,6 +641,7 @@ async function boot() {
       } else {
         lastFrameTime = performance.now();
         lastRenderAt = 0;
+        needsRender = true; // returning from a hidden tab repaints once
         renderer.setAnimationLoop(animate);
       }
     });
