@@ -141,6 +141,30 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
 ) {
   background: transparent !important;
 }
+/* Official Harness Desktop 0.2.x uses a different AppFrame from the
+   community desktop wrapper. Its sidebar, center, conversation and docked
+   rightbar each paint a surface; translucent paints compound into a much
+   darker center. The shell overlay is a stable AppFrame marker, while the
+   platform attributes keep this adjustment out of ordinary Harness Web. */
+html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) {
+  background: var(--dsw-alias-bg-base) !important;
+}
+html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) > :is(:first-child, :nth-child(2), [data-rightbar-col]),
+html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) > :nth-child(2) [data-phase],
+html:is([data-platform="darwin"], [data-windows-titlebar]) body #root [data-rightbar-col] [data-dockkit-host="dock"] > [data-dockkit-content] {
+  background: transparent !important;
+}
+html[data-windows-titlebar] body #root div:has(> [data-shell-overlay])::before {
+  background: transparent !important;
+}
+/* Settings is body-portalled, not a shell column. Keep it readable even when
+   the user chooses the minimum 40% glass opacity for the workspace. */
+body [data-shortcut-modal="settings"] {
+  background: rgba(250, 251, 253, .97) !important;
+}
+body[data-ds-dark-theme] [data-shortcut-modal="settings"] {
+  background: rgba(24, 28, 35, .97) !important;
+}
 /* Legacy Harness builds: these CSS-module hashes are best-effort fallbacks. */
 .wSkVaW_root,
 .pI_x6G_sidebarCol,

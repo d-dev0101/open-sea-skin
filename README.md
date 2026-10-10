@@ -70,6 +70,7 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 
 | Your setup | Best starting point |
 | --- | --- |
+| Official DeepSeek Harness Desktop 0.2.x | [Desktop install](#official-desktop) |
 | Harness Web / DSH plugin installer | [DSH plugin](#dsh-plugin) |
 | Local Harness in Chrome or Edge | [Browser extension](#browser-extension) |
 | Built frontend without plugin support | [Static installer](#static-installer) |
@@ -79,7 +80,7 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 
 ### 1. DSH plugin
 
-**Release status, checked September 12, 2026:** GitHub **v1.2.4** is available; npm is still **1.2.3**. The language-sync fix is in v1.2.4. Do not use `open-sea-skin@1.2.4` until it appears on npm.
+**Release status, checked October 10, 2026:** GitHub **v1.2.5** includes the official Desktop glass fix; npm is still **1.2.3**. Do not use `open-sea-skin@1.2.5` until it appears on npm.
 
 Install the prebuilt npm version without a Git download or install-time build:
 
@@ -87,21 +88,33 @@ Install the prebuilt npm version without a Git download or install-time build:
 dsh plugin --profile web add open-sea-skin@1.2.3
 ```
 
-For the v1.2.4 language fix, install the published GitHub tag:
+For the latest GitHub release (including the language and official Desktop fixes), install the immutable tag:
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.4'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
 ```
 
-Restart Harness, reload its page, then open **Skin settings** at the lower left. In DSH Desktop, use the managed plugin installer and restart from Desktop settings; available update versions depend on the catalog and installation source.
+Restart Harness, reload its page, then open **Skin settings** at the lower left. The official Desktop has a separate `desktop` profile; see its instructions below.
 
 [Installation & troubleshooting →](docs/dsh-plugin.md)
 
+<a id="official-desktop"></a>
+
+### 2. Official DeepSeek Harness Desktop
+
+The official macOS Desktop **0.2.0-rc.2** was tested with the release package in an isolated profile. Its plugin profile is separate from `dsh web`. If its in-app plugin catalog offers v1.2.5, install or update there and restart the app. Until the catalog catches up, fully quit Desktop, [download the v1.2.5 package](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz), then use the **CLI bundled with Desktop**:
+
+```sh
+"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+```
+
+Reopen Desktop after installation. Adjust **Skin settings** at the lower left; use 40% glass for the clearest ocean. If Desktop is installed elsewhere or you are on Windows, locate its bundled `dsh` executable and follow the [detailed Desktop guide](docs/dsh-plugin.md). The native Windows client has not yet been E2E tested.
+
 <a id="browser-extension"></a>
 
-### 2. Chrome / Edge extension
+### 3. Chrome / Edge extension
 
-1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.4/open-sea-skin-extension-v1.2.4.zip) and unzip it.
+1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-extension-v1.2.5.zip) and unzip it.
 2. Open `chrome://extensions` or `edge://extensions`; enable **Developer mode**.
 3. Choose **Load unpacked** and select the extracted folder containing `manifest.json`. If you cloned the repository, choose `extension/`.
 4. Open your Harness page on `127.0.0.1` or `localhost` and reload it.
@@ -110,7 +123,7 @@ Restart Harness, reload its page, then open **Skin settings** at the lower left.
 
 <a id="static-installer"></a>
 
-### 3. Static frontend installer
+### 4. Static frontend installer
 
 For a built Harness frontend that cannot use the plugin. **Stop Harness first.** [Inspect the script](install.sh), then run from any directory:
 
@@ -155,7 +168,7 @@ Then restart Harness. The static installer removes its own marked loader/assets,
 <details>
 <summary><strong>Is every latest Harness/Desktop version tested?</strong></summary>
 
-No blanket compatibility claim. Native source integration was verified against Harness `0.1.2-alpha.3`, commit `dd6322d60` (August 31, 2026). Desktop regression tests use a Chromium shell fixture based on DSH Desktop Beta `2.0.5-beta.1`, covering 24 layout/material/theme/opacity combinations—not a full native desktop end-to-end test.
+No blanket compatibility claim. Native source integration was verified against Harness `0.1.2-alpha.3`, commit `dd6322d60` (August 31, 2026). **Official macOS Desktop `0.2.0-rc.2`** was installed and visually verified with v1.2.5 in an isolated profile. The community DSH Desktop Beta `2.0.5-beta.1` shell has 24 fixture combinations; the official 0.2.x macOS/Windows shell has additional browser regression coverage. Native Windows Desktop is not yet E2E tested.
 
 If an update breaks the skin, [report your Harness version, installation method and a redacted screenshot/log](https://github.com/d-dev0101/open-sea-skin/issues).
 

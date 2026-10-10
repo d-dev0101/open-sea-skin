@@ -15,25 +15,46 @@ Open Sea appears behind the Web UI. The **Skin settings** button at the lower
 left opens the wave, daylight, glass-opacity, and day-cycle controls. Settings
 are saved locally in that browser profile.
 
-As checked on September 12, 2026, npm publication of 1.2.4 is pending.
-For the 1.2.4 language-sync fix, use the published GitHub release instead:
+As checked on October 10, 2026, npm is still at 1.2.3. GitHub v1.2.5
+includes the language-sync and official Desktop glass fixes. Do not request
+`open-sea-skin@1.2.5` from npm until that version is published. For Harness Web,
+use the immutable GitHub tag instead:
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.4'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
 ```
 
 ## DSH Desktop
 
-In **Settings → Plugin Market → Installed**, update `open-sea-skin` to
-`1.2.3` or newer and restart Harness using the desktop Settings menu. The
-market's **Themes** tab lists this project under **Themes & Appearance**.
-If the catalog still reports `1.2.2` as current, wait for its registry refresh
-or use the published `open-sea-skin@1.2.3` npm package through the market's package installer.
+Official DeepSeek Harness Desktop keeps its own **`desktop` profile**. Updating
+the `web` profile does not update Desktop. In **Settings → Plugin Market →
+Installed**, use v1.2.5 when the catalog offers it, then restart Desktop. The
+market's **Themes** tab lists this project under **Themes & Appearance**. If
+the catalog still offers 1.2.3, it does **not** include the official 0.2.x
+glass fix.
 
-Version `1.2.3` fixes uneven glass in Desktop's advanced and extended shells:
-all three columns share one translucent background while composers and dialogs
-retain their own fills. The browser regression fixture is based on Desktop
-Beta `2.0.5-beta.1` shell styles; it is not a full native desktop end-to-end test.
+To use v1.2.5 before the catalog synchronizes:
+
+1. Fully quit Desktop, including its background process.
+2. [Download `open-sea-skin-1.2.5.tgz`](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz) to Downloads.
+3. Use the `dsh` executable bundled with your Desktop installation, targeting
+   `desktop`, not the separately installed npm CLI. Standard macOS app path:
+
+   ```sh
+   "/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+   ```
+
+4. Reopen Desktop. Confirm the lower-left **Skin settings** button appears.
+   Adjust glass to **40%** for the most visible ocean.
+
+The local tarball install and visual result were tested in an **isolated**
+official macOS Desktop `0.2.0-rc.2` profile. It fixes the layered background
+that made the conversation darker or lighter than the sidebar, while the
+composer and Settings remain readable. The official 0.2.x Windows shell is
+covered by a browser fixture, but the native Windows app has not been E2E
+tested. On Windows or a nonstandard macOS app location, find the bundled CLI
+inside the Desktop app rather than guessing an npm `dsh` path. Do not edit or
+delete your existing Desktop profile to install the skin.
 
 ## Verify the package
 

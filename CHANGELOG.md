@@ -2,6 +2,28 @@
 
 All notable changes to Open Sea Skin are documented here.
 
+## 1.2.5 — 2026-10-10
+
+### Fixed
+
+- Official DeepSeek Harness Desktop `0.2.0-rc.2` now paints one glass layer
+  across the sidebar, conversation, and rightbar. The conversation's nested
+  background no longer compounds opacity, while the composer remains readable.
+- Official Desktop Settings stays opaque enough to read when workspace glass
+  is set to its minimum 40%.
+
+### Tested
+
+- Installed the release package into an isolated official macOS Desktop
+  `0.2.0-rc.2` profile with its bundled CLI and visually verified the shell.
+- Added a 0.2.x shell regression fixture for macOS/Windows structure in light
+  and dark modes. Windows is fixture-tested, not native Windows E2E-tested.
+
+### Documentation
+
+- Clarified the Desktop install path and distinguished the GitHub release from
+  the older npm package currently available through registries.
+
 ## 1.2.4 — 2026-09-09
 
 ### Fixed

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh" data-platform="darwin">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Official Harness Desktop 0.2.x surface regression</title>
+  <link rel="icon" href="data:,">
+  <style>
+    * { box-sizing: border-box; }
+    html, body, #root { width: 100%; height: 100%; margin: 0; }
+    body { --dsw-alias-bg-base: #fff; --dsw-alias-bg-layer-1: #f8f8f8; --dsw-alias-bg-layer-2: #fff; --dsw-specific-sidebar-fill: #edf0f5; color: #111; font: 16px system-ui; }
+    body[data-ds-dark-theme] { --dsw-alias-bg-base: #14171c; --dsw-alias-bg-layer-1: #20242b; --dsw-alias-bg-layer-2: #20242b; --dsw-specific-sidebar-fill: #242831; color: #eee; }
+    #root { position: relative; z-index: 1; }
+    .frame { display: grid; grid-template-columns: 270px 1fr 220px; height: 100%; background: var(--dsw-alias-bg-base); }
+    html[data-platform="darwin"] .frame { background: transparent; }
+    .sidebar { background: var(--dsw-specific-sidebar-fill); padding: 24px; }
+    .center { background: var(--dsw-alias-bg-base); }
+    .conversation { height: 100%; display: grid; place-items: center; background: var(--dsw-alias-bg-base); }
+    .rightbar { background: var(--dsw-alias-bg-base); }
+    [data-dockkit-content] { height: 100%; padding: 24px; background: var(--dsw-alias-bg-base); }
+    .composer { width: 350px; padding: 20px; border-radius: 16px; background: var(--dsw-alias-bg-layer-1); }
+    .overlay { position: absolute; inset: 0; pointer-events: none; }
+    .settings { position: fixed; inset: 15%; z-index: 1000; display: none; padding: 40px; background: var(--dsw-alias-bg-layer-2); }
+    .settings.open { display: block; }
+  </style>
+</head>
+<body data-ds-dark-theme>
+  <div id="root">
+    <div class="frame">
+      <aside class="sidebar">deepseek HARNESS</aside>
+      <main class="center"><div data-slot="conversation" style="display: contents"><div class="conversation" data-phase="hero"><div class="composer">探索未至之境</div></div></div></main>
+      <aside class="rightbar" data-rightbar-col><div data-dockkit-host="dock"><section data-dockkit-content="details">详情</section></div></aside>
+      <div class="overlay" data-shell-overlay></div>
+    </div>
+  </div>
+  <div class="settings" data-shortcut-modal="settings" role="dialog">设置</div>
+</body>
+</html>

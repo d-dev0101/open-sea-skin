@@ -70,6 +70,7 @@
 
 | 你正在使用 | 建议入口 |
 | --- | --- |
+| DeepSeek Harness 官方 Desktop 0.2.x | [桌面端安装](#official-desktop) |
 | Harness Web / DSH 插件安装器 | [DSH 插件](#dsh-plugin) |
 | Chrome / Edge 中的本地 Harness | [浏览器扩展](#browser-extension) |
 | 不支持插件的已构建前端 | [静态安装器](#static-installer) |
@@ -79,7 +80,7 @@
 
 ### 1. DSH 插件
 
-**版本状态（2026 年 9 月 12 日核对）：** GitHub 已发布 **v1.2.4**，npm 仍为 **1.2.3**。语言切换修复包含在 v1.2.4 中；npm 正式发布前，请不要使用 `open-sea-skin@1.2.4` 命令。
+**版本状态（2026 年 10 月 10 日核对）：** GitHub **v1.2.5** 包含官方桌面端玻璃透明度修复，npm 仍为 **1.2.3**。npm 正式发布前，请不要使用 `open-sea-skin@1.2.5` 命令。
 
 安装已发布的 npm 预构建包，无需 Git 下载或安装时编译：
 
@@ -87,21 +88,33 @@
 dsh plugin --profile web add open-sea-skin@1.2.3
 ```
 
-如果需要 v1.2.4 的语言切换修复，可安装已发布的 GitHub 标签：
+如需最新 GitHub 版本（含语言与官方桌面端修复），安装固定标签：
 
 ```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.4'
+dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
 ```
 
-安装后重启 Harness、刷新页面，再点击左下角的**皮肤设置**。DSH Desktop 用户可通过托管插件安装器安装，并从桌面设置重启；市场能提供的更新版本取决于目录同步与安装来源。
+安装后重启 Harness、刷新页面，再点击左下角的**皮肤设置**。官方 Desktop 使用独立的 `desktop` profile，请按下文安装。
 
 [安装验证与故障排查 →](docs/dsh-plugin.md)
 
+<a id="official-desktop"></a>
+
+### 2. DeepSeek Harness 官方桌面端
+
+已在隔离配置中实际安装和测试官方 macOS Desktop **0.2.0-rc.2**。它的插件 profile 与 `dsh web` 分开。如果桌面端插件市场已有 v1.2.5，直接在市场更新并重启。市场尚未同步时，先彻底退出 Desktop，[下载 v1.2.5 安装包](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz)，再使用**桌面端自带的 CLI**：
+
+```sh
+"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+```
+
+完成后重新打开 Desktop；左下角的**皮肤设置**可以把玻璃不透明度调到 40%，让海面更清晰。如果安装在其他位置或使用 Windows，请找到桌面端自带的 `dsh` 程序并参阅[详细桌面端指南](docs/dsh-plugin.md)。Windows 原生客户端尚未完成端到端实测。
+
 <a id="browser-extension"></a>
 
-### 2. Chrome / Edge 扩展
+### 3. Chrome / Edge 扩展
 
-1. [下载扩展 ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.4/open-sea-skin-extension-v1.2.4.zip) 并解压。
+1. [下载扩展 ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-extension-v1.2.5.zip) 并解压。
 2. 打开 `chrome://extensions` 或 `edge://extensions`，开启**开发者模式**。
 3. 点击**加载已解压的扩展程序**，选择包含 `manifest.json` 的解压目录；如果克隆了仓库，则选择 `extension/`。
 4. 打开 `127.0.0.1` 或 `localhost` 上的 Harness，刷新一次。
@@ -110,7 +123,7 @@ dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.4'
 
 <a id="static-installer"></a>
 
-### 3. 静态前端安装器
+### 4. 静态前端安装器
 
 适用于无法使用插件的已构建 Harness 前端。**先停止 Harness**，可先[查看脚本](install.sh)，然后在任意目录运行：
 
@@ -155,7 +168,7 @@ curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/instal
 <details>
 <summary><strong>是否保证兼容所有最新版 Harness / Desktop？</strong></summary>
 
-不做全版本兼容承诺。原生源码集成的验证基线为 Harness `0.1.2-alpha.3`、提交 `dd6322d60`（2026 年 8 月 31 日）。桌面回归使用基于 DSH Desktop Beta `2.0.5-beta.1` 的 Chromium 外壳测试页面，覆盖 24 组布局、材质、明暗与透明度组合，不等同于完整原生桌面端到端测试。
+不做全版本兼容承诺。原生源码集成的验证基线为 Harness `0.1.2-alpha.3`、提交 `dd6322d60`（2026 年 8 月 31 日）。**官方 macOS Desktop `0.2.0-rc.2`** 已在隔离配置中实装 v1.2.5 并目视验证。社区 DSH Desktop Beta `2.0.5-beta.1` 有 24 组外壳回归组合；官方 0.2.x 的 macOS/Windows 页面结构也加入了浏览器回归测试。Windows 原生 Desktop 尚未完成端到端测试。
 
 如果升级后遇到问题，请[提供 Harness 版本、安装方式，以及去除敏感信息的截图或日志](https://github.com/d-dev0101/open-sea-skin/issues)。
 

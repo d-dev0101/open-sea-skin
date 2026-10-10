@@ -204,24 +204,30 @@
       <div class="section-heading install-heading reveal">
         <span class="section-number">04 / INSTALLATION</span>
         <h2 id="install-title" data-i18n="installTitle">把海带回<br>你的 Harness</h2>
-        <p data-i18n="installBody">推荐使用 DSH 插件安装；浏览器扩展适合不修改 Harness 的用户，静态安装器用于打包环境。</p>
+        <p data-i18n="installBody">官方 Desktop、Harness Web、浏览器扩展和静态前端各有自己的安装入口。先确认你的运行环境，再选一种方式。</p>
       </div>
       <div class="install-grid">
         <article class="install-card recommended reveal">
           <div class="install-card-head"><span>01</span><strong data-i18n="recommended">推荐</strong></div>
+          <h3>Official Desktop</h3>
+          <p data-i18n="desktopBody">官方 Desktop 0.2.x 已实测。市场同步后直接更新；此前可下载 GitHub 安装包，用桌面端自带的 CLI 安装。</p>
+          <a class="download-link" href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md#dsh-desktop"><span data-i18n="desktopGuide">查看桌面端安装指南</span><span>↗</span></a>
+        </article>
+        <article class="install-card reveal">
+          <div class="install-card-head"><span>02</span><strong>HARNESS WEB</strong></div>
           <h3>DSH Plugin</h3>
-          <p data-i18n="dshBody">一行命令安装完整本地运行时与左下角快捷控制。</p>
-          <div class="code-line"><code>dsh plugin --profile web add open-sea-skin@1.2.4</code><button type="button" data-copy="dsh plugin --profile web add open-sea-skin@1.2.4" data-i18n-aria="copy" aria-label="复制命令">COPY</button></div>
+          <p data-i18n="dshBody">Web 插件一行命令安装；npm 当前为 1.2.3，最新修复请查看 GitHub v1.2.5。</p>
+          <div class="code-line"><code>dsh plugin --profile web add open-sea-skin@1.2.3</code><button type="button" data-copy="dsh plugin --profile web add open-sea-skin@1.2.3" data-i18n-aria="copy" aria-label="复制命令">COPY</button></div>
           <small data-i18n="restart">安装后重新启动 dsh web</small>
         </article>
         <article class="install-card reveal">
-          <div class="install-card-head"><span>02</span><strong>CHROME / EDGE</strong></div>
+          <div class="install-card-head"><span>03</span><strong>CHROME / EDGE</strong></div>
           <h3 data-i18n="browserExtension">浏览器扩展</h3>
           <p data-i18n="browserBody">只为经过识别的 Harness 页面换肤，不会接管新标签页或影响其他本地网站。</p>
-          <a class="download-link" href="https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.4/open-sea-skin-extension-v1.2.4.zip"><span data-i18n="downloadZip">下载 v1.2.4 ZIP</span><span>↓</span></a>
+          <a class="download-link" href="https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-extension-v1.2.5.zip"><span data-i18n="downloadZip">下载 v1.2.5 ZIP</span><span>↓</span></a>
         </article>
         <article class="install-card reveal">
-          <div class="install-card-head"><span>03</span><strong>STATIC DIST</strong></div>
+          <div class="install-card-head"><span>04</span><strong>STATIC DIST</strong></div>
           <h3 data-i18n="oneCommand">一键静态安装</h3>
           <p data-i18n="staticBody">从任意目录运行；自动备份、可重复更新、可安全卸载。</p>
           <div class="code-line"><code>curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash</code><button type="button" data-copy="curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash" data-i18n-aria="copy" aria-label="复制命令">COPY</button></div>
@@ -238,7 +244,7 @@
         <p data-i18n="closingBody">Open Sea 免费、开源、本地优先。欢迎把它带进你的 Harness，也欢迎一起把这片海做得更好。</p>
         <div class="closing-actions">
           <a class="primary-action" href="https://github.com/d-dev0101/open-sea-skin" target="_blank" rel="noreferrer"><span data-i18n="visitGitHub">前往 GitHub</span><span>↗</span></a>
-          <a class="quiet-action" href="https://github.com/d-dev0101/open-sea-skin/releases/tag/v1.2.4"><span data-i18n="viewRelease">查看最新 Release</span><span>→</span></a>
+          <a class="quiet-action" href="https://github.com/d-dev0101/open-sea-skin/releases/tag/v1.2.5"><span data-i18n="viewRelease">查看最新 Release</span><span>→</span></a>
         </div>
       </div>
       <div class="closing-mark" aria-hidden="true">
