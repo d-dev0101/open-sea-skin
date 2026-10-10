@@ -80,18 +80,10 @@
 
 ### 1. DSH 插件
 
-**版本状态（2026 年 10 月 10 日核对）：** GitHub **v1.2.5** 包含官方桌面端玻璃透明度修复，npm 仍为 **1.2.3**。npm 正式发布前，请不要使用 `open-sea-skin@1.2.5` 命令。
-
-安装已发布的 npm 预构建包，无需 Git 下载或安装时编译：
+从 npm（或已同步的 npm 镜像）安装预构建的 **v1.2.5** 包，无需访问 GitHub 下载包，也无需安装时编译：
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.3
-```
-
-如需最新 GitHub 版本（含语言与官方桌面端修复），安装固定标签：
-
-```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
+dsh plugin --profile web add open-sea-skin@1.2.5
 ```
 
 安装后重启 Harness、刷新页面，再点击左下角的**皮肤设置**。官方 Desktop 使用独立的 `desktop` profile，请按下文安装。
@@ -102,15 +94,15 @@ dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
 
 ### 2. DeepSeek Harness 官方桌面端 · 不用终端
 
-在桌面端打开**插件 → 添加插件**，粘贴下面的发布包链接，点击**安装**，再选择**立即启用**：
+在桌面端打开**插件 → 添加插件**，输入下面的准确包名与版本，点击**安装**，再选择**立即启用**：
 
 ```text
-https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz
+open-sea-skin@1.2.5
 ```
 
 如果已经安装旧版 Open Sea，请先在**插件**中卸载旧版；官方 Desktop 0.2.0-rc.2 的这个对话框暂不支持原地升级。启用后点击左下角的**皮肤设置**，可将玻璃不透明度调到 40%，让海面更清晰。桌面端使用独立的 `desktop` profile，给 Web 安装不会自动给桌面端安装。
 
-这个链接已通过官方 macOS Desktop **0.2.0-rc.2** 自带的包管理器，在隔离配置中成功安装。应用内「添加插件」流程见[官方插件管理器说明](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md)；我们尚未独立完成其界面全流程或 Windows 原生安装实测。若下载失败，可重试或查看[详细桌面端指南与命令行备用方案](docs/dsh-plugin.md)。**不用手动改动现有配置。**
+按包名安装可避开 [pnpm 11.7.0 重复解析 GitHub 压缩包链接时的已报告问题](https://github.com/deepseek-ai/deepseek-harness/discussions/8294)。v1.2.5 已使用官方 macOS Desktop **0.2.0-rc.2** 自带的命令，在隔离配置中分别从 npm 官方源和大陆镜像成功安装。应用内操作见[官方插件管理器说明](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md)；其界面全流程和 Windows 原生安装尚未独立实测。如果镜像还没有同步到 1.2.5，请在同一窗口切换到官方 npm 源，或稍后重试。验证方法与本地安装包备用方案见[详细桌面端指南](docs/dsh-plugin.md)。**不要为了修复压缩包报错而删除现有配置或 lockfile。**
 
 <a id="browser-extension"></a>
 

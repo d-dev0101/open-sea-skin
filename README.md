@@ -80,18 +80,10 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 
 ### 1. DSH plugin
 
-**Release status, checked October 10, 2026:** GitHub **v1.2.5** includes the official Desktop glass fix; npm is still **1.2.3**. Do not use `open-sea-skin@1.2.5` until it appears on npm.
-
-Install the prebuilt npm version without a Git download or install-time build:
+Install the prebuilt **v1.2.5** package from npm (or a synced npm mirror). No Git download or install-time build is needed:
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.3
-```
-
-For the latest GitHub release (including the language and official Desktop fixes), install the immutable tag:
-
-```sh
-dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
+dsh plugin --profile web add open-sea-skin@1.2.5
 ```
 
 Restart Harness, reload its page, then open **Skin settings** at the lower left. The official Desktop has a separate `desktop` profile; see its instructions below.
@@ -102,15 +94,15 @@ Restart Harness, reload its page, then open **Skin settings** at the lower left.
 
 ### 2. Official DeepSeek Harness Desktop — no terminal
 
-In Desktop, open **Plugins → Add plugin**, paste this release package URL, select **Install**, then **Enable now**:
+In Desktop, open **Plugins → Add plugin**, enter this exact package name and version, select **Install**, then **Enable now**:
 
 ```text
-https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz
+open-sea-skin@1.2.5
 ```
 
 If an older Open Sea version is installed, uninstall it in **Plugins** first; official Desktop 0.2.0-rc.2 does not update a plugin in place through this dialog. After enabling, open **Skin settings** at the lower left and try 40% glass for a clearer ocean. The desktop `desktop` profile is separate from `dsh web`; installing for Web does not install it in Desktop.
 
-This URL was installed successfully using the bundled package manager in an isolated official macOS Desktop **0.2.0-rc.2** profile. The in-app Add plugin flow is documented by [the official plugin manager](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md); we have not independently completed its UI flow or a native Windows installation. If the URL download fails, retry or see the [detailed Desktop guide and CLI fallback](docs/dsh-plugin.md). You do **not** need to modify your existing profile manually.
+The package-name install avoids a [known pnpm 11.7.0 failure with cached GitHub tarball URLs](https://github.com/deepseek-ai/deepseek-harness/discussions/8294). Version 1.2.5 was installed successfully from both the official npm registry and the mainland China mirror using the bundled CLI in an isolated official macOS Desktop **0.2.0-rc.2** profile. The in-app Add plugin flow is documented by [the official plugin manager](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md); its UI flow and native Windows installation have not been independently completed. If a mirror has not yet synchronized 1.2.5, choose the official npm registry in the same dialog or retry later. See the [detailed Desktop guide](docs/dsh-plugin.md) for verification and a local-package fallback. Do **not** delete your profile or lockfile to work around the tarball error.
 
 <a id="browser-extension"></a>
 

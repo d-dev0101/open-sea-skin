@@ -22,11 +22,11 @@ const translations = {
     galleryTitle: '来自真实 Harness<br>的海况记录', galleryBody: '以下全部在 DeepSeek Harness 中录制，玻璃不透明度统一为 40%。不是概念图，也不是后期合成。',
     galleryDark: '深色全景', galleryLight: '浅色全景', galleryWaves: '调节波浪', gallerySunset: '从白天到夕阳',
     installTitle: '把海带回<br>你的 Harness', installBody: '官方 Desktop、Harness Web、浏览器扩展和静态前端各有自己的安装入口。先确认你的运行环境，再选一种方式。',
-    recommended: '推荐', desktopBody: '无需终端：在桌面端打开「插件」→「添加插件」，粘贴下面的发布包链接，安装后选择「立即启用」。', desktopGuide: '完整步骤与故障排查',
-    dshBody: 'Web 插件一行命令安装；npm 当前为 1.2.3，最新修复请查看 GitHub v1.2.5。', restart: '安装后重新启动 dsh web',
+    recommended: '推荐', desktopBody: '无需终端：在桌面端打开「插件」→「添加插件」，输入下面的包名，安装后选择「立即启用」。可使用大陆镜像；未同步时切换官方 npm 源。', desktopGuide: '完整步骤与故障排查',
+    dshBody: 'Web 插件一行命令安装 v1.2.5；使用预构建 npm 包，无需访问 GitHub 下载压缩包。', restart: '安装后重新启动 dsh web',
     browserExtension: '浏览器扩展', browserBody: '只为经过识别的 Harness 页面换肤，不会接管新标签页或影响其他本地网站。',
     downloadZip: '下载 v1.2.5 ZIP', oneCommand: '一键静态安装', staticBody: '从任意目录运行；自动备份、可重复更新、可安全卸载。',
-    copy: '复制命令', copied: '命令已复制', copyFailed: '复制失败，请手动选择命令', copyUrl: '复制安装链接', copiedUrl: '安装链接已复制', copyUrlFailed: '复制失败，请手动选择链接',
+    copy: '复制命令', copied: '命令已复制', copyFailed: '复制失败，请手动选择命令', copyPackage: '复制包名', copiedPackage: '包名已复制', copyPackageFailed: '复制失败，请手动选择包名',
     closingTitle: '工作可以很深，<br>界面不必沉重。', closingBody: 'Open Sea 免费、开源、本地优先。欢迎把它带进你的 Harness，也欢迎一起把这片海做得更好。',
     visitGitHub: '前往 GitHub', viewRelease: '查看最新 Release', privacyPolicy: '隐私', issues: '问题反馈',
     timeDusk: '黄昏', timeGolden: '金色时刻', timeAfternoon: '下午', timeNoon: '正午',
@@ -54,11 +54,11 @@ const translations = {
     galleryTitle: 'Sea-state records<br>from real Harness', galleryBody: 'Every capture below was recorded inside DeepSeek Harness at 40% glass opacity. No concept renders and no compositing.',
     galleryDark: 'Dark overview', galleryLight: 'Light overview', galleryWaves: 'Adjusting waves', gallerySunset: 'Daylight to sunset',
     installTitle: 'Bring the ocean<br>into your Harness', installBody: 'Official Desktop, Harness Web, browser extension, and static frontend each have their own install path. Check your environment and choose one.',
-    recommended: 'Recommended', desktopBody: 'No terminal: open Plugins → Add plugin in Desktop, paste the release package URL below, then choose Enable now.', desktopGuide: 'Full steps & troubleshooting',
-    dshBody: 'Install the Web plugin in one command. npm is currently at 1.2.3; see GitHub v1.2.5 for the latest fixes.', restart: 'Restart dsh web after installation',
+    recommended: 'Recommended', desktopBody: 'No terminal: open Plugins → Add plugin in Desktop, enter the package below, then choose Enable now. Use the npm mirror, or switch to the official registry before it syncs.', desktopGuide: 'Full steps & troubleshooting',
+    dshBody: 'Install the prebuilt v1.2.5 Web plugin in one command—no GitHub tarball download.', restart: 'Restart dsh web after installation',
     browserExtension: 'Browser extension', browserBody: 'Skins verified Harness pages only. It never replaces New Tab or touches other localhost apps.',
     downloadZip: 'Download v1.2.5 ZIP', oneCommand: 'One-command static install', staticBody: 'Run it from any directory, with automatic backup, repeatable updates, and safe uninstall.',
-    copy: 'Copy command', copied: 'Command copied', copyFailed: 'Copy failed—select the command manually', copyUrl: 'Copy install URL', copiedUrl: 'Install URL copied', copyUrlFailed: 'Copy failed—select the URL manually',
+    copy: 'Copy command', copied: 'Command copied', copyFailed: 'Copy failed—select the command manually', copyPackage: 'Copy package name', copiedPackage: 'Package name copied', copyPackageFailed: 'Copy failed—select the package name manually',
     closingTitle: 'The work can be deep.<br>The interface can feel light.', closingBody: 'Open Sea is free, open source, and local-first. Bring it into your Harness—and help us make this ocean even better.',
     visitGitHub: 'Visit GitHub', viewRelease: 'View latest release', privacyPolicy: 'Privacy', issues: 'Issues',
     timeDusk: 'Dusk', timeGolden: 'Golden hour', timeAfternoon: 'Afternoon', timeNoon: 'Midday',
@@ -336,12 +336,12 @@ for (const button of document.querySelectorAll('[data-copy]')) {
   button.addEventListener('click', async () => {
     try {
       await copyText(button.dataset.copy);
-      copyStatus.textContent = copy()[button.dataset.copyKind === 'url' ? 'copiedUrl' : 'copied'];
+      copyStatus.textContent = copy()[button.dataset.copyKind === 'package' ? 'copiedPackage' : 'copied'];
       const previous = button.textContent;
       button.textContent = '✓';
       window.setTimeout(() => { button.textContent = previous; }, 1400);
     } catch {
-      copyStatus.textContent = copy()[button.dataset.copyKind === 'url' ? 'copyUrlFailed' : 'copyFailed'];
+      copyStatus.textContent = copy()[button.dataset.copyKind === 'package' ? 'copyPackageFailed' : 'copyFailed'];
     }
   });
 }
