@@ -100,15 +100,17 @@ Restart Harness, reload its page, then open **Skin settings** at the lower left.
 
 <a id="official-desktop"></a>
 
-### 2. Official DeepSeek Harness Desktop
+### 2. Official DeepSeek Harness Desktop — no terminal
 
-The official macOS Desktop **0.2.0-rc.2** was tested with the release package in an isolated profile. Its plugin profile is separate from `dsh web`. If its in-app plugin catalog offers v1.2.5, install or update there and restart the app. Until the catalog catches up, fully quit Desktop, [download the v1.2.5 package](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz), then use the **CLI bundled with Desktop**:
+In Desktop, open **Plugins → Add plugin**, paste this release package URL, select **Install**, then **Enable now**:
 
-```sh
-"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+```text
+https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz
 ```
 
-Reopen Desktop after installation. Adjust **Skin settings** at the lower left; use 40% glass for the clearest ocean. If Desktop is installed elsewhere or you are on Windows, locate its bundled `dsh` executable and follow the [detailed Desktop guide](docs/dsh-plugin.md). The native Windows client has not yet been E2E tested.
+If an older Open Sea version is installed, uninstall it in **Plugins** first; official Desktop 0.2.0-rc.2 does not update a plugin in place through this dialog. After enabling, open **Skin settings** at the lower left and try 40% glass for a clearer ocean. The desktop `desktop` profile is separate from `dsh web`; installing for Web does not install it in Desktop.
+
+This URL was installed successfully using the bundled package manager in an isolated official macOS Desktop **0.2.0-rc.2** profile. The in-app Add plugin flow is documented by [the official plugin manager](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md); we have not independently completed its UI flow or a native Windows installation. If the URL download fails, retry or see the [detailed Desktop guide and CLI fallback](docs/dsh-plugin.md). You do **not** need to modify your existing profile manually.
 
 <a id="browser-extension"></a>
 

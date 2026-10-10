@@ -11,6 +11,11 @@ const installer = resolve(root, 'native-dist/install-skin.sh')
 const bootstrapInstaller = resolve(root, 'install.sh')
 const sourceInstaller = resolve(root, 'harness-plugin/install-into-harness.sh')
 
+test('static bootstrap defaults to the current GitHub release', async () => {
+  const script = await readFile(bootstrapInstaller, 'utf8')
+  assert.match(script, /OPEN_SEA_VERSION="\$\{OPEN_SEA_VERSION:-v1\.2\.5\}"/)
+})
+
 function run(...args) {
   const result = spawnSync('bash', [installer, ...args], { cwd: root, encoding: 'utf8' })
   assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`)

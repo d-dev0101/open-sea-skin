@@ -100,15 +100,17 @@ dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
 
 <a id="official-desktop"></a>
 
-### 2. DeepSeek Harness 官方桌面端
+### 2. DeepSeek Harness 官方桌面端 · 不用终端
 
-已在隔离配置中实际安装和测试官方 macOS Desktop **0.2.0-rc.2**。它的插件 profile 与 `dsh web` 分开。如果桌面端插件市场已有 v1.2.5，直接在市场更新并重启。市场尚未同步时，先彻底退出 Desktop，[下载 v1.2.5 安装包](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz)，再使用**桌面端自带的 CLI**：
+在桌面端打开**插件 → 添加插件**，粘贴下面的发布包链接，点击**安装**，再选择**立即启用**：
 
-```sh
-"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+```text
+https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz
 ```
 
-完成后重新打开 Desktop；左下角的**皮肤设置**可以把玻璃不透明度调到 40%，让海面更清晰。如果安装在其他位置或使用 Windows，请找到桌面端自带的 `dsh` 程序并参阅[详细桌面端指南](docs/dsh-plugin.md)。Windows 原生客户端尚未完成端到端实测。
+如果已经安装旧版 Open Sea，请先在**插件**中卸载旧版；官方 Desktop 0.2.0-rc.2 的这个对话框暂不支持原地升级。启用后点击左下角的**皮肤设置**，可将玻璃不透明度调到 40%，让海面更清晰。桌面端使用独立的 `desktop` profile，给 Web 安装不会自动给桌面端安装。
+
+这个链接已通过官方 macOS Desktop **0.2.0-rc.2** 自带的包管理器，在隔离配置中成功安装。应用内「添加插件」流程见[官方插件管理器说明](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md)；我们尚未独立完成其界面全流程或 Windows 原生安装实测。若下载失败，可重试或查看[详细桌面端指南与命令行备用方案](docs/dsh-plugin.md)。**不用手动改动现有配置。**
 
 <a id="browser-extension"></a>
 

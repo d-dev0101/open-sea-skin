@@ -27,34 +27,48 @@ dsh plugin --profile web add 'github:d-dev0101/open-sea-skin#v1.2.5'
 ## DSH Desktop
 
 Official DeepSeek Harness Desktop keeps its own **`desktop` profile**. Updating
-the `web` profile does not update Desktop. In **Settings → Plugin Market →
-Installed**, use v1.2.5 when the catalog offers it, then restart Desktop. The
-market's **Themes** tab lists this project under **Themes & Appearance**. If
-the catalog still offers 1.2.3, it does **not** include the official 0.2.x
-glass fix.
+the `web` profile does not update Desktop. The easiest path uses Desktop's own
+plugin manager—no download folder, terminal, or profile editing:
 
-To use v1.2.5 before the catalog synchronizes:
+1. Open **Plugins** in the Desktop sidebar, then choose **Add plugin**.
+2. Paste this release package URL into the package/source field:
 
-1. Fully quit Desktop, including its background process.
-2. [Download `open-sea-skin-1.2.5.tgz`](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz) to Downloads.
-3. Use the `dsh` executable bundled with your Desktop installation, targeting
-   `desktop`, not the separately installed npm CLI. Standard macOS app path:
-
-   ```sh
-   "/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+   ```text
+   https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz
    ```
 
-4. Reopen Desktop. Confirm the lower-left **Skin settings** button appears.
-   Adjust glass to **40%** for the most visible ocean.
+3. Choose **Install**, review the package details, then **Enable now**.
+4. In Harness, use the lower-left **Skin settings** control. Set glass opacity
+   to **40%** if you want the ocean to show clearly.
 
-The local tarball install and visual result were tested in an **isolated**
-official macOS Desktop `0.2.0-rc.2` profile. It fixes the layered background
-that made the conversation darker or lighter than the sidebar, while the
-composer and Settings remain readable. The official 0.2.x Windows shell is
-covered by a browser fixture, but the native Windows app has not been E2E
-tested. On Windows or a nonstandard macOS app location, find the bundled CLI
-inside the Desktop app rather than guessing an npm `dsh` path. Do not edit or
+If Open Sea 1.2.3 is already installed, uninstall that package in **Plugins**
+before adding this URL. The official `0.2.0-rc.2` Add plugin dialog does not
+perform in-place upgrades. The in-app market may still list 1.2.3; it lacks
+the official 0.2.x glass fix. Once the market lists 1.2.5, it can be used
+instead. A slow or failed GitHub download may succeed on retry.
+
+The URL package was installed using the bundled package manager in an
+**isolated** official macOS Desktop `0.2.0-rc.2` profile. The in-app Add plugin
+flow and accepted tarball URLs are described in the [official plugin manager
+documentation](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md). We have not
+independently completed the in-app UI flow or a native Windows E2E test. The
+official 0.2.x Windows shell has browser fixture coverage. Do not edit or
 delete your existing Desktop profile to install the skin.
+
+### CLI fallback when Add plugin is unavailable
+
+Fully quit Desktop first. [Download the v1.2.5 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz)
+to Downloads, then use the `dsh` executable bundled with your Desktop app—not
+a separate npm CLI. Standard macOS app path:
+
+```sh
+"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+```
+
+Reopen Desktop afterward. For Windows or a nonstandard macOS app location,
+locate the bundled CLI inside the Desktop app rather than guessing a path.
+The local tarball fallback and visual result were tested in the isolated macOS
+profile; native Windows Desktop has not been E2E tested.
 
 ## Verify the package
 

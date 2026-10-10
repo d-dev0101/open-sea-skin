@@ -1258,6 +1258,21 @@ html[data-ui-theme='light'] .harness-capture-light {
   background: rgba(143, 233, 228, 0.08);
 }
 
+.install-guide-link {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  color: var(--aqua);
+  font-family: var(--mono);
+  font-size: 9px;
+  text-decoration: none;
+}
+
+.install-guide-link:hover {
+  text-decoration: underline;
+}
+
 .install-card > small {
   margin-top: 10px;
   font-family: var(--mono);

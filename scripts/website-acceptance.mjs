@@ -35,6 +35,11 @@ try {
   assert.equal(await page.locator('#capture-opacity-output').textContent(), '64%')
   assert.equal(await page.locator('.nav-github svg').count(), 1)
   assert.equal(await page.locator('.brand-mark .brand-symbol').count(), 2)
+  const desktopUrl = 'https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz'
+  assert.equal(await page.locator('.install-card.recommended [data-copy]').getAttribute('data-copy'), desktopUrl)
+  assert.match(await page.locator('.install-card.recommended').innerText(), /插件.*添加插件/s)
+  await page.locator('.install-card.recommended [data-copy]').click()
+  await page.locator('#copy-status').getByText('安装链接已复制').waitFor()
 
   const captures = page.locator('.harness-capture')
   assert.equal(await captures.count(), 2)
