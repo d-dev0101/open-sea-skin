@@ -140,7 +140,7 @@
       <div><span>01</span><b data-i18n="factOne">只作用于 Harness</b><small data-i18n="factOneBody">不接管新标签页</small></div>
       <div><span>02</span><b data-i18n="factTwo">五组 Gerstner 波</b><small>THREE.JS · TSL</small></div>
       <div><span>03</span><b data-i18n="factThree">自适应性能</b><small>60 / 30 / 20 FPS</small></div>
-      <div><span>04</span><b data-i18n="factFour">可逆安装</b><small data-i18n="factFourBody">三种安装方式</small></div>
+      <div><span>04</span><b data-i18n="factFour">可逆安装</b><small data-i18n="factFourBody">五种入口，按需选择</small></div>
     </section>
 
     <section class="feature-section section-shell" id="features" aria-labelledby="features-title">
@@ -209,16 +209,16 @@
       <div class="install-grid">
         <article class="install-card recommended reveal">
           <div class="install-card-head"><span>01</span><strong data-i18n="recommended">推荐</strong></div>
-          <h3>Official Desktop</h3>
+          <h3 data-i18n="desktopTitle">🖥️ 官方客户端 · Windows / Mac</h3>
           <p data-i18n="desktopBody">无需终端：在桌面端打开「插件」→「添加插件」，输入下面的包名，安装后选择「立即启用」。可使用大陆镜像；未同步时切换官方 npm 源。</p>
-          <div class="code-line"><code>open-sea-skin@1.2.5</code><button type="button" data-copy="open-sea-skin@1.2.5" data-copy-kind="package" data-i18n-aria="copyPackage" aria-label="复制包名">COPY</button></div>
-          <a class="install-guide-link" href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md#dsh-desktop"><span data-i18n="desktopGuide">完整步骤与故障排查</span><span>↗</span></a>
+          <div class="code-line"><code>open-sea-skin@1.2.5</code><button type="button" data-copy="open-sea-skin@1.2.5" data-copy-kind="package" data-i18n-aria="copyPackage" aria-label="复制包名" data-i18n="copyButton">复制</button></div>
+          <a class="install-guide-link" id="desktop-guide-link" href="https://github.com/d-dev0101/open-sea-skin/blob/main/docs/install.zh.md"><span data-i18n="desktopGuide">中文安装指南与常见报错</span><span>↗</span></a>
         </article>
         <article class="install-card reveal">
           <div class="install-card-head"><span>02</span><strong>HARNESS WEB</strong></div>
-          <h3>DSH Plugin</h3>
+          <h3 data-i18n="webTitle">🌐 Harness 网页版</h3>
           <p data-i18n="dshBody">Web 插件一行命令安装 v1.2.5；使用预构建 npm 包，无需访问 GitHub 下载压缩包。</p>
-          <div class="code-line"><code>dsh plugin --profile web add open-sea-skin@1.2.5</code><button type="button" data-copy="dsh plugin --profile web add open-sea-skin@1.2.5" data-i18n-aria="copy" aria-label="复制命令">COPY</button></div>
+          <div class="code-line"><code>dsh plugin --profile web add open-sea-skin@1.2.5</code><button type="button" data-copy="dsh plugin --profile web add open-sea-skin@1.2.5" data-i18n-aria="copy" aria-label="复制命令" data-i18n="copyButton">复制</button></div>
           <small data-i18n="restart">安装后重新启动 dsh web</small>
         </article>
         <article class="install-card reveal">
@@ -229,10 +229,15 @@
         </article>
         <article class="install-card reveal">
           <div class="install-card-head"><span>04</span><strong>STATIC DIST</strong></div>
-          <h3 data-i18n="oneCommand">一键静态安装</h3>
-          <p data-i18n="staticBody">从任意目录运行；自动备份、可重复更新、可安全卸载。</p>
-          <div class="code-line"><code>curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash</code><button type="button" data-copy="curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash" data-i18n-aria="copy" aria-label="复制命令">COPY</button></div>
+          <h3 data-i18n="oneCommand">🔧 静态前端 · 进阶</h3>
+          <p data-i18n="staticBody">进阶备用：适用于 macOS / Linux 的 Bash。会修改已构建前端；Windows 官方客户端请选择方式 1。</p>
+          <div class="code-line"><code>curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash</code><button type="button" data-copy="curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/install.sh | bash" data-i18n-aria="copy" aria-label="复制命令" data-i18n="copyButton">复制</button></div>
         </article>
+      </div>
+      <div class="install-source reveal">
+        <span>05</span>
+        <div><h3 data-i18n="sourceTitle">🛠️ 源码接入</h3><p data-i18n="sourceBody">供自行编译 Harness 的开发者使用。普通客户端用户请选择方式 1。</p></div>
+        <a href="https://github.com/d-dev0101/open-sea-skin/blob/main/harness-plugin/README.md" data-i18n="sourceGuide">查看源码接入指南</a>
       </div>
       <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
     </section>

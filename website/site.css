@@ -1192,21 +1192,21 @@ html[data-ui-theme='light'] .harness-capture-light {
   align-items: center;
   justify-content: space-between;
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 0.12em;
-  color: rgba(224, 244, 242, 0.44);
+  color: rgba(224, 244, 242, 0.72);
 }
 
 .install-card-head strong {
   padding: 4px 7px;
   border: 1px solid rgba(143, 233, 228, 0.3);
   color: var(--aqua);
-  font-size: 7px;
+  font-size: 12px;
   font-weight: 400;
 }
 
 .install-card h3 {
-  margin: 70px 0 14px;
+  margin: 40px 0 16px;
   font-size: 30px;
   font-weight: 400;
   letter-spacing: -0.04em;
@@ -1214,8 +1214,8 @@ html[data-ui-theme='light'] .harness-capture-light {
 
 .install-card > p {
   margin: 0;
-  color: rgba(222, 241, 239, 0.52);
-  font-size: 11px;
+  color: rgba(222, 241, 239, 0.8);
+  font-size: 15px;
   line-height: 1.8;
 }
 
@@ -1238,19 +1238,20 @@ html[data-ui-theme='light'] .harness-capture-light {
   overflow: auto;
   color: rgba(229, 246, 244, 0.72);
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 13px;
   line-height: 1.6;
   scrollbar-width: thin;
 }
 
 .code-line button {
-  width: 52px;
+  width: 64px;
+  min-height: 44px;
   border: 0;
   border-left: 1px solid rgba(221, 244, 241, 0.15);
   background: transparent;
   color: var(--aqua);
   font-family: var(--mono);
-  font-size: 7px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -1265,7 +1266,7 @@ html[data-ui-theme='light'] .harness-capture-light {
   margin-top: 12px;
   color: var(--aqua);
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 13px;
   text-decoration: none;
 }
 
@@ -1276,8 +1277,8 @@ html[data-ui-theme='light'] .harness-capture-light {
 .install-card > small {
   margin-top: 10px;
   font-family: var(--mono);
-  font-size: 7px;
-  color: rgba(221, 241, 239, 0.35);
+  font-size: 12px;
+  color: rgba(221, 241, 239, 0.72);
 }
 
 .download-link {
@@ -1737,3 +1738,11 @@ input:focus-visible {
     transform: none;
   }
 }
+
+/* Keep the advanced fifth path visible without competing with Desktop. */
+.install-source { display:flex; flex-wrap:wrap; align-items:center; gap:20px; padding:24px 30px; border:1px solid var(--line); border-top:0; background:#06161b; }
+.install-source > span { color:var(--aqua); font-family:var(--mono); }
+.install-source > div { flex:1 1 260px; }
+.install-source h3 { margin:0 0 8px; font-size:20px; }
+.install-source p { margin:0; font-size:14px; line-height:1.8; color:rgba(222,241,239,.8); }
+.install-source a { color:var(--aqua); font-size:14px; }

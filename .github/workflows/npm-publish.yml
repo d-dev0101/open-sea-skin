@@ -9,7 +9,11 @@ on:
         default: v1.2.5
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: npm-release
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -19,6 +23,10 @@ jobs:
       - uses: actions/checkout@v5
         with:
           ref: ${{ inputs.tag }}
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          path: release-tooling
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -26,7 +34,35 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Verify release version
-        run: test "v$(node -p "require('./package.json').version")" = "${{ inputs.tag }}"
-      - run: npm publish --access public
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "v$(node -p "require('./package.json').version")" = "$RELEASE_TAG"
+          gh release view "$RELEASE_TAG"
+      - run: npm run build && npm run check
+      - name: Pack once and publish those exact bytes
+        run: |
+          mkdir -p release-audit
+          npm pack --ignore-scripts --pack-destination release-audit --json > release-audit/pack.json
+          node -e 'const fs=require("fs"); const p=require("./release-audit/pack.json")[0]; fs.copyFileSync("release-audit/"+p.filename,"release-audit/open-sea-skin.tgz")'
+          npm publish release-audit/open-sea-skin.tgz --ignore-scripts --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Verify registry bytes before attaching GitHub assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          VERSION=$(node -p 'require("./package.json").version')
+          npm view "open-sea-skin@$VERSION" dist --json --registry=https://registry.npmjs.org > release-audit/dist.json
+          URL=$(node -p 'require("./release-audit/dist.json").tarball')
+          curl --fail --location --retry 5 "$URL" -o release-audit/registry.tgz
+          node release-tooling/scripts/verify-release.mjs release-audit/open-sea-skin.tgz release-audit/registry.tgz release-audit/dist.json
+          (cd release-audit && sha256sum "open-sea-skin-$VERSION.tgz" open-sea-skin.tgz > SHA256SUMS)
+          gh release upload "$RELEASE_TAG" "release-audit/open-sea-skin-$VERSION.tgz" release-audit/open-sea-skin.tgz release-audit/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-integrity-evidence
+          path: release-audit/

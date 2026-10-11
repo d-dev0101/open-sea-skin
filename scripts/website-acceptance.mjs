@@ -37,6 +37,13 @@ try {
   assert.equal(await page.locator('.brand-mark .brand-symbol').count(), 2)
   assert.equal(await page.locator('.install-card.recommended [data-copy]').getAttribute('data-copy'), 'open-sea-skin@1.2.5')
   assert.match(await page.locator('.install-card.recommended').innerText(), /插件.*添加插件/s)
+  assert.match(await page.locator('#desktop-guide-link').getAttribute('href'), /install.zh.md$/)
+  assert.equal(await page.locator('.install-source').count(), 1)
+  assert.ok(await page.locator('.code-line button').first().evaluate(el => parseFloat(getComputedStyle(el).fontSize) >= 12))
+  await page.locator('.install-card.recommended').scrollIntoViewIfNeeded()
+  await page.waitForFunction(() => getComputedStyle(document.querySelector('.install-card.recommended')).opacity === '1')
+  await page.locator('.install-card.recommended').scrollIntoViewIfNeeded()
+  if (process.env.OSS_SCREENSHOTS) await page.screenshot({ path: `${process.env.OSS_SCREENSHOTS}/install-desktop.png` })
   await page.locator('.install-card.recommended [data-copy]').click()
   await page.locator('#copy-status').getByText('包名已复制').waitFor()
 
@@ -70,6 +77,7 @@ try {
   await page.locator('#language-toggle').click()
   assert.match(await page.title(), /Ocean skin for DeepSeek Harness/)
   assert.equal(await page.locator('#hero-title').innerText(), 'Give Harness\nits own horizon')
+  assert.match(await page.locator('#desktop-guide-link').getAttribute('href'), /dsh-plugin.md#dsh-desktop$/)
 
   await page.locator('#gallery').scrollIntoViewIfNeeded()
   const images = page.locator('#gallery img')
@@ -84,6 +92,10 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true)
   assert.equal(await page.locator('.brand').first().isVisible(), true)
   assert.equal(await page.locator('.control-dock').isVisible(), true)
+  await page.locator('#language-toggle').click()
+  await page.locator('.install-card.recommended').scrollIntoViewIfNeeded()
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true)
+  if (process.env.OSS_SCREENSHOTS) await page.screenshot({ path: `${process.env.OSS_SCREENSHOTS}/install-mobile.png` })
 
   assert.deepEqual(failedResponses, [])
   assert.deepEqual(failures, [])

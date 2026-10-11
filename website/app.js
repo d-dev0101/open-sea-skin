@@ -13,7 +13,7 @@ const translations = {
     welcomeBody: 'Open Sea 让 DeepSeek Harness 的工作空间随海况与光线呼吸。', composer: '描述你想构建的内容',
     detailsTitle: '当前环境', rendering: '渲染', privacy: '隐私', local: '本地', fps: '帧率', scroll: '继续探索',
     factOne: '只作用于 Harness', factOneBody: '不接管新标签页', factTwo: '五组 Gerstner 波', factThree: '自适应性能',
-    factFour: '可逆安装', factFourBody: '四种安装方式', featuresTitle: '一片真正属于<br>工作流的海',
+    factFour: '可逆安装', factFourBody: '五种入口，按需选择', featuresTitle: '一片真正属于<br>工作流的海',
     featuresBody: '它不是覆盖在界面上的视频。海面、天空、太阳和反射由 GPU 实时生成，控制变化会立刻反馈到你的工作空间。',
     featureLive: '实时，而非循环素材', featureLiveBody: '五组 Gerstner 涌浪、解析法线、FBM 微表面、浪尖泡沫与 Fresnel 天空反射，共享同一组日光参数。',
     featureHarness: '为 Harness 而生', featureHarnessBody: '左下角快捷控制、设置页原生入口、对话框层级修复，以及只识别真正 Harness 页面的浏览器扩展。',
@@ -22,10 +22,10 @@ const translations = {
     galleryTitle: '来自真实 Harness<br>的海况记录', galleryBody: '以下全部在 DeepSeek Harness 中录制，玻璃不透明度统一为 40%。不是概念图，也不是后期合成。',
     galleryDark: '深色全景', galleryLight: '浅色全景', galleryWaves: '调节波浪', gallerySunset: '从白天到夕阳',
     installTitle: '把海带回<br>你的 Harness', installBody: '官方 Desktop、Harness Web、浏览器扩展和静态前端各有自己的安装入口。先确认你的运行环境，再选一种方式。',
-    recommended: '推荐', desktopBody: '无需终端：在桌面端打开「插件」→「添加插件」，输入下面的包名，安装后选择「立即启用」。可使用大陆镜像；未同步时切换官方 npm 源。', desktopGuide: '完整步骤与故障排查',
+    desktopTitle: '🖥️ 官方客户端 · Windows / Mac', webTitle: '🌐 Harness 网页版', copyButton: '复制', sourceTitle: '🛠️ 源码接入', sourceBody: '供自行编译 Harness 的开发者使用。普通客户端用户请选择方式 1。', sourceGuide: '查看源码接入指南', recommended: '优先推荐', desktopBody: '无需终端：在桌面端打开「插件」→「添加插件」，输入下面的包名，安装后选择「立即启用」。可使用大陆镜像；未同步时切换官方 npm 源。', desktopGuide: '中文安装指南与常见报错',
     dshBody: 'Web 插件一行命令安装 v1.2.5；使用预构建 npm 包，无需访问 GitHub 下载压缩包。', restart: '安装后重新启动 dsh web',
-    browserExtension: '浏览器扩展', browserBody: '只为经过识别的 Harness 页面换肤，不会接管新标签页或影响其他本地网站。',
-    downloadZip: '下载 v1.2.5 ZIP', oneCommand: '一键静态安装', staticBody: '从任意目录运行；自动备份、可重复更新、可安全卸载。',
+    browserExtension: '🧩 浏览器扩展', browserBody: '只为经过识别的 Harness 页面换肤，不会接管新标签页或影响其他本地网站。',
+    downloadZip: '下载 v1.2.5 ZIP', oneCommand: '🔧 静态前端 · 进阶', staticBody: '进阶备用：适用于 macOS / Linux 的 Bash。会修改已构建前端；Windows 官方客户端请选择方式 1。',
     copy: '复制命令', copied: '命令已复制', copyFailed: '复制失败，请手动选择命令', copyPackage: '复制包名', copiedPackage: '包名已复制', copyPackageFailed: '复制失败，请手动选择包名',
     closingTitle: '工作可以很深，<br>界面不必沉重。', closingBody: 'Open Sea 免费、开源、本地优先。欢迎把它带进你的 Harness，也欢迎一起把这片海做得更好。',
     visitGitHub: '前往 GitHub', viewRelease: '查看最新 Release', privacyPolicy: '隐私', issues: '问题反馈',
@@ -45,7 +45,7 @@ const translations = {
     welcomeBody: 'Open Sea lets the DeepSeek Harness workspace breathe with sea state and light.', composer: 'Describe what you want to build',
     detailsTitle: 'Current environment', rendering: 'Rendering', privacy: 'Privacy', local: 'Local', fps: 'Frame rate', scroll: 'Keep exploring',
     factOne: 'Harness only', factOneBody: 'Never replaces New Tab', factTwo: 'Five Gerstner waves', factThree: 'Adaptive performance',
-    factFour: 'Reversible install', factFourBody: 'Four install paths', featuresTitle: 'An ocean made<br>for the workflow',
+    factFour: 'Reversible install', factFourBody: 'Five install paths', featuresTitle: 'An ocean made<br>for the workflow',
     featuresBody: 'This is not a video behind the interface. The sea, sky, sun, and reflections are generated live on the GPU, so every control responds immediately.',
     featureLive: 'Realtime, never looped footage', featureLiveBody: 'Five Gerstner swells, analytic normals, FBM micro-surface, crest foam, and Fresnel sky reflections share one daylight model.',
     featureHarness: 'Made for Harness', featureHarnessBody: 'Lower-left quick controls, native Settings integration, corrected modal stacking, and a browser extension that recognizes only real Harness pages.',
@@ -54,10 +54,10 @@ const translations = {
     galleryTitle: 'Sea-state records<br>from real Harness', galleryBody: 'Every capture below was recorded inside DeepSeek Harness at 40% glass opacity. No concept renders and no compositing.',
     galleryDark: 'Dark overview', galleryLight: 'Light overview', galleryWaves: 'Adjusting waves', gallerySunset: 'Daylight to sunset',
     installTitle: 'Bring the ocean<br>into your Harness', installBody: 'Official Desktop, Harness Web, browser extension, and static frontend each have their own install path. Check your environment and choose one.',
-    recommended: 'Recommended', desktopBody: 'No terminal: open Plugins → Add plugin in Desktop, enter the package below, then choose Enable now. Use the npm mirror, or switch to the official registry before it syncs.', desktopGuide: 'Full steps & troubleshooting',
+    desktopTitle: '🖥️ Official Desktop · Windows / Mac', webTitle: '🌐 Harness Web', copyButton: 'Copy', sourceTitle: '🛠️ Source integration', sourceBody: 'For developers building Harness from source. Desktop users should choose option 1.', sourceGuide: 'Source integration guide', recommended: 'Recommended', desktopBody: 'No terminal: open Plugins → Add plugin in Desktop, enter the package below, then choose Enable now. Use the npm mirror, or switch to the official registry before it syncs.', desktopGuide: 'Full steps & troubleshooting',
     dshBody: 'Install the prebuilt v1.2.5 Web plugin in one command—no GitHub tarball download.', restart: 'Restart dsh web after installation',
     browserExtension: 'Browser extension', browserBody: 'Skins verified Harness pages only. It never replaces New Tab or touches other localhost apps.',
-    downloadZip: 'Download v1.2.5 ZIP', oneCommand: 'One-command static install', staticBody: 'Run it from any directory, with automatic backup, repeatable updates, and safe uninstall.',
+    downloadZip: 'Download v1.2.5 ZIP', oneCommand: '🔧 Static frontend · advanced', staticBody: 'Advanced fallback for Bash on macOS / Linux. Modifies a built frontend; use option 1 for Official Desktop.',
     copy: 'Copy command', copied: 'Command copied', copyFailed: 'Copy failed—select the command manually', copyPackage: 'Copy package name', copiedPackage: 'Package name copied', copyPackageFailed: 'Copy failed—select the package name manually',
     closingTitle: 'The work can be deep.<br>The interface can feel light.', closingBody: 'Open Sea is free, open source, and local-first. Bring it into your Harness—and help us make this ocean even better.',
     visitGitHub: 'Visit GitHub', viewRelease: 'View latest release', privacyPolicy: 'Privacy', issues: 'Issues',
@@ -282,6 +282,9 @@ function applyLanguage(lang) {
     if (value !== undefined) element.setAttribute('aria-label', value);
   }
   languageToggle.textContent = lang === 'zh' ? 'EN' : '中文';
+  document.getElementById('desktop-guide-link').href = lang === 'zh'
+    ? 'https://github.com/d-dev0101/open-sea-skin/blob/main/docs/install.zh.md'
+    : 'https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md#dsh-desktop';
   document.title = lang === 'zh'
     ? 'Open Sea · DeepSeek Harness 海洋皮肤'
     : 'Open Sea · Ocean skin for DeepSeek Harness';
@@ -337,9 +340,8 @@ for (const button of document.querySelectorAll('[data-copy]')) {
     try {
       await copyText(button.dataset.copy);
       copyStatus.textContent = copy()[button.dataset.copyKind === 'package' ? 'copiedPackage' : 'copied'];
-      const previous = button.textContent;
       button.textContent = '✓';
-      window.setTimeout(() => { button.textContent = previous; }, 1400);
+      window.setTimeout(() => { button.textContent = copy().copyButton; }, 1400);
     } catch {
       copyStatus.textContent = copy()[button.dataset.copyKind === 'package' ? 'copyPackageFailed' : 'copyFailed'];
     }

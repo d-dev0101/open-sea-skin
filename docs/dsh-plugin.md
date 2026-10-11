@@ -1,5 +1,7 @@
 # DSH plugin installation
 
+[中文安装与排错指南](install.zh.md) · [Choose your installation](../README.en.md#install)
+
 The repository root is a self-contained DeepSeek Harness bundle. It adds one
 Host row (`open-sea-skin`), one Web client module, and a read-only local asset
 route. It does not modify the Harness checkout.
@@ -100,7 +102,7 @@ If the launcher does not appear, confirm the command used the same profile as
 
 ## Update or remove
 
-Install a newer immutable release tag with the same `add` command. To remove
+Install a newer published npm version with the same `add` command. To remove
 the package and its profile row:
 
 ```sh
