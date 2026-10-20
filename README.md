@@ -16,21 +16,38 @@
 
 ## 🚀 官方客户端，三步开始
 
-**大多数读者只需要「Harness 插件安装」这一条路径。** 官方客户端直接填 npm 包名；浏览器运行的 Harness Web 用同一个插件包。Chrome / Edge 扩展是另一种可选方式，不是桌面端安装的前置步骤，**同一个 Harness 不要重复安装多种皮肤方式**。
+🖥️ **用官方客户端？直接安装 Harness 插件即可。** Windows / Mac 操作相同，不用终端，也不用先装浏览器扩展。
 
-**① 打开「插件 → 添加插件」　② 输入下面的包名　③ 安装后「立即启用」**
+1. 🧩 点击侧栏 **「插件 → 添加插件」**。
+2. 📋 复制下方包名，粘贴后点击 **「安装」**。
+3. ✅ 安装完成后 **「立即启用」**；出现重启提示时按提示操作。
 
 ```text
 open-sea-skin@1.2.6
 ```
 
-🖥️ Windows / Mac 通用 · 🇨🇳 可选中国大陆镜像源 · [其他安装方式](#install) · [中文排错指南](docs/install.zh.md)
+🇨🇳 大陆用户可选中国大陆镜像源；找不到版本时切换官方 npm 源。
 
-> 社区插件市场用户：搜索 **Open Sea / open-sea-skin**，核对作者 **d-dev0101**、项目地址及版本再安装。市场未同步时，改用上面的官方客户端「添加插件」入口；不需要为了安装本皮肤先安装第三方市场。
+🌐 用的是 Harness Web？[跳到 Web 插件安装](#dsh-plugin)。遇到问题？[查看中文排错指南](docs/install.zh.md)。
+
+> 💡 **只选一种安装方式。** Harness 插件和浏览器扩展是两条不同路径，不要在同一个 Harness 中重复安装。
+
+<details>
+<summary>🛍️ 已经装了社区插件市场？</summary>
+
+搜索 **Open Sea / open-sea-skin**，核对项目为 **d-dev0101/open-sea-skin**，再检查版本并安装。
+
+市场尚未同步时，改用官方客户端的「添加插件」。**不需要为了安装 Open Sea 先安装第三方市场。**
+
+</details>
 
 ![Open Sea 在 DeepSeek Harness 中展示的动态海洋背景与透明聊天界面](docs/marketplace/open-sea-harness-cover.png)
 
-**Open Sea 是为 DeepSeek Harness（DSH）制作的开源海洋皮肤与界面美化插件。** 它将实时 WebGPU 动态背景、可调海浪、白天到夕阳的光照，以及半透明玻璃界面带进你的工作空间。支持 DSH 插件、仅作用于 Harness 的 Chrome / Edge 扩展，以及静态前端集成。
+**Open Sea 是为 DeepSeek Harness（DSH）制作的开源海洋皮肤与界面美化插件。**
+
+🌊 让真实流动的海浪成为背景。<br>
+🌅 从白天调到夕阳，选择你喜欢的光线。<br>
+🫧 自由调节玻璃不透明度，让海洋与工作界面自然融合。
 
 > 本项目为社区作品，**不是 DeepSeek 官方产品**。适用对象是 **DeepSeek Harness**，不是 DeepSeek 网页聊天站点；也与 OpenSea NFT 交易平台无关。
 
@@ -83,8 +100,8 @@ open-sea-skin@1.2.6
 | 编号 | 你在用什么？ | 从这里开始 |
 | --- | --- | --- |
 | **1 🖥️ 推荐** | **官方客户端 · Windows / Mac** | [客户端内安装，无需终端](#official-desktop) |
-| **2 🌐** | 浏览器里运行的 Harness Web | [一条命令安装插件](#dsh-plugin) |
-| **3 🧩** | 想用 Chrome / Edge 扩展换肤 | [安装浏览器扩展](#browser-extension) |
+| **2 🌐 插件** | 浏览器里运行的 Harness Web | [在运行 Harness 的电脑上安装](#dsh-plugin) |
+| **3 🧩 扩展** | 本机 Harness Web，想用浏览器扩展换肤 | [安装 Chrome / Edge 扩展](#browser-extension) |
 | **4 🔧 进阶** | 不支持插件的已构建前端 | [静态前端安装](#static-installer) |
 | **5 🛠️ 开发者** | 自己编译 Harness 源码 | [原生源码接入](#source-integration) |
 
@@ -107,9 +124,13 @@ open-sea-skin@1.2.6
 
 > 💡 入口是侧栏的「插件」，不是「设置 → 内置插件」。安装时填写包名，不要填写 GitHub 仓库或远程压缩包链接。
 
-**更新旧版：** 在「插件」页卸载旧版 Open Sea，再按上述步骤安装。已核对的官方安装器暂不支持第三方插件原地升级。
-**暂时关闭：** 在皮肤面板关闭海洋，或在「插件」页停用 Open Sea。
-**完整卸载：** 在「插件」页找到 Open Sea，选择卸载。无需运行 Web 卸载命令。
+#### 🔄 更新、暂停与卸载
+
+- **更新旧版：** 在「插件」页卸载旧版 Open Sea，再按上述步骤安装。已核对的官方安装器暂不支持第三方插件原地升级。
+- **暂时关闭：** 在皮肤面板关闭海洋，或在「插件」页停用 Open Sea。
+- **完整卸载：** 在「插件」页找到 Open Sea，选择卸载。无需运行 Web 卸载命令。
+
+> 🛟 不要删除整个 Harness 配置目录、会话目录或锁文件。安装报错时先看[中文恢复与排错指南](docs/install.zh.md)。
 
 📖 [Windows / Mac 中文详细指南与常见报错](docs/install.zh.md) · [下载官方客户端](https://github.com/deepseek-ai/deepseek-harness/releases)
 
@@ -260,7 +281,14 @@ npm run test:website
 
 ## 🤝 反馈与许可
 
-为想要个性化 DeepSeek Harness 工作空间的人而做。欢迎提交建议、反馈问题或贡献代码；请勿在 Issue 中公开密码、Token 或私人对话。
+💬 **遇到问题？欢迎用中文提问。** [提交 Issue](https://github.com/d-dev0101/open-sea-skin/issues/new) 时，附上以下信息，方便定位：
+
+- 🖥️ 系统：Windows / macOS，以及 Harness 版本。
+- 📦 安装：皮肤版本、安装方式（客户端插件 / Web 插件 / 浏览器扩展等）。
+- 🔎 现象：操作步骤、报错原文，以及去除敏感信息的截图。
+
+🔐 请勿公开密码、Token 或私人对话。<br>
+💡 有改进建议也欢迎交流；想参与开发，可提交 [Pull request](https://github.com/d-dev0101/open-sea-skin/pulls)。
 
 项目代码使用 [MIT 开源许可](LICENSE)，第三方代码与字体遵循各自许可，详见[第三方声明](THIRD_PARTY_NOTICES.md)。
 

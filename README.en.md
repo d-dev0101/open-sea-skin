@@ -1,9 +1,7 @@
-> **Recommended: install as a Harness plugin.** Official Desktop accepts the npm package name; Harness Web uses the same package via its CLI. The Chrome / Edge extension is an alternative, not a Desktop prerequisite. Do not install multiple skin integrations in the same Harness instance. In community markets, verify the repository is `d-dev0101/open-sea-skin` and check the version; if stale, use Desktop's Add plugin entry instead.
-
 <div align="center">
   <img src="extension/icons/icon128.png" width="80" height="80" alt="Open Sea wave logo" />
   <h1>Open Sea Skin · DeepSeek Harness Ocean Theme</h1>
-  <p><strong>A living ocean behind your workspace.</strong><br>实时海洋 · 夕阳光影 · 透明玻璃界面</p>
+  <p><strong>A living ocean behind your workspace.</strong><br>Animated waves · Sunset lighting · Translucent glass</p>
   <p><a href="README.md">简体中文</a> · <strong>English</strong></p>
   <p>
     <a href="https://github.com/d-dev0101/open-sea-skin/releases"><img src="https://img.shields.io/github/v/release/d-dev0101/open-sea-skin?color=138b8b&amp;label=GitHub%20release" alt="Latest GitHub release" /></a>
@@ -18,13 +16,30 @@
 
 ## 🚀 Official Desktop in three steps
 
-**① Plugins → Add plugin　② Paste the package below　③ Install → Enable now**
+🖥️ **Using Official Desktop? Install the Harness plugin directly.** The same steps work on Windows and Mac. No terminal or browser extension required.
+
+1. 🧩 Open **Plugins → Add plugin** in the sidebar.
+2. 📋 Paste the package name below and click **Install**.
+3. ✅ Choose **Enable now**, then restart if prompted.
 
 ```text
 open-sea-skin@1.2.6
 ```
 
-Windows / Mac · npm and mainland China mirror · [Other methods](#install)
+🇨🇳 The mainland China mirror is optional; switch to the official npm registry if the version is not available.
+
+🌐 Using Harness Web? [Go to Web installation](#dsh-plugin). Need help? [Read the plugin guide](docs/dsh-plugin.md).
+
+> 💡 **Choose one integration.** The Harness plugin and browser extension are alternatives. Do not install both in the same Harness instance.
+
+<details>
+<summary>🛍️ Already using a community plugin market?</summary>
+
+Search for **Open Sea / open-sea-skin**, verify the repository is **d-dev0101/open-sea-skin**, and check the version.
+
+If the listing is outdated, use Official Desktop's **Add plugin** instead. Installing a community market is not required.
+
+</details>
 
 ![Open Sea dynamic ocean theme running inside DeepSeek Harness with a transparent chat interface](docs/marketplace/open-sea-harness-cover.png)
 
