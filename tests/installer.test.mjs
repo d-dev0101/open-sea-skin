@@ -13,7 +13,8 @@ const sourceInstaller = resolve(root, 'harness-plugin/install-into-harness.sh')
 
 test('static bootstrap defaults to the current GitHub release', async () => {
   const script = await readFile(bootstrapInstaller, 'utf8')
-  assert.match(script, /OPEN_SEA_VERSION="\$\{OPEN_SEA_VERSION:-v1\.2\.5\}"/)
+  const { version } = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'))
+  assert.ok(script.includes(`OPEN_SEA_VERSION="${'${'}OPEN_SEA_VERSION:-v${version}}"`))
 })
 
 function run(...args) {

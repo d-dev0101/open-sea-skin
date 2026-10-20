@@ -9,7 +9,7 @@ route. It does not modify the Harness checkout.
 ## Install a release
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.5
+dsh plugin --profile web add open-sea-skin@1.2.6
 dsh web
 ```
 
@@ -20,7 +20,7 @@ are saved locally in that browser profile.
 Use the explicit version above so a stale registry or mirror cannot silently
 select 1.2.3, which lacks the official Desktop glass fix. A mainland China
 mirror may take time to synchronize a new npm release; use the official npm
-registry in the installer if 1.2.5 is not yet available from the mirror.
+registry in the installer if 1.2.6 is not yet available from the mirror.
 
 ## DSH Desktop
 
@@ -32,7 +32,7 @@ plugin manager—no download folder, terminal, or profile editing:
 2. Enter this exact package name and version:
 
    ```text
-   open-sea-skin@1.2.5
+   open-sea-skin@1.2.6
    ```
 
 3. Choose **Install**, review the package details, then **Enable now**.
@@ -40,9 +40,9 @@ plugin manager—no download folder, terminal, or profile editing:
    to **40%** if you want the ocean to show clearly.
 
 If Open Sea 1.2.3 is already installed, uninstall that package in **Plugins**
-before adding 1.2.5. The official `0.2.0-rc.2` Add plugin dialog does not
+before adding 1.2.6. The official `0.2.0-rc.2` Add plugin dialog does not
 perform in-place upgrades. If the selected mainland China mirror has not yet
-synchronized 1.2.5, choose the **official npm registry** in the same dialog.
+synchronized 1.2.6, choose the **official npm registry** in the same dialog.
 The in-app catalog may list an older version; entering the exact package spec
 avoids accidentally reinstalling it.
 
@@ -54,20 +54,20 @@ does not repair a cached URL resolution. The [official plugin manager
 documentation](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md) describes the package-name and registry controls.
 Native Windows Desktop has not been E2E tested.
 
-The exact `open-sea-skin@1.2.5` package was installed successfully from both
+The previous `open-sea-skin@1.2.5` package was installed successfully from both
 the official npm registry and the mainland China mirror with the bundled CLI
 in an isolated official macOS Desktop `0.2.0-rc.2` profile. This confirms the
 package and registry paths; the in-app UI flow has not been independently
-completed.
+completed. Version 1.2.6 adds overlay/dialog browser regressions; this is not a new native Desktop certification.
 
 ### Local-package fallback
 
-If both registries are unavailable, [download the v1.2.5 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-1.2.5.tgz)
+If both registries are unavailable, [download the v1.2.6 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.6/open-sea-skin-1.2.6.tgz)
 to Downloads. Fully quit Desktop, then use the `dsh` executable bundled with
 your Desktop app—not a separate npm CLI. Standard macOS app path:
 
 ```sh
-"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.5.tgz"
+"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.6.tgz"
 ```
 
 Reopen Desktop afterward. This **local file** install was tested in an isolated

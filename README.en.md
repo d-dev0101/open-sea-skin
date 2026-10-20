@@ -1,3 +1,5 @@
+> **Recommended: install as a Harness plugin.** Official Desktop accepts the npm package name; Harness Web uses the same package via its CLI. The Chrome / Edge extension is an alternative, not a Desktop prerequisite. Do not install multiple skin integrations in the same Harness instance. In community markets, verify the repository is `d-dev0101/open-sea-skin` and check the version; if stale, use Desktop's Add plugin entry instead.
+
 <div align="center">
   <img src="extension/icons/icon128.png" width="80" height="80" alt="Open Sea wave logo" />
   <h1>Open Sea Skin · DeepSeek Harness Ocean Theme</h1>
@@ -19,7 +21,7 @@
 **① Plugins → Add plugin　② Paste the package below　③ Install → Enable now**
 
 ```text
-open-sea-skin@1.2.5
+open-sea-skin@1.2.6
 ```
 
 Windows / Mac · npm and mainland China mirror · [Other methods](#install)
@@ -94,7 +96,7 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 2. Paste this exact package name and version:
 
    ```text
-   open-sea-skin@1.2.5
+   open-sea-skin@1.2.6
    ```
 
 3. Choose the official npm registry, or the mainland China mirror if that works better on your network.
@@ -116,7 +118,7 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 Run this on the machine that runs `dsh web`. The command is the same in Windows PowerShell and the macOS terminal:
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.5
+dsh plugin --profile web add open-sea-skin@1.2.6
 ```
 
 Restart your running `dsh web` process and reload the browser. This installs into the Web profile, **not Official Desktop**.
@@ -129,7 +131,7 @@ Restart your running `dsh web` process and reload the browser. This installs int
 
 For local Harness pages in a browser, on Windows or Mac.
 
-1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-extension-v1.2.5.zip) and unzip it.
+1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.6/open-sea-skin-extension-v1.2.6.zip) and unzip it.
 2. Open `chrome://extensions` or `edge://extensions`; enable **Developer mode**.
 3. Choose **Load unpacked** and select the extracted folder containing `manifest.json`.
 4. Reload your Harness page on `127.0.0.1` or `localhost`.

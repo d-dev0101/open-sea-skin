@@ -35,7 +35,7 @@ try {
   assert.equal(await page.locator('#capture-opacity-output').textContent(), '64%')
   assert.equal(await page.locator('.nav-github svg').count(), 1)
   assert.equal(await page.locator('.brand-mark .brand-symbol').count(), 2)
-  assert.equal(await page.locator('.install-card.recommended [data-copy]').getAttribute('data-copy'), 'open-sea-skin@1.2.5')
+  assert.equal(await page.locator('.install-card.recommended [data-copy]').getAttribute('data-copy'), 'open-sea-skin@1.2.6')
   assert.match(await page.locator('.install-card.recommended').innerText(), /插件.*添加插件/s)
   assert.match(await page.locator('#desktop-guide-link').getAttribute('href'), /install.zh.md$/)
   assert.equal(await page.locator('.install-source').count(), 1)

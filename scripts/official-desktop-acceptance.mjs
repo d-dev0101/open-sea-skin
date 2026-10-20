@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
-import { chromiumArgs, findChromeForTesting, serveDirectory, waitForOcean, watchPageErrors } from './browser-support.mjs'
+import { chromiumArgs, findChromeForTesting, serveDirectory, setRange, waitForOcean, watchPageErrors } from './browser-support.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const server = await serveDirectory(root)
@@ -33,6 +33,8 @@ try {
 
   for (const platform of ['darwin', 'windows']) {
     for (const dark of [true, false]) {
+      for (const glass of [40, 90]) {
+      await setRange(page.locator('#__open-sea-skin-panel__-glass-range'), glass)
       await page.evaluate(({ platform, dark }) => {
         document.documentElement.toggleAttribute('data-windows-titlebar', platform === 'windows')
         if (platform === 'darwin') document.documentElement.dataset.platform = 'darwin'
@@ -58,13 +60,22 @@ try {
           columns: ['.sidebar', '.conversation', '[data-dockkit-content]'].map(effective),
           composer: alpha('.composer'),
           settings: alpha('[data-shortcut-modal="settings"]'),
+          marketplace: alpha('.marketplace'),
+          pluginDialog: alpha('.plugin-dialog'),
         }
       })
-      const expected = .4
+      const expected = dark ? Math.max(.4, glass / 100 - .12) : glass / 100
       for (const value of paints.columns) assert.ok(Math.abs(value - expected) < .005,
         `${platform}/${dark ? 'dark' : 'light'}: columns ${JSON.stringify(paints.columns)} expected ${expected}`)
       assert.ok(paints.composer >= .4, 'composer retains its own surface')
       assert.ok(paints.settings >= .96, 'settings stays legible over the ocean')
+      assert.ok(paints.marketplace >= .96, 'marketplace keeps a readable overlay token')
+      assert.ok(paints.pluginDialog >= .96, 'sibling configuration dialog has an independent surface')
+      assert.equal(await page.locator('[data-shell-overlay]').evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)')
+      if (process.env.OSS_SCREENSHOTS && platform === 'windows' && glass === 40) {
+        await page.screenshot({ path: `${process.env.OSS_SCREENSHOTS}/overlay-${dark ? 'dark' : 'light'}.png` })
+      }
+      }
     }
   }
   await page.evaluate(() => window.stopOpenSea())

@@ -22,6 +22,8 @@
     .overlay { position: absolute; inset: 0; pointer-events: none; }
     .settings { position: fixed; inset: 15%; z-index: 1000; display: none; padding: 40px; background: var(--dsw-alias-bg-layer-2); }
     .settings.open { display: block; }
+    .plugin-dialog { position: fixed; inset: 22% 20%; z-index: 1100; padding: 24px; background: var(--dsw-alias-bg-layer-2); }
+    .marketplace { position: fixed; inset: 8%; z-index: 1050; background: var(--dsw-alias-bg-overlay); }
   </style>
 </head>
 <body data-ds-dark-theme>
@@ -34,5 +36,8 @@
     </div>
   </div>
   <div class="settings" data-shortcut-modal="settings" role="dialog">设置</div>
+  <div class="marketplace">插件广场</div>
+  <!-- A sibling portal, not a child of the Settings dialog. -->
+  <div class="plugin-dialog" role="dialog" aria-modal="true" aria-label="插件配置">独立的二级配置弹窗</div>
 </body>
 </html>

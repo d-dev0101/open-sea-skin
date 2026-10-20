@@ -106,7 +106,7 @@ body {
   --dsw-alias-bg-layer-3: rgba(255, 255, 255, ${alpha(light)}) !important;
   --dsw-alias-bg-module-platform: rgba(245, 246, 247, ${alpha(light + 0.02)}) !important;
   --dsw-alias-bg-multi-select: rgba(245, 246, 247, ${alpha(light + 0.02)}) !important;
-  --dsw-alias-bg-overlay: rgba(233, 236, 242, ${alpha(Math.min(0.96, light + 0.10))}) !important;
+  --dsw-alias-bg-overlay: rgba(233, 236, 242, .97) !important;
   --dsw-specific-sidebar-fill: rgba(249, 250, 251, ${alpha(Math.max(0.36, light - 0.04))}) !important;
   --dsw-specific-selector: rgba(245, 246, 247, ${alpha(light + 0.02)}) !important;
 }
@@ -117,7 +117,7 @@ body[data-ds-dark-theme] {
   --dsw-alias-bg-layer-3: rgba(20, 25, 33, ${alpha(dark)}) !important;
   --dsw-alias-bg-module-platform: rgba(13, 17, 23, ${alpha(dark + 0.02)}) !important;
   --dsw-alias-bg-multi-select: rgba(13, 17, 23, ${alpha(dark + 0.02)}) !important;
-  --dsw-alias-bg-overlay: rgba(18, 22, 30, ${alpha(Math.min(0.92, dark + 0.14))}) !important;
+  --dsw-alias-bg-overlay: rgba(18, 22, 30, .97) !important;
   --dsw-specific-sidebar-fill: rgba(11, 15, 21, ${alpha(Math.max(0.35, dark - 0.05))}) !important;
   --dsw-specific-selector: rgba(13, 17, 23, ${alpha(dark + 0.02)}) !important;
 }
@@ -161,12 +161,13 @@ html:is([data-platform="darwin"], [data-windows-titlebar]) body #root [data-righ
 html[data-windows-titlebar] body #root div:has(> [data-shell-overlay])::before {
   background: transparent !important;
 }
-/* Settings is body-portalled, not a shell column. Keep it readable even when
-   the user chooses the minimum 40% glass opacity for the workspace. */
-body [data-shortcut-modal="settings"] {
+/* Modal cards can be independent body portals, including second-level plugin
+   configuration. Protect semantic dialog surfaces, not the full-screen mask
+   or shell overlay. Keep this independent of workspace opacity and DOM depth. */
+body :is([data-shortcut-modal="settings"], [role="dialog"], [role="alertdialog"]) {
   background: rgba(250, 251, 253, .97) !important;
 }
-body[data-ds-dark-theme] [data-shortcut-modal="settings"] {
+body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], [role="alertdialog"]) {
   background: rgba(24, 28, 35, .97) !important;
 }
 /* Legacy Harness builds: these CSS-module hashes are best-effort fallbacks. */

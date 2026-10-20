@@ -16,13 +16,17 @@
 
 ## 🚀 官方客户端，三步开始
 
+**大多数读者只需要「Harness 插件安装」这一条路径。** 官方客户端直接填 npm 包名；浏览器运行的 Harness Web 用同一个插件包。Chrome / Edge 扩展是另一种可选方式，不是桌面端安装的前置步骤，**同一个 Harness 不要重复安装多种皮肤方式**。
+
 **① 打开「插件 → 添加插件」　② 输入下面的包名　③ 安装后「立即启用」**
 
 ```text
-open-sea-skin@1.2.5
+open-sea-skin@1.2.6
 ```
 
 🖥️ Windows / Mac 通用 · 🇨🇳 可选中国大陆镜像源 · [其他安装方式](#install) · [中文排错指南](docs/install.zh.md)
+
+> 社区插件市场用户：搜索 **Open Sea / open-sea-skin**，核对作者 **d-dev0101**、项目地址及版本再安装。市场未同步时，改用上面的官方客户端「添加插件」入口；不需要为了安装本皮肤先安装第三方市场。
 
 ![Open Sea 在 DeepSeek Harness 中展示的动态海洋背景与透明聊天界面](docs/marketplace/open-sea-harness-cover.png)
 
@@ -94,7 +98,7 @@ open-sea-skin@1.2.5
 2. 复制下面这一行，粘贴到插件名称输入框：
 
    ```text
-   open-sea-skin@1.2.5
+   open-sea-skin@1.2.6
    ```
 
 3. 中国大陆用户可选择 **「中国大陆镜像源」**；下载失败时可切换 **「官方 npm 源」**。
@@ -116,7 +120,7 @@ open-sea-skin@1.2.5
 在启动 `dsh web` 的那台电脑上运行。Windows PowerShell 与 macOS 终端使用同一条命令：
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.5
+dsh plugin --profile web add open-sea-skin@1.2.6
 ```
 
 安装完成后，重启正在运行的 `dsh web`，刷新浏览器页面。
@@ -130,7 +134,7 @@ dsh plugin --profile web add open-sea-skin@1.2.5
 
 适用于在浏览器中打开的本机 Harness，Windows / Mac 均可使用。
 
-1. [下载扩展 ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.5/open-sea-skin-extension-v1.2.5.zip)，先解压。
+1. [下载扩展 ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.6/open-sea-skin-extension-v1.2.6.zip)，先解压。
 2. 打开 `chrome://extensions` 或 `edge://extensions`，开启 **「开发者模式」**。
 3. 点击 **「加载已解压的扩展程序」**，选择包含 `manifest.json` 的目录。
 4. 回到 `127.0.0.1` 或 `localhost` 上的 Harness 页面，刷新一次。

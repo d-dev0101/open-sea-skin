@@ -6,7 +6,7 @@ on:
       tag:
         description: Git tag whose package version should be published
         required: true
-        default: v1.2.5
+        default: v1.2.6
 
 permissions:
   contents: write
