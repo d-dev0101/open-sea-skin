@@ -14,6 +14,12 @@
   <p><a href="https://d-dev0101.github.io/open-sea-skin/"><strong>🌊 Interactive demo</strong></a> · <a href="#install">📦 Install</a> · <a href="https://github.com/d-dev0101/open-sea-skin/releases">🚀 Releases</a> · <a href="https://github.com/d-dev0101/open-sea-skin/issues">💬 Get help</a></p>
 </div>
 
+## 🌊 See the ocean in motion
+
+![Open Sea animated ocean inside DeepSeek Harness in dark mode at 40 percent glass opacity](docs/screenshots/harness-dark-overview-40.gif)
+
+🎬 Original Harness recording · 40% glass opacity · [Light mode, waves & sunset](#gallery) · [Try the interactive website](https://d-dev0101.github.io/open-sea-skin/)
+
 ## 🚀 Official Desktop in three steps
 
 🖥️ **Using Official Desktop? Install the Harness plugin directly.** The same steps work on Windows and Mac. No terminal or browser extension required.
@@ -40,8 +46,6 @@ Search for **Open Sea / open-sea-skin**, verify the repository is **d-dev0101/op
 If the listing is outdated, use Official Desktop's **Add plugin** instead. Installing a community market is not required.
 
 </details>
-
-![Open Sea dynamic ocean theme running inside DeepSeek Harness with a transparent chat interface](docs/marketplace/open-sea-harness-cover.png)
 
 **Open Sea Skin is an open-source ocean theme and appearance plugin for DeepSeek Harness (DSH).** It adds a real-time WebGPU animated background, adjustable waves, daylight-to-sunset lighting, and a translucent glass interface. Use it as a DSH plugin, a Harness-only Chrome/Edge extension, or a static frontend integration.
 

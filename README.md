@@ -14,6 +14,12 @@
   <p><a href="https://d-dev0101.github.io/open-sea-skin/"><strong>🌊 官网交互体验</strong></a> · <a href="#install">📦 安装指南</a> · <a href="https://github.com/d-dev0101/open-sea-skin/releases">🚀 下载版本</a> · <a href="https://github.com/d-dev0101/open-sea-skin/issues">💬 问题反馈</a></p>
 </div>
 
+## 🌊 先看海动起来
+
+![Open Sea 在 DeepSeek Harness 中的深色海洋动态实录，玻璃不透明度 40%](docs/screenshots/harness-dark-overview-40.gif)
+
+🎬 原有 Harness 实录 · 40% 玻璃不透明度 · [浅色、海浪与夕阳动图](#gallery) · [亲手调节官网效果](https://d-dev0101.github.io/open-sea-skin/)
+
 ## 🚀 官方客户端，三步开始
 
 🖥️ **用官方客户端？直接安装 Harness 插件即可。** Windows / Mac 操作相同，不用终端，也不用先装浏览器扩展。
@@ -40,8 +46,6 @@ open-sea-skin@1.2.6
 市场尚未同步时，改用官方客户端的「添加插件」。**不需要为了安装 Open Sea 先安装第三方市场。**
 
 </details>
-
-![Open Sea 在 DeepSeek Harness 中展示的动态海洋背景与透明聊天界面](docs/marketplace/open-sea-harness-cover.png)
 
 **Open Sea 是为 DeepSeek Harness（DSH）制作的开源海洋皮肤与界面美化插件。**
 
