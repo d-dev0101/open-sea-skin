@@ -46,7 +46,7 @@ jobs:
           mkdir -p release-audit
           npm pack --ignore-scripts --pack-destination release-audit --json > release-audit/pack.json
           node -e 'const fs=require("fs"); const p=require("./release-audit/pack.json")[0]; fs.copyFileSync("release-audit/"+p.filename,"release-audit/open-sea-skin.tgz")'
-          npm publish release-audit/open-sea-skin.tgz --ignore-scripts --access public
+          npm publish ./release-audit/open-sea-skin.tgz --ignore-scripts --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Verify registry bytes before attaching GitHub assets
