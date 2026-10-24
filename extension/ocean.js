@@ -15,7 +15,7 @@ import * as THREE from './vendor/three.webgpu.js';
 import {
   Fn, pass, uniform, float, vec2, vec3, vec4, If,
   sin, cos, dot, cross, normalize, mix, pow, max, clamp, fract, floor,
-  smoothstep, distance, reflect,
+  smoothstep, length, reflect,
   positionLocal, positionWorld, cameraPosition
 } from './vendor/three.tsl.js';
 import { OrbitControls } from './vendor/addons/controls/OrbitControls.js';
@@ -72,27 +72,40 @@ const GERSTNER_DEFS = [
   return { dx, dy, k, c, a0: w.steepness / k };
 });
 
-const wavePosition = Fn(([xz, time, sea]) => {
+const TWO_PI = Math.PI * 2;
+// Precompute k*c*t mod 2*pi on the CPU. The motion is identical (sin/cos are
+// periodic), each wave loses a multiply/subtract per stage, and long-running
+// backgrounds no longer feed an ever-growing time value into the shader.
+const uPhases = GERSTNER_DEFS.map(() => uniform(0));
+
+const wavePosition = Fn(([xz, sea]) => {
   let x = xz.x;
   let y = float(0);
   let z = xz.y;
-  for (const w of GERSTNER_DEFS) {
+  for (let i = 0; i < GERSTNER_DEFS.length; i++) {
+    const w = GERSTNER_DEFS[i];
     const dir = vec2(w.dx, w.dy);
-    const f = float(w.k).mul(dir.dot(xz).sub(time.mul(float(w.c))));
+    const f = float(w.k).mul(dir.dot(xz)).sub(uPhases[i]);
     const a = float(w.a0).mul(sea);
-    x = x.add(a.mul(dir.x).mul(cos(f)));
-    y = y.add(a.mul(sin(f)));
-    z = z.add(a.mul(dir.y).mul(cos(f)));
+    const cf = cos(f);
+    const sf = sin(f);
+    x = x.add(a.mul(dir.x).mul(cf));
+    y = y.add(a.mul(sf));
+    z = z.add(a.mul(dir.y).mul(cf));
   }
   return vec3(x, y, z);
 });
 
-const waveNormal = Fn(([xz, time, sea]) => {
+// Normal + crest share one loop: the crest sum reuses the sin(f) that the
+// normal already evaluates, instead of running a second 5-wave pass.
+const waveSurface = Fn(([xz, sea]) => {
   let tx = float(1), ty = float(0), tz = float(0);
   let bx = float(0), by = float(0), bz = float(1);
-  for (const w of GERSTNER_DEFS) {
+  let crest = float(0);
+  for (let i = 0; i < GERSTNER_DEFS.length; i++) {
+    const w = GERSTNER_DEFS[i];
     const dir = vec2(w.dx, w.dy);
-    const f = float(w.k).mul(dir.dot(xz).sub(time.mul(float(w.c))));
+    const f = float(w.k).mul(dir.dot(xz)).sub(uPhases[i]);
     const a = float(w.a0).mul(sea);
     const s = sin(f);
     const co = cos(f);
@@ -105,17 +118,10 @@ const waveNormal = Fn(([xz, time, sea]) => {
     bx = bx.sub(aks.mul(dir.x).mul(dir.y));
     by = by.add(akc.mul(dir.y));
     bz = bz.sub(aks.mul(dir.y).mul(dir.y));
+    crest = crest.add(a.mul(s));
   }
-  return normalize(cross(vec3(bx, by, bz), vec3(tx, ty, tz)));
-});
-
-const waveCrest = Fn(([xz, time, sea]) => {
-  let crest = float(0);
-  for (const w of GERSTNER_DEFS) {
-    const f = float(w.k).mul(vec2(w.dx, w.dy).dot(xz).sub(time.mul(float(w.c))));
-    crest = crest.add(float(w.a0).mul(sea).mul(sin(f)));
-  }
-  return crest;
+  const n = normalize(cross(vec3(bx, by, bz), vec3(tx, ty, tz)));
+  return vec4(n.x, n.y, n.z, crest);
 });
 
 // ----------------------------------------------------------------------------
@@ -166,7 +172,7 @@ const detailHeight = Fn(([xz, time]) => {
 // ----------------------------------------------------------------------------
 
 const skyColor = Fn(([dir, cloudMask]) => {
-  const d = normalize(dir);
+  const d = dir; // both callers pass a normalized direction
   const up = clamp(d.y, -0.15, 1);
   const col = mix(uHorizonColor, uZenithColor, pow(max(up, 0), 0.42)).toVar();
 
@@ -203,12 +209,14 @@ const oceanColor = Fn(() => {
   const xz = P.xz;
   const time = uTime;
   const sea = uSea;
-  const dist = distance(P, cameraPosition);
+  const toCam = cameraPosition.sub(P);
+  const dist = length(toCam);
 
-  const N0 = waveNormal(xz, time, sea);
+  const surface = waveSurface(xz, sea);
+  const N0 = vec3(surface.x, surface.y, surface.z);
   const N = N0.toVar();
-  const crest = waveCrest(xz, time, sea);
-  const V = normalize(cameraPosition.sub(P));
+  const crest = surface.w;
+  const V = normalize(toCam);
 
   const spec = vec3(0).toVar();
   const foam = float(0).toVar();
@@ -430,6 +438,14 @@ function applyResolutionScale(scale) {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+function updateWavePhases() {
+  const t = uTime.value;
+  for (let i = 0; i < GERSTNER_DEFS.length; i++) {
+    const w = GERSTNER_DEFS[i];
+    uPhases[i].value = (t * w.k * w.c) % TWO_PI;
+  }
+}
+
 function animate(now) {
   // high-resolution timestamp -> delta, clamped so hitches never cause jumps
   const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
@@ -442,6 +458,7 @@ function animate(now) {
   if (now - lastRenderAt < FRAME_MS - 0.5) return;
   lastRenderAt = now;
 
+  updateWavePhases();
   postProcessing.render();
 
   // rolling FPS + adaptive resolution (rechecked every 2 s)
@@ -521,7 +538,7 @@ async function boot() {
     oceanGeometry.rotateX(-Math.PI / 2);
 
     const oceanMaterial = new THREE.MeshBasicNodeMaterial();
-    oceanMaterial.positionNode = wavePosition(positionLocal.xz, uTime, uSea);
+    oceanMaterial.positionNode = wavePosition(positionLocal.xz, uSea);
     oceanMaterial.colorNode = oceanColor();
 
     const ocean = new THREE.Mesh(oceanGeometry, oceanMaterial);
