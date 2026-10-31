@@ -1,0 +1,45 @@
+name: 🐛 问题反馈 / Bug report
+description: 安装、透明度、弹窗或海洋显示异常 / Installation or visual issues
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请先查看[中文排错指南](https://github.com/d-dev0101/open-sea-skin/blob/main/docs/install.zh.md)。
+        截图请遮住私人会话、邮箱和文件路径；不要上传令牌、API Key 或完整配置文件。
+  - type: input
+    id: versions
+    attributes:
+      label: 系统与版本 / OS and versions
+      description: 请同时填写操作系统、Harness 和 Open Sea 版本。
+      placeholder: Windows 11 / Harness 0.2.1-rc.5 / Open Sea 1.2.7
+    validations:
+      required: true
+  - type: dropdown
+    id: installation
+    attributes:
+      label: 安装方式 / Installation
+      options:
+        - 官方桌面端「插件 → 添加插件」/ Official Desktop
+        - 社区桌面端或插件市场 / Community Desktop or marketplace
+        - Harness Web 的 npm 插件 / Web npm plugin
+        - Chrome / Edge 扩展 / Extension
+        - 静态安装或源码接入 / Static or source integration
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 发生了什么？如何复现？ / What happened?
+      description: 请说明打开哪个页面、期望效果和实际效果。界面问题请附明暗模式、玻璃数值和去敏截图；安装问题请附完整报错。
+    validations:
+      required: true
+  - type: textarea
+    id: comparison
+    attributes:
+      label: 停用皮肤后的对照 / With the skin disabled
+      description: 若方便，请暂时停用 Open Sea，确认同一问题是否仍然出现。无需卸载或删除配置。
+  - type: input
+    id: hardware
+    attributes:
+      label: 性能问题补充 / For rendering or performance issues
+      placeholder: 显卡或芯片、屏幕分辨率、波浪和日光设置 / GPU, resolution, sea and daylight values

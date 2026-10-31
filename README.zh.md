@@ -20,6 +20,12 @@
 
 🎬 原有 Harness 实录 · 40% 玻璃不透明度 · [浅色、海浪与夕阳动图](#gallery) · [亲手调节官网效果](https://d-dev0101.github.io/open-sea-skin/)
 
+## 🛠️ 当前维护状态
+
+**GitHub 修复版：v1.2.7 · npm 可安装版：v1.2.6。** v1.2.7 已修复浅色面板、侧栏叠色和新版聊天卡片透明度；npm 发布等待维护者登录，下面的复制包名暂时保留可用的 1.2.6。需要修复版可按[本地包安装步骤](docs/install.zh.md#下载本地包备用)安装，勿把 GitHub 下载链接直接填进安装器。
+
+🔎 已核对官方 Harness **0.2.1-rc.5**。验证覆盖官方 Mac 包内运行时与真实 Web 页面、安装/卸载和浅深色；**Windows 原生客户端尚未实测**。[查看兼容性记录与已知问题 →](docs/compatibility.md)
+
 ## 🚀 官方客户端，三步开始
 
 🖥️ **用官方客户端？直接安装 Harness 插件即可。** Windows / Mac 操作相同，不用终端，也不用先装浏览器扩展。
@@ -128,6 +134,20 @@ open-sea-skin@1.2.6
 
 > 💡 入口是侧栏的「插件」，不是「设置 → 内置插件」。安装时填写包名，不要填写 GitHub 仓库或远程压缩包链接。
 
+#### 🌐 三种安装源，怎么选？
+
+**插件名称一栏填 `open-sea-skin@1.2.6`；源地址在「安装源」里选择或填写，两者不要填反。** Windows 和 Mac 步骤相同。
+
+| 安装源选项 | 完整地址 / 填写内容 | 适用情况 |
+| --- | --- | --- |
+| **🌍 npm 官方源** | `https://registry.npmjs.org` | 首选官方发布源，新版本从这里发布。 |
+| **🇨🇳 中国大陆镜像源** | `https://registry.npmmirror.com` | 大陆网络可尝试；镜像同步可能晚于官方源。 |
+| **🏢 自定义地址** | 填你使用的 **npm registry** 完整地址；也可填 `https://registry.npmjs.org` 使用官方源 | 适合企业/内网代理。它不是额外的固定公共镜像，需要能访问或代理 `open-sea-skin`。 |
+
+📦 **公开源目前可安装 1.2.6；1.2.7 的 npm 发布尚未完成。** GitHub 修复包请按[本地安装步骤](docs/install.zh.md#下载本地包备用)使用。选择镜像不会加速另行粘贴的 GitHub URL。
+
+🛟 遇到 404 / 找不到版本，先换官方源；自定义源出现 401 / 403，请按该源要求登录。[更详细的源选择与排错 →](docs/install.zh.md#三种安装源如何填写)
+
 #### 🔄 更新、暂停与卸载
 
 - **更新旧版：** 在「插件」页卸载旧版 Open Sea，再按上述步骤安装。已核对的官方安装器暂不支持第三方插件原地升级。
@@ -159,7 +179,7 @@ dsh plugin --profile web add open-sea-skin@1.2.6
 
 适用于在浏览器中打开的本机 Harness，Windows / Mac 均可使用。
 
-1. [下载扩展 ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.6/open-sea-skin-extension-v1.2.6.zip)，先解压。
+1. [下载扩展 ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.7/open-sea-skin-extension-v1.2.7.zip)，先解压。
 2. 打开 `chrome://extensions` 或 `edge://extensions`，开启 **「开发者模式」**。
 3. 点击 **「加载已解压的扩展程序」**，选择包含 `manifest.json` 的目录。
 4. 回到 `127.0.0.1` 或 `localhost` 上的 Harness 页面，刷新一次。
@@ -235,7 +255,9 @@ curl -fsSL https://raw.githubusercontent.com/d-dev0101/open-sea-skin/main/instal
 <details>
 <summary><strong>是否保证兼容所有最新版 Harness / Desktop？</strong></summary>
 
-不做全版本兼容承诺。原生源码集成的验证基线为 Harness `0.1.2-alpha.3`、提交 `dd6322d60`（2026 年 8 月 31 日）。**官方 macOS Desktop `0.2.0-rc.2`** 已在隔离配置中实装 v1.2.5 并目视验证。社区 DSH Desktop Beta `2.0.5-beta.1` 有 24 组外壳回归组合；官方 0.2.x 的 macOS/Windows 页面结构也加入了浏览器回归测试。Windows 原生 Desktop 尚未完成端到端测试。
+已核对最新发布通道的 Harness **0.2.1-rc.5**，并用官方 macOS 包内运行时完成隔离安装、真实 Web 页面加载、皮肤调节和卸载重启。页面回归覆盖 macOS / Windows 的浅深色与 40% / 90% 玻璃组合。**这不等于 Windows 原生客户端端到端测试，也不是所有未来版本的兼容承诺。**
+
+📋 [版本、测试方法、历史验证基线与未解决问题](docs/compatibility.md)。
 
 如果升级后遇到问题，请[提供 Harness 版本、安装方式，以及去除敏感信息的截图或日志](https://github.com/d-dev0101/open-sea-skin/issues)。
 

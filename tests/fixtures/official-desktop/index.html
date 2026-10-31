@@ -3,22 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Official Harness Desktop 0.2.x surface regression</title>
+  <title>Official Harness Desktop 0.2.1-rc.5 surface regression</title>
   <link rel="icon" href="data:,">
   <style>
     * { box-sizing: border-box; }
     html, body, #root { width: 100%; height: 100%; margin: 0; }
-    body { --dsw-alias-bg-base: #fff; --dsw-alias-bg-layer-1: #f8f8f8; --dsw-alias-bg-layer-2: #fff; --dsw-specific-sidebar-fill: #edf0f5; color: #111; font: 16px system-ui; }
-    body[data-ds-dark-theme] { --dsw-alias-bg-base: #14171c; --dsw-alias-bg-layer-1: #20242b; --dsw-alias-bg-layer-2: #20242b; --dsw-specific-sidebar-fill: #242831; color: #eee; }
+    /* Surface hierarchy and token consumers from deepseek-ai/deepseek-harness
+       dsh-v0.2.1-rc.5: AppFrame, SidebarRoot, InputBar, MessageItem, ToolDetails,
+       and CodeBlock. Slot names also verified against the packaged desktop UI.
+       Deliberately unhashed fixture classes: skin adapters must use semantics. */
+    body { --dsw-alias-bg-base: #fff; --dsw-alias-bg-layer-1: #f8f8f8; --dsw-alias-bg-layer-2: #fff; --dsw-specific-sidebar-fill: #edf0f5; --dsw-specific-input-major: #fff; --dsw-specific-bubble: #eff3ff; --dsw-alias-markdown-code-block: #f8f8f8; --dsw-alias-markdown-code-block-banner: #f8f8f8; color: #111; font: 16px system-ui; }
+    body[data-ds-dark-theme] { --dsw-alias-bg-base: #14171c; --dsw-alias-bg-layer-1: #20242b; --dsw-alias-bg-layer-2: #20242b; --dsw-specific-sidebar-fill: #242831; --dsw-specific-input-major: #292929; --dsw-specific-bubble: #292929; --dsw-alias-markdown-code-block: #222; --dsw-alias-markdown-code-block-banner: #292929; color: #eee; }
     #root { position: relative; z-index: 1; }
-    .frame { display: grid; grid-template-columns: 270px 1fr 220px; height: 100%; background: var(--dsw-alias-bg-base); }
+    .frame { display: grid; grid-template-columns: 270px 1fr 220px; grid-template-rows: minmax(0, 1fr) auto; height: 100%; background: var(--dsw-alias-bg-base); }
     html[data-platform="darwin"] .frame { background: transparent; }
-    .sidebar { background: var(--dsw-specific-sidebar-fill); padding: 24px; }
+    .sidebar { background: var(--dsw-specific-sidebar-fill); }
+    /* SidebarRoot is a second painted surface on Windows. On macOS its
+       background is transparent for native vibrancy. */
+    .sidebar-root { height: 100%; padding: 24px; background: var(--dsw-specific-sidebar-fill); }
+    html[data-platform="darwin"] .sidebar-root { background: transparent; }
     .center { background: var(--dsw-alias-bg-base); }
-    .conversation { height: 100%; display: grid; place-items: center; background: var(--dsw-alias-bg-base); }
+    .conversation { height: 100%; display: grid; align-content: center; gap: 20px; padding: 32px; background: var(--dsw-alias-bg-base); }
     .rightbar { background: var(--dsw-alias-bg-base); }
     [data-dockkit-content] { height: 100%; padding: 24px; background: var(--dsw-alias-bg-base); }
-    .composer { width: 350px; padding: 20px; border-radius: 16px; background: var(--dsw-alias-bg-layer-1); }
+    .composer { padding: 20px; border-radius: 22px; background: var(--dsw-specific-input-major); }
+    .message-bubble { padding: 16px 20px; border-radius: 22px; background: var(--dsw-specific-bubble); }
+    .tool-details { padding: 16px; border-radius: 12px; background: var(--dsw-alias-markdown-code-block); }
+    .md-code-block { --dsl-code-block-background: var(--dsw-alias-markdown-code-block); background: var(--dsl-code-block-background); border-radius: 12px; }
+    .banner-wrap { background: var(--dsw-alias-bg-base); }
+    [data-code-block-banner] { padding: 9px 14px; background: var(--dsw-alias-markdown-code-block-banner); }
+    [data-code-block-content] { display: contents; }
+    .md-code-block pre { padding: 16px; margin: 0; background: var(--dsl-code-block-background) !important; border-radius: 0 0 12px 12px; }
+    .md-code-block code { background: none; }
+    .syntax-token { color: rgb(90, 140, 220); }
+    [data-shell-bottom] { grid-column: 1 / -1; padding: 10px 24px; background: var(--dsw-alias-bg-base); }
     .overlay { position: absolute; inset: 0; pointer-events: none; }
     .settings { position: fixed; inset: 15%; z-index: 1000; display: none; padding: 40px; background: var(--dsw-alias-bg-layer-2); }
     .settings.open { display: block; }
@@ -29,15 +47,21 @@
 <body data-ds-dark-theme>
   <div id="root">
     <div class="frame">
-      <aside class="sidebar">deepseek HARNESS</aside>
-      <main class="center"><div data-slot="conversation" style="display: contents"><div class="conversation" data-phase="hero"><div class="composer">探索未至之境</div></div></div></main>
+      <aside class="sidebar"><div data-slot="sidebar" style="display: contents"><div class="sidebar-root">deepseek HARNESS</div></div></aside>
+      <main class="center"><div data-slot="main" style="display: contents"><div data-slot="main.conversation" style="display: contents"><div class="conversation" data-phase="active">
+        <div class="message-bubble">帮我创建一个海洋主题页面。</div>
+        <div class="tool-details">已完成 · 查看文件</div>
+        <div class="md-code-block"><div class="banner-wrap"><div data-code-block-banner>JavaScript</div></div><div data-code-block-content><pre class="shiki"><code><span class="syntax-token">const</span> sea = 'open';</code></pre></div></div>
+        <div data-composer-seat><div data-slot="conversation.composer.bar" style="display: contents"><div class="composer" data-composer-card>描述你想要构建的内容…</div></div></div>
+      </div></div></div></main>
       <aside class="rightbar" data-rightbar-col><div data-dockkit-host="dock"><section data-dockkit-content="details">详情</section></div></aside>
+      <div data-shell-bottom>底部面板</div>
       <div class="overlay" data-shell-overlay></div>
     </div>
   </div>
   <div class="settings" data-shortcut-modal="settings" role="dialog">设置</div>
   <div class="marketplace">插件广场</div>
   <!-- A sibling portal, not a child of the Settings dialog. -->
-  <div class="plugin-dialog" role="dialog" aria-modal="true" aria-label="插件配置">独立的二级配置弹窗</div>
+  <div class="plugin-dialog" role="dialog" aria-modal="true" aria-label="插件配置">独立的二级配置弹窗<div class="composer">插件输入卡</div><div class="message-bubble">插件预览卡</div><div class="tool-details">插件详情</div></div>
 </body>
 </html>

@@ -1,8 +1,8 @@
 {
   "name": "open-sea-skin",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "type": "module",
-  "description": "Realtime WebGPU ocean skin for DeepSeek Harness on Chrome and Edge",
+  "description": "实时海洋皮肤 · Realtime ocean theme for DeepSeek Harness Desktop and Web",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/d-dev0101/open-sea-skin.git"

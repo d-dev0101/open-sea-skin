@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Git tag whose package version should be published
+        description: Existing GitHub Release whose verified package should be published
         required: true
-        default: v1.2.6
+        default: v1.2.7
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: npm-release
@@ -22,45 +22,39 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ inputs.tag }}
-      - uses: actions/checkout@v5
-        with:
           ref: ${{ github.sha }}
-          path: release-tooling
       - uses: actions/setup-node@v5
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
-          cache: npm
-      - run: npm ci
-      - name: Verify release version
+      - name: Download and verify the existing GitHub package
         env:
           RELEASE_TAG: ${{ inputs.tag }}
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
-          test "v$(node -p "require('./package.json').version")" = "$RELEASE_TAG"
-          gh release view "$RELEASE_TAG"
-      - run: npm run build && npm run check
-      - name: Pack once and publish those exact bytes
-        run: |
+          VERSION=$(node --input-type=module -e 'import { versionFromTag } from "./scripts/verify-release.mjs"; console.log(versionFromTag(process.env.RELEASE_TAG))')
           mkdir -p release-audit
-          npm pack --ignore-scripts --pack-destination release-audit --json > release-audit/pack.json
-          node -e 'const fs=require("fs"); const p=require("./release-audit/pack.json")[0]; fs.copyFileSync("release-audit/"+p.filename,"release-audit/open-sea-skin.tgz")'
+          gh release download "$RELEASE_TAG" --pattern "open-sea-skin-$VERSION.tgz" --pattern SHA256SUMS --dir release-audit
+          tar -xOf "release-audit/open-sea-skin-$VERSION.tgz" package/package.json > release-audit/package.json
+          node scripts/verify-release.mjs --github "release-audit/open-sea-skin-$VERSION.tgz" release-audit/SHA256SUMS release-audit/package.json "$RELEASE_TAG"
+          cp "release-audit/open-sea-skin-$VERSION.tgz" release-audit/open-sea-skin.tgz
+      - name: Check whether npm already has these exact bytes
+        id: registry
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: node scripts/verify-release.mjs --registry release-audit/open-sea-skin.tgz "$RELEASE_TAG" release-audit --allow-missing
+      - name: Publish the verified GitHub package only when the version is absent
+        if: steps.registry.outputs.status == 'missing'
+        run: |
           npm publish ./release-audit/open-sea-skin.tgz --ignore-scripts --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Verify registry bytes before attaching GitHub assets
+      - name: Verify newly published registry bytes
+        if: steps.registry.outputs.status == 'missing'
         env:
-          GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.tag }}
-        run: |
-          VERSION=$(node -p 'require("./package.json").version')
-          npm view "open-sea-skin@$VERSION" dist --json --registry=https://registry.npmjs.org > release-audit/dist.json
-          URL=$(node -p 'require("./release-audit/dist.json").tarball')
-          curl --fail --location --retry 5 "$URL" -o release-audit/registry.tgz
-          node release-tooling/scripts/verify-release.mjs release-audit/open-sea-skin.tgz release-audit/registry.tgz release-audit/dist.json
-          (cd release-audit && sha256sum "open-sea-skin-$VERSION.tgz" open-sea-skin.tgz > SHA256SUMS)
-          gh release upload "$RELEASE_TAG" "release-audit/open-sea-skin-$VERSION.tgz" release-audit/open-sea-skin.tgz release-audit/SHA256SUMS
+        run: node scripts/verify-release.mjs --registry release-audit/open-sea-skin.tgz "$RELEASE_TAG" release-audit
       - uses: actions/upload-artifact@v4
         if: always()
         with:

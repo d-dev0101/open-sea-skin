@@ -9,3 +9,6 @@ test-results/
 playwright-report/
 pages-dist/
 docs/screenshots/*.actual.png
+
+# Local compatibility runs may contain extracted desktop apps and logs.
+.local-evidence/

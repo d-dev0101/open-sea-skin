@@ -15,7 +15,7 @@ import * as THREE from './vendor/three.webgpu.js';
 import {
   Fn, pass, uniform, float, vec2, vec3, vec4, If,
   sin, cos, dot, cross, normalize, mix, pow, max, clamp, fract, floor,
-  smoothstep, distance, reflect,
+  smoothstep, length, reflect,
   positionLocal, positionWorld, cameraPosition
 } from './vendor/three.tsl.js';
 import { OrbitControls } from './vendor/addons/controls/OrbitControls.js';
@@ -80,21 +80,25 @@ const wavePosition = Fn(([xz, time, sea]) => {
     const dir = vec2(w.dx, w.dy);
     const f = float(w.k).mul(dir.dot(xz).sub(time.mul(float(w.c))));
     const a = float(w.a0).mul(sea);
-    x = x.add(a.mul(dir.x).mul(cos(f)));
+    const cf = cos(f).toVar();
+    x = x.add(a.mul(dir.x).mul(cf));
     y = y.add(a.mul(sin(f)));
-    z = z.add(a.mul(dir.y).mul(cos(f)));
+    z = z.add(a.mul(dir.y).mul(cf));
   }
   return vec3(x, y, z);
 });
 
-const waveNormal = Fn(([xz, time, sea]) => {
+// Reuse the swell phase for normal and crest (adapted from zdjmrq's PR #21).
+// Keep the original time/phase formula and visual parameters unchanged.
+const waveSurface = Fn(([xz, time, sea]) => {
   let tx = float(1), ty = float(0), tz = float(0);
   let bx = float(0), by = float(0), bz = float(1);
+  let crest = float(0);
   for (const w of GERSTNER_DEFS) {
     const dir = vec2(w.dx, w.dy);
     const f = float(w.k).mul(dir.dot(xz).sub(time.mul(float(w.c))));
     const a = float(w.a0).mul(sea);
-    const s = sin(f);
+    const s = sin(f).toVar();
     const co = cos(f);
     const ak = a.mul(float(w.k));
     const aks = ak.mul(s);
@@ -105,17 +109,10 @@ const waveNormal = Fn(([xz, time, sea]) => {
     bx = bx.sub(aks.mul(dir.x).mul(dir.y));
     by = by.add(akc.mul(dir.y));
     bz = bz.sub(aks.mul(dir.y).mul(dir.y));
+    crest = crest.add(a.mul(s));
   }
-  return normalize(cross(vec3(bx, by, bz), vec3(tx, ty, tz)));
-});
-
-const waveCrest = Fn(([xz, time, sea]) => {
-  let crest = float(0);
-  for (const w of GERSTNER_DEFS) {
-    const f = float(w.k).mul(vec2(w.dx, w.dy).dot(xz).sub(time.mul(float(w.c))));
-    crest = crest.add(float(w.a0).mul(sea).mul(sin(f)));
-  }
-  return crest;
+  const normal = normalize(cross(vec3(bx, by, bz), vec3(tx, ty, tz)));
+  return vec4(normal, crest);
 });
 
 // ----------------------------------------------------------------------------
@@ -166,7 +163,7 @@ const detailHeight = Fn(([xz, time]) => {
 // ----------------------------------------------------------------------------
 
 const skyColor = Fn(([dir, cloudMask]) => {
-  const d = normalize(dir);
+  const d = dir; // Both callers supply a normalized direction.
   const up = clamp(d.y, -0.15, 1);
   const col = mix(uHorizonColor, uZenithColor, pow(max(up, 0), 0.42)).toVar();
 
@@ -203,12 +200,14 @@ const oceanColor = Fn(() => {
   const xz = P.xz;
   const time = uTime;
   const sea = uSea;
-  const dist = distance(P, cameraPosition);
+  const toCam = cameraPosition.sub(P).toVar();
+  const dist = length(toCam);
 
-  const N0 = waveNormal(xz, time, sea);
+  const surface = waveSurface(xz, time, sea).toVar();
+  const N0 = surface.xyz;
   const N = N0.toVar();
-  const crest = waveCrest(xz, time, sea);
-  const V = normalize(cameraPosition.sub(P));
+  const crest = surface.w;
+  const V = normalize(toCam);
 
   const spec = vec3(0).toVar();
   const foam = float(0).toVar();
