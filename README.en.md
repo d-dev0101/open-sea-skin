@@ -22,7 +22,7 @@
 
 ## 🛠️ Maintenance status
 
-**GitHub fix release: v1.2.7 · available on npm: v1.2.6.** Version 1.2.7 fixes the light-mode controls, stacked sidebar fill and newer conversation surfaces. npm publication is waiting for maintainer authentication; copyable package names below intentionally remain at the available 1.2.6. For the fixes, follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback). Do not paste the remote GitHub tarball URL into the installer.
+**✅ v1.2.7 is available from npm and the mainland China mirror.** It fixes the light-mode controls, stacked sidebar fill and newer conversation surfaces. Copy the package name below to install. If an older version is installed, remove it in **Plugins** before installing the update.
 
 🔎 Checked official Harness **0.2.1-rc.5** using the packaged Mac runtime and actual Web client, including install/remove and both themes. **Native Windows Desktop remains untested.** [Compatibility evidence & known issues →](docs/compatibility.md)
 
@@ -35,7 +35,7 @@
 3. ✅ Choose **Enable now**, then restart if prompted.
 
 ```text
-open-sea-skin@1.2.6
+open-sea-skin@1.2.7
 ```
 
 🇨🇳 The mainland China mirror is optional; switch to the official npm registry if the version is not available.
@@ -121,7 +121,7 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 2. Paste this exact package name and version:
 
    ```text
-   open-sea-skin@1.2.6
+   open-sea-skin@1.2.7
    ```
 
 3. Choose the official npm registry, or the mainland China mirror if that works better on your network.
@@ -132,7 +132,7 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 
 #### 🌐 All three installation-source options
 
-**Enter `open-sea-skin@1.2.6` as the package name. Choose or enter the registry separately under Installation source.** The UI flow is the same on Mac and Windows.
+**Enter `open-sea-skin@1.2.7` as the package name. Choose or enter the registry separately under Installation source.** The UI flow is the same on Mac and Windows.
 
 | Source option | Registry URL | When to use it |
 | --- | --- | --- |
@@ -140,7 +140,7 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 | **🇨🇳 Mainland China mirror** | `https://registry.npmmirror.com` | An alternative for mainland networks; new versions may arrive later. |
 | **🏢 Custom address** | Your npm registry URL; `https://registry.npmjs.org` also works as a custom value | For a company/private proxy. This is an input option, not a third predefined public mirror; it must serve or proxy this package. |
 
-Both public sources currently offer **1.2.6**. npm publication of **1.2.7 is pending**; use the [local fix package](docs/dsh-plugin.md#local-package-fallback) in the meantime. Registry selection does not redirect a GitHub URL. For custom-registry 401/403 errors, follow that registry's authentication requirements.
+Verified on **November 1, 2026**: both public sources serve **1.2.7**, with archive bytes matching the GitHub Release. Use the [local-package fallback](docs/dsh-plugin.md#local-package-fallback) if registries are unavailable. Registry selection does not redirect a GitHub URL. For custom-registry 401/403 errors, follow that registry's authentication requirements.
 
 **Update:** uninstall the older Open Sea version in Plugins, then install the version above. The reviewed official installer does not update third-party bundles in place.
 **Disable:** turn off the ocean in the skin controls, or disable Open Sea in Plugins.
@@ -155,7 +155,7 @@ Both public sources currently offer **1.2.6**. npm publication of **1.2.7 is pen
 Run this on the machine that runs `dsh web`. The command is the same in Windows PowerShell and the macOS terminal:
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.6
+dsh plugin --profile web add open-sea-skin@1.2.7
 ```
 
 Restart your running `dsh web` process and reload the browser. This installs into the Web profile, **not Official Desktop**.
