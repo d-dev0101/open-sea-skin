@@ -20,6 +20,12 @@
 
 🎬 Original Harness recording · 40% glass opacity · [Light mode, waves & sunset](#gallery) · [Try the interactive website](https://d-dev0101.github.io/open-sea-skin/)
 
+## 🛠️ Maintenance status
+
+**GitHub fix release: v1.2.7 · available on npm: v1.2.6.** Version 1.2.7 fixes the light-mode controls, stacked sidebar fill and newer conversation surfaces. npm publication is waiting for maintainer authentication; copyable package names below intentionally remain at the available 1.2.6. For the fixes, follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback). Do not paste the remote GitHub tarball URL into the installer.
+
+🔎 Checked official Harness **0.2.1-rc.5** using the packaged Mac runtime and actual Web client, including install/remove and both themes. **Native Windows Desktop remains untested.** [Compatibility evidence & known issues →](docs/compatibility.md)
+
 ## 🚀 Official Desktop in three steps
 
 🖥️ **Using Official Desktop? Install the Harness plugin directly.** The same steps work on Windows and Mac. No terminal or browser extension required.
@@ -124,6 +130,18 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 
 > 💡 Use the sidebar's Plugins page, not Settings → Built-in plugins. Enter the package name rather than a GitHub repository or remote tarball URL.
 
+#### 🌐 All three installation-source options
+
+**Enter `open-sea-skin@1.2.6` as the package name. Choose or enter the registry separately under Installation source.** The UI flow is the same on Mac and Windows.
+
+| Source option | Registry URL | When to use it |
+| --- | --- | --- |
+| **🌍 Official npm** | `https://registry.npmjs.org` | The upstream publication source. |
+| **🇨🇳 Mainland China mirror** | `https://registry.npmmirror.com` | An alternative for mainland networks; new versions may arrive later. |
+| **🏢 Custom address** | Your npm registry URL; `https://registry.npmjs.org` also works as a custom value | For a company/private proxy. This is an input option, not a third predefined public mirror; it must serve or proxy this package. |
+
+Both public sources currently offer **1.2.6**. npm publication of **1.2.7 is pending**; use the [local fix package](docs/dsh-plugin.md#local-package-fallback) in the meantime. Registry selection does not redirect a GitHub URL. For custom-registry 401/403 errors, follow that registry's authentication requirements.
+
 **Update:** uninstall the older Open Sea version in Plugins, then install the version above. The reviewed official installer does not update third-party bundles in place.
 **Disable:** turn off the ocean in the skin controls, or disable Open Sea in Plugins.
 **Uninstall:** remove Open Sea from Plugins. Web-profile commands do not remove Desktop plugins.
@@ -150,7 +168,7 @@ Restart your running `dsh web` process and reload the browser. This installs int
 
 For local Harness pages in a browser, on Windows or Mac.
 
-1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.6/open-sea-skin-extension-v1.2.6.zip) and unzip it.
+1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.7/open-sea-skin-extension-v1.2.7.zip) and unzip it.
 2. Open `chrome://extensions` or `edge://extensions`; enable **Developer mode**.
 3. Choose **Load unpacked** and select the extracted folder containing `manifest.json`.
 4. Reload your Harness page on `127.0.0.1` or `localhost`.
@@ -226,7 +244,7 @@ Then restart Harness. The static installer removes its own marked loader/assets,
 <details>
 <summary><strong>Is every latest Harness/Desktop version tested?</strong></summary>
 
-No blanket compatibility claim. Native source integration was verified against Harness `0.1.2-alpha.3`, commit `dd6322d60` (August 31, 2026). **Official macOS Desktop `0.2.0-rc.2`** was installed and visually verified with v1.2.5 in an isolated profile. The community DSH Desktop Beta `2.0.5-beta.1` shell has 24 fixture combinations; the official 0.2.x macOS/Windows shell has additional browser regression coverage. Native Windows Desktop is not yet E2E tested.
+The current release channel, **0.2.1-rc.5**, was checked with the official packaged macOS runtime in an isolated profile: package installation, actual Web client loading, skin controls, uninstall and restart. Browser regressions cover macOS/Windows shell structures, both themes and 40%/90% glass. **This is not native Windows Desktop E2E testing or a promise of compatibility with every future release.** [Exact scope, historical baselines and known issues](docs/compatibility.md).
 
 If an update breaks the skin, [report your Harness version, installation method and a redacted screenshot/log](https://github.com/d-dev0101/open-sea-skin/issues).
 

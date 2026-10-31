@@ -150,7 +150,12 @@ body:is([data-dsh-desktop-mode="advanced"], [data-dsh-desktop-mode="extended"]) 
 html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) {
   background: var(--dsw-alias-bg-base) !important;
 }
-html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) > :is(:first-child, :nth-child(2), [data-rightbar-col]),
+/* The sidebar slot contains another SidebarRoot fill on Windows. Clear its
+   token at this semantic boundary instead of targeting a CSS-module hash. */
+html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) > :first-child [data-slot="sidebar"] {
+  --dsw-specific-sidebar-fill: transparent !important;
+}
+html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) > :is(:first-child, :nth-child(2), [data-rightbar-col], [data-shell-bottom]),
 html:is([data-platform="darwin"], [data-windows-titlebar]) body #root div:has(> [data-shell-overlay]) > :nth-child(2) [data-phase],
 html:is([data-platform="darwin"], [data-windows-titlebar]) body #root [data-rightbar-col] [data-dockkit-host="dock"] > [data-dockkit-content] {
   background: transparent !important;
@@ -158,13 +163,23 @@ html:is([data-platform="darwin"], [data-windows-titlebar]) body #root [data-righ
 html[data-windows-titlebar] body #root div:has(> [data-shell-overlay])::before {
   background: transparent !important;
 }
+/* Harness 0.2.1 uses dedicated tokens for composer, message bubbles and tool /
+   code cards. Limit these to the conversation slot: settings and other plugin
+   interfaces retain their original surfaces, radii and syntax highlighting. */
+body [data-slot="main.conversation"] {
+  --dsw-specific-input-major: var(--dsw-alias-bg-layer-1) !important;
+  --dsw-specific-bubble: var(--dsw-alias-bg-layer-2) !important;
+  --dsw-alias-markdown-code-block: var(--dsw-alias-bg-layer-1) !important;
+  --dsw-alias-markdown-code-block-banner: var(--dsw-alias-bg-layer-2) !important;
+}
 /* Modal cards can be independent body portals, including second-level plugin
    configuration. Protect semantic dialog surfaces, not the full-screen mask
-   or shell overlay. Keep this independent of workspace opacity and DOM depth. */
-body :is([data-shortcut-modal="settings"], [role="dialog"], [role="alertdialog"]) {
+   or shell overlay. Open Sea's own dialog already supplies dark glass and light
+   text in either theme; the host light fill would make it white on white. */
+body :is([data-shortcut-modal="settings"], [role="dialog"], [role="alertdialog"]):not(#${IDS.panel}) {
   background: rgba(250, 251, 253, .97) !important;
 }
-body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], [role="alertdialog"]) {
+body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], [role="alertdialog"]):not(#${IDS.panel}) {
   background: rgba(24, 28, 35, .97) !important;
 }
 /* Legacy Harness builds: these CSS-module hashes are best-effort fallbacks. */
@@ -180,13 +195,13 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
 #${IDS.button} {
   position: fixed; z-index: 6000; width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 10px; border: 1px solid rgba(255,255,255,.14);
-  background: rgba(12,16,22,.58); backdrop-filter: blur(14px) saturate(130%);
-  color: #9fb3bd; cursor: pointer; padding: 0;
+  border-radius: 10px; border: 1px solid rgba(255,255,255,.22);
+  background: rgba(12,16,22,.78); backdrop-filter: blur(14px) saturate(130%);
+  color: #c5dce3; cursor: pointer; padding: 0;
   transition: color .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .1s ease;
 }
-#${IDS.button}:hover { color:#8fe9e4; border-color:rgba(143,233,228,.5); background:rgba(16,22,30,.72); }
-#${IDS.button}.active { color:#dafdfb; border-color:rgba(143,233,228,.55); background:rgba(143,233,228,.14); box-shadow:0 0 14px rgba(143,233,228,.25); }
+#${IDS.button}:hover { color:#8fe9e4; border-color:rgba(143,233,228,.5); background:rgba(16,22,30,.88); }
+#${IDS.button}.active { color:#dafdfb; border-color:rgba(143,233,228,.55); background:rgba(16,32,38,.92); box-shadow:0 0 14px rgba(143,233,228,.25); }
 #${IDS.button}:active { transform:scale(.94); }
 #${IDS.button}:focus-visible, #${IDS.panel} button:focus-visible, #${IDS.panel} input:focus-visible { outline:2px solid rgba(143,233,228,.7); outline-offset:2px; }
 #${IDS.panel} {
@@ -210,7 +225,7 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
 #${IDS.panel} input[type='range']::-webkit-slider-thumb { appearance:none; width:14px; height:14px; margin-top:-5.5px; border:0; border-radius:50%; background:#8fe9e4; box-shadow:0 0 10px rgba(143,233,228,.75); }
 #${IDS.panel} input[type='range']::-moz-range-track { height:3px; border-radius:2px; background:rgba(255,255,255,.2); }
 #${IDS.panel} input[type='range']::-moz-range-thumb { width:14px; height:14px; border:0; border-radius:50%; background:#8fe9e4; box-shadow:0 0 10px rgba(143,233,228,.75); }
-#${IDS.panel} .oss-note { margin-top:13px; font-size:10px; line-height:1.7; color:rgba(255,255,255,.46); }
+#${IDS.panel} .oss-note { margin-top:13px; font-size:10px; line-height:1.7; color:rgba(255,255,255,.6); }
 #${IDS.panel} .oss-switch { display:flex; align-items:center; justify-content:space-between; gap:12px; }
 #${IDS.panel} .oss-switch label { font-size:11px; color:rgba(255,255,255,.7); }
 #${IDS.panel} .oss-switch input[type='checkbox'] { width:15px; height:15px; margin:0; accent-color:#8fe9e4; cursor:pointer; }

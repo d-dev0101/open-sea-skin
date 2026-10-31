@@ -1746,3 +1746,17 @@ input:focus-visible {
 .install-source h3 { margin:0 0 8px; font-size:20px; }
 .install-source p { margin:0; font-size:14px; line-height:1.8; color:rgba(222,241,239,.8); }
 .install-source a { color:var(--aqua); font-size:14px; }
+
+/* Release availability sits next to the copyable install instructions. */
+.release-status { margin: 0 0 24px; padding: 16px 20px; border: 1px solid rgba(143,233,228,.24); border-left: 3px solid #8fe9e4; background: rgba(9,22,28,.82); color: #edf8f8; line-height: 1.7; }
+.release-status p { margin: 0 0 6px; }
+.release-status a { color: #8fe9e4; text-underline-offset: 3px; }
+
+.registry-guide { margin-bottom: 24px; padding: 16px 20px; background: rgba(9,22,28,.82); color: #edf8f8; border: 1px solid rgba(143,233,228,.24); line-height: 1.7; }
+.registry-guide summary { cursor: pointer; font-weight: 500; }
+.registry-guide dl { margin: 16px 0; }
+.registry-guide dl > div { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.12); }
+.registry-guide dt { flex: 1 1 180px; }
+.registry-guide dd { flex: 2 1 260px; margin: 0; overflow-wrap: anywhere; }
+.registry-guide code { color: #8fe9e4; }
+.registry-guide p { margin: 12px 0 0; }

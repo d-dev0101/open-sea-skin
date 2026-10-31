@@ -6,6 +6,8 @@ The repository root is a self-contained DeepSeek Harness bundle. It adds one
 Host row (`open-sea-skin`), one Web client module, and a read-only local asset
 route. It does not modify the Harness checkout.
 
+> **Publication status:** GitHub v1.2.7 contains the latest fixes; npm currently offers v1.2.6. npm publication awaits maintainer authentication. Use the [local-package fallback](#local-package-fallback) for the fix release, or the available registry version below.
+
 ## Install a release
 
 ```sh
@@ -20,7 +22,7 @@ are saved locally in that browser profile.
 Use the explicit version above so a stale registry or mirror cannot silently
 select 1.2.3, which lacks the official Desktop glass fix. A mainland China
 mirror may take time to synchronize a new npm release; use the official npm
-registry in the installer if 1.2.6 is not yet available from the mirror.
+registry in the installer if the requested published version is not available from the mirror.
 
 ## DSH Desktop
 
@@ -40,9 +42,9 @@ plugin manager—no download folder, terminal, or profile editing:
    to **40%** if you want the ocean to show clearly.
 
 If Open Sea 1.2.3 is already installed, uninstall that package in **Plugins**
-before adding 1.2.6. The official `0.2.0-rc.2` Add plugin dialog does not
+before adding another version. The reviewed `0.2.1-rc.5` Add plugin dialog does not
 perform in-place upgrades. If the selected mainland China mirror has not yet
-synchronized 1.2.6, choose the **official npm registry** in the same dialog.
+synchronized the published version, choose the **official npm registry** in the same dialog.
 The in-app catalog may list an older version; entering the exact package spec
 avoids accidentally reinstalling it.
 
@@ -51,29 +53,38 @@ The package-name path avoids a [reported pnpm 11.7.0 bug](https://github.com/dee
 a GitHub URL. **Do not delete the profile or lockfile** in response to that
 error; the installer restores failed profile changes, and deleting the lockfile
 does not repair a cached URL resolution. The [official plugin manager
-documentation](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md) describes the package-name and registry controls.
+documentation](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-rc.5/packages/client/ui-plugin-manager/README.md) describes the package-name and registry controls.
 Native Windows Desktop has not been E2E tested.
 
-The previous `open-sea-skin@1.2.5` package was installed successfully from both
-the official npm registry and the mainland China mirror with the bundled CLI
-in an isolated official macOS Desktop `0.2.0-rc.2` profile. This confirms the
-package and registry paths; the in-app UI flow has not been independently
-completed. Version 1.2.6 adds overlay/dialog browser regressions; this is not a new native Desktop certification.
+On November 1, 2026, the official macOS **0.2.1-rc.5** packaged runtime was used in an isolated profile to install, load and remove the 1.2.7 package. Tests loaded the actual Web client and ocean renderer, then checked both themes and glass controls. macOS/Windows platform attributes were exercised in Chromium; this is **not native Desktop GUI or Windows E2E certification**. See [compatibility evidence and historical tests](compatibility.md).
+
+### Installation sources
+
+The installer offers **two public registries and a custom-registry input**:
+
+1. **Official npm:** `https://registry.npmjs.org`.
+2. **Mainland China mirror:** `https://registry.npmmirror.com`. Synchronization can lag.
+3. **Custom address:** enter your npm registry URL. For a working public example, enter `https://registry.npmjs.org`; enterprise proxies must serve or proxy the package. A private source may require authentication in the local `.npmrc` (the installer points to `~/.npmrc`). Public-registry installation does not require an npm account.
+
+The package field is always `open-sea-skin@1.2.6` until npm publication of the fixes completes. Registry URLs belong in the separate source field, not the package field. A custom registry is not another public mirror we can publish to on your behalf.
+
+For Harness Web, append `--registry=https://registry.npmjs.org` or `--registry=https://registry.npmmirror.com` to the install command. Use your own registry URL for a custom source. A selected mirror does not redirect remote GitHub downloads. For 404, check the published version; for custom-source 401/403, follow the source's authentication requirements without embedding secrets in URLs or issue reports.
 
 ### Local-package fallback
 
-If both registries are unavailable, [download the v1.2.6 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.6/open-sea-skin-1.2.6.tgz)
-to Downloads. Fully quit Desktop, then use the `dsh` executable bundled with
-your Desktop app—not a separate npm CLI. Standard macOS app path:
+For the v1.2.7 fixes before npm publication, or if registries are unavailable:
 
-```sh
-"/Applications/DeepSeek Harness.app/Contents/Resources/runtime/cli/bin/dsh" plugin --profile desktop add "$HOME/Downloads/open-sea-skin-1.2.6.tgz"
+1. [Download the v1.2.7 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.7/open-sea-skin-1.2.7.tgz). Keep it as `.tgz`; do not extract it.
+2. Uninstall the older Open Sea package in **Plugins**, if installed.
+3. Copy the downloaded file's absolute path: **Option–Command–C** in macOS Finder, or **Copy as path** in Windows Explorer.
+4. Paste the local path into **Plugins → Add plugin**, removing surrounding quotation marks. Install and enable it.
+
+```text
+/Users/your-name/Downloads/open-sea-skin-1.2.7.tgz
+C:\Users\your-name\Downloads\open-sea-skin-1.2.7.tgz
 ```
 
-Reopen Desktop afterward. This **local file** install was tested in an isolated
-official macOS Desktop `0.2.0-rc.2` profile and does not reuse the remote URL's
-bad cached integrity entry. For Windows or a nonstandard macOS app location,
-locate the bundled CLI inside the Desktop app rather than guessing a path.
+The official rc.5 [install-spec parser](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-rc.5/packages/boot/plugin-manager/src/install-spec.ts) accepts absolute `.tgz` paths. This avoids the remote GitHub URL resolution path. Windows support here is source-checked, not a native Windows installation claim. Use the path on your own computer, not either example literally.
 
 ## Verify the package
 

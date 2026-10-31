@@ -2,6 +2,27 @@
 
 All notable changes to Open Sea Skin are documented here.
 
+## 1.2.7 — 2026-11-01
+
+### 修复 / Fixed
+
+- 皮肤控制面板不再被宿主的浅色 dialog 样式染成白底白字；提高左下角按钮与说明文字对比度。感谢 #16 中的精确复现。
+- 清除官方 Windows 侧栏内层重复背景，保留单层工作区玻璃；底部区域不再叠加填色。
+- 按 Harness 0.2.1-rc.5 的真实 `main.conversation` 插槽适配输入卡片、消息气泡与代码卡片的专属颜色变量，保留圆角和代码高亮；不对其它插件做全局卡片覆盖。
+- Keep Open Sea controls readable in either theme and restore translucent conversation surfaces on current Harness layouts.
+
+### 优化 / Performance
+
+- 合并波浪法线/浪峰计算，缓存重复的余弦与视线计算。部分采纳 @zdjmrq 的 #21 建议；原 PR 已由作者关闭，并未整体合并。
+- WebGPU / WebGL2 均无渲染错误，固定场景最大色值差为 1/255；800 个时空/浪高样本与原公式一致。未进行 FPS 基准，不宣称固定提速比例。原海洋效果、Logo 与动态展示图保留。
+
+### 兼容与发布 / Compatibility and delivery
+
+- 核对官方最新发布通道 **0.2.1-rc.5**，新增可复跑的隔离运行时安装/加载/卸载检查；[测试边界与已知问题](docs/compatibility.md)。Windows 原生完整安装仍未实测。
+- 新增中文优先的问题模板，更新官网与安装文档；GitHub 包和 npm 包分阶段发布时，明确哪个版本已可安装。
+- npm 发布复用 GitHub 的同一份校验包，再比对 registry integrity 和 SHA-256，避免二次打包漂移。
+- 远景高光闪烁（#19）与独立波浪速度（#22）仍在跟进，不计入本次已修复项。
+
 ## 1.2.6 — 2026-10-20
 
 ### 修复 / Fixed
