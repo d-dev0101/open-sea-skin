@@ -1,16 +1,20 @@
 # 🌊 Open Sea 1.2.7：新版 Harness 透明度与面板修复
 
-**GitHub 修复包已提供；npm 当前仍为 1.2.6，1.2.7 等待维护者登录发布。** 不要在 npm 安装器中反复填写尚未发布的 `open-sea-skin@1.2.7`。
+**✅ v1.2.7 已在 GitHub 和 npm 发布，中国大陆镜像已同步。** 官方源、镜像与 GitHub 的下载包已核对一致。
 
 ## 📦 安装这次修复
 
-1. 下载下方 `open-sea-skin-1.2.7.tgz`，保持压缩包原样。
-2. 在 Harness「插件」页卸载旧版 Open Sea（如已安装）。
-3. 打开「插件 → 添加插件」，粘贴**已下载文件的完整本地路径**，安装后点击「立即启用」。出现重启提示时按提示操作。
+1. 在 Harness「插件」页卸载旧版 Open Sea（如已安装）。
+2. 打开「插件 → 添加插件」，输入下方包名；可选择 npm 官方源或中国大陆镜像源。
+3. 安装后点击「立即启用」。出现重启提示时按提示操作。
 
-Mac 可在 Finder 选中文件后按 **⌥⌘C** 复制路径；Windows 可右键选择 **「复制文件地址」**。粘贴时去掉首尾引号。请勿粘贴远程 GitHub 下载链接。
+```text
+open-sea-skin@1.2.7
+```
 
-[中文详细步骤](https://github.com/d-dev0101/open-sea-skin/blob/main/docs/install.zh.md#下载本地包备用) · [English](https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md#local-package-fallback)
+Windows / Mac 均使用以上入口，无需终端。npm 源不可用时，可下载下方 `open-sea-skin-1.2.7.tgz`，按[本地包安装步骤](https://github.com/d-dev0101/open-sea-skin/blob/main/docs/install.zh.md#下载本地包备用)粘贴文件的完整本地路径；请勿粘贴远程 GitHub 下载链接。
+
+[中文详细步骤](https://github.com/d-dev0101/open-sea-skin/blob/main/docs/install.zh.md) · [English](https://github.com/d-dev0101/open-sea-skin/blob/main/docs/dsh-plugin.md)
 
 ## 🛠️ 修复内容
 
@@ -29,10 +33,10 @@ Mac 可在 Finder 选中文件后按 **⌥⌘C** 复制路径；Windows 可右�
 
 ## 🔐 包完整性
 
-版本化与不带版本号的 `.tgz` 为同一份内容，SHA-256 列在 `SHA256SUMS`。后续 npm 发布将复用同一份 GitHub 包，验证 registry 的 SHA-512 和字节一致性，不二次打包。
+版本化与不带版本号的 `.tgz` 为同一份内容，SHA-256 列在 `SHA256SUMS`。npm 发布复用了同一份 GitHub 包，没有二次打包；npm 官方源与大陆镜像均已验证 SHA-512，且下载内容与 GitHub 包逐字节一致。
 
 Chrome/Edge 用户下载 `open-sea-skin-extension-v1.2.7.zip`；该扩展不适用于桌面客户端，不改主页或新标签页。
 
 ## English
 
-Fixes light-mode quick-control readability, duplicate sidebar fill and newer conversation surface tokens. Reduces repeated ocean calculations without redesigning the original scene. Checked against the official packaged Harness 0.2.1-rc.5 runtime and actual Web client; native Windows E2E is not claimed. **npm remains at 1.2.6 pending maintainer authentication.** To install this fix now, download the `.tgz` and enter its local absolute path in Plugins → Add plugin. GitHub and future npm releases will use the same verified archive bytes.
+Fixes light-mode quick-control readability, duplicate sidebar fill and newer conversation surface tokens. Reduces repeated ocean calculations without redesigning the original scene. Checked against the official packaged Harness 0.2.1-rc.5 runtime and actual Web client; native Windows E2E is not claimed. **v1.2.7 is available from npm and the mainland China mirror.** Remove an older Open Sea version in Plugins, then enter `open-sea-skin@1.2.7` in Plugins → Add plugin and enable it after installation. Both registries serve the same verified archive bytes as GitHub. The downloaded `.tgz` remains a local-path fallback.

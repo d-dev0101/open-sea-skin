@@ -6,12 +6,12 @@ The repository root is a self-contained DeepSeek Harness bundle. It adds one
 Host row (`open-sea-skin`), one Web client module, and a read-only local asset
 route. It does not modify the Harness checkout.
 
-> **Publication status:** GitHub v1.2.7 contains the latest fixes; npm currently offers v1.2.6. npm publication awaits maintainer authentication. Use the [local-package fallback](#local-package-fallback) for the fix release, or the available registry version below.
+> **v1.2.7 is published on npm and synchronized to the mainland China mirror.** Both registry archives have been verified against the GitHub Release. Install by package name below; use the [local-package fallback](#local-package-fallback) if registries are unavailable.
 
 ## Install a release
 
 ```sh
-dsh plugin --profile web add open-sea-skin@1.2.6
+dsh plugin --profile web add open-sea-skin@1.2.7
 dsh web
 ```
 
@@ -20,7 +20,7 @@ left opens the wave, daylight, glass-opacity, and day-cycle controls. Settings
 are saved locally in that browser profile.
 
 Use the explicit version above so a stale registry or mirror cannot silently
-select 1.2.3, which lacks the official Desktop glass fix. A mainland China
+select an older build without the latest fixes. A mainland China
 mirror may take time to synchronize a new npm release; use the official npm
 registry in the installer if the requested published version is not available from the mirror.
 
@@ -34,14 +34,14 @@ plugin manager—no download folder, terminal, or profile editing:
 2. Enter this exact package name and version:
 
    ```text
-   open-sea-skin@1.2.6
+   open-sea-skin@1.2.7
    ```
 
 3. Choose **Install**, review the package details, then **Enable now**.
 4. In Harness, use the lower-left **Skin settings** control. Set glass opacity
    to **40%** if you want the ocean to show clearly.
 
-If Open Sea 1.2.3 is already installed, uninstall that package in **Plugins**
+If an older Open Sea version is installed, uninstall that package in **Plugins**
 before adding another version. The reviewed `0.2.1-rc.5` Add plugin dialog does not
 perform in-place upgrades. If the selected mainland China mirror has not yet
 synchronized the published version, choose the **official npm registry** in the same dialog.
@@ -66,13 +66,13 @@ The installer offers **two public registries and a custom-registry input**:
 2. **Mainland China mirror:** `https://registry.npmmirror.com`. Synchronization can lag.
 3. **Custom address:** enter your npm registry URL. For a working public example, enter `https://registry.npmjs.org`; enterprise proxies must serve or proxy the package. A private source may require authentication in the local `.npmrc` (the installer points to `~/.npmrc`). Public-registry installation does not require an npm account.
 
-The package field is always `open-sea-skin@1.2.6` until npm publication of the fixes completes. Registry URLs belong in the separate source field, not the package field. A custom registry is not another public mirror we can publish to on your behalf.
+Enter `open-sea-skin@1.2.7` in the package field. Both public registries were verified to serve this version on November 1, 2026. Registry URLs belong in the separate source field, not the package field. A custom registry is not another public mirror we can publish to on your behalf.
 
 For Harness Web, append `--registry=https://registry.npmjs.org` or `--registry=https://registry.npmmirror.com` to the install command. Use your own registry URL for a custom source. A selected mirror does not redirect remote GitHub downloads. For 404, check the published version; for custom-source 401/403, follow the source's authentication requirements without embedding secrets in URLs or issue reports.
 
 ### Local-package fallback
 
-For the v1.2.7 fixes before npm publication, or if registries are unavailable:
+If registries are unavailable or you need to install from a local file:
 
 1. [Download the v1.2.7 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.7/open-sea-skin-1.2.7.tgz). Keep it as `.tgz`; do not extract it.
 2. Uninstall the older Open Sea package in **Plugins**, if installed.
