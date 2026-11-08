@@ -162,6 +162,12 @@ html:is([data-platform="darwin"], [data-windows-titlebar]) body #root [data-righ
 html[data-windows-titlebar] body #root div:has(> [data-shell-overlay])::before {
   background: transparent !important;
 }
+/* The active conversation's sticky composer seat adds a bg-base gradient
+   behind the input card. The shared desktop frame already paints that glass;
+   clear only this semantic seat, keeping the card's own surface and radius. */
+html:is([data-platform="darwin"], [data-windows-titlebar]) body #root [data-slot="main.conversation"] [data-composer-seat] {
+  background: transparent !important;
+}
 /* Harness 0.2.1 uses dedicated tokens for composer, message bubbles and tool /
    code cards. Limit these to the conversation slot: settings and other plugin
    interfaces retain their original surfaces, radii and syntax highlighting. */

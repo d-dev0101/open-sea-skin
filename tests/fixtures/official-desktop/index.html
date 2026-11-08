@@ -24,6 +24,12 @@
     html[data-platform="darwin"] .sidebar-root { background: transparent; }
     .center { background: var(--dsw-alias-bg-base); }
     .conversation { height: 100%; display: grid; align-content: center; gap: 20px; padding: 32px; background: var(--dsw-alias-bg-base); }
+    /* ConversationRoot.module.css keeps this sticky fade in 0.2.2-rc.1 too.
+       It paints an extra layer even when background-color is transparent. */
+    .conversation[data-phase="active"] [data-composer-seat] {
+      position: sticky; bottom: 0; z-index: 7;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--dsw-alias-bg-base) 0%, transparent) 0px, var(--dsw-alias-bg-base) 36px);
+    }
     .rightbar { background: var(--dsw-alias-bg-base); }
     [data-dockkit-content] { height: 100%; padding: 24px; background: var(--dsw-alias-bg-base); }
     .composer { padding: 20px; border-radius: 22px; background: var(--dsw-specific-input-major); }
