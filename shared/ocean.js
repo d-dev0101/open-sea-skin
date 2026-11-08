@@ -429,6 +429,28 @@ function applyResolutionScale(scale) {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+function resetFrameTiming(now = performance.now()) {
+  lastFrameTime = now;
+  lastRenderAt = 0;
+  fpsStamp = now;
+  adaptStamp = now;
+  fpsFrames = 0;
+  fpsWindow = 0;
+  adaptWindow = 0;
+  fpsNow = 0;
+}
+
+function applyFallbackBudget() {
+  // A backend fallback must not raise the reduced-motion frame/pixel budget.
+  PIXEL_RATIO_CAP = Math.min(PIXEL_RATIO_CAP, 1.0);
+  BASE_PIXEL_RATIO = Math.min(window.devicePixelRatio || 1, PIXEL_RATIO_CAP);
+  FRAME_RATE_CAP = Math.min(FRAME_RATE_CAP, 30);
+  FRAME_MS = 1000 / FRAME_RATE_CAP;
+  TARGET_FPS = Math.min(TARGET_FPS, 28);
+  renderScale = 0.6;
+  applyResolutionScale(renderScale);
+}
+
 function animate(now) {
   // high-resolution timestamp -> delta, clamped so hitches never cause jumps
   const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
@@ -462,7 +484,9 @@ function animate(now) {
       if (fpsNow < TARGET_FPS - 8 && renderScale > MIN_SCALE) {
         renderScale = Math.max(MIN_SCALE, +(renderScale * 0.92).toFixed(3));
         applyResolutionScale(renderScale);
-      } else if (fpsNow > TARGET_FPS + 8 && renderScale < 1) {
+      } else if (fpsNow >= Math.min(TARGET_FPS + 8, FRAME_RATE_CAP * 0.9) && renderScale < 1) {
+        // Low/reduced-motion modes cannot exceed their own 30/20 FPS caps.
+        // Recover resolution once rendering is stable near the selected cap.
         renderScale = Math.min(1, +(renderScale * 1.06).toFixed(3));
         applyResolutionScale(renderScale);
       }
@@ -605,8 +629,7 @@ async function boot() {
       if (document.hidden) {
         renderer.setAnimationLoop(null);
       } else {
-        lastFrameTime = performance.now();
-        lastRenderAt = 0;
+        resetFrameTiming();
         renderer.setAnimationLoop(animate);
       }
     });
@@ -617,17 +640,12 @@ async function boot() {
     if (renderer.backend.isWebGPUBackend !== true) {
       // WebGPU 不可用时 three 自动回退 WebGL2 backend：两种 backend 都允许渲染
       // （2026-08-23 webgui 冒烟测试：用户浏览器无 WebGPU → 纯 WebGPU 检查导致初始化失败）。
-      PIXEL_RATIO_CAP = 1.0;
-      BASE_PIXEL_RATIO = Math.min(window.devicePixelRatio || 1, PIXEL_RATIO_CAP);
-      FRAME_RATE_CAP = 30;
-      FRAME_MS = 1000 / FRAME_RATE_CAP;
-      TARGET_FPS = 28;
-      renderScale = 0.6;
-      applyResolutionScale(renderScale);
+      applyFallbackBudget();
     }
 
     loopStarted = true;
-    renderer.setAnimationLoop(animate);
+    resetFrameTiming();
+    if (!document.hidden) renderer.setAnimationLoop(animate);
   } catch (err) {
     showInitError(err);
   }

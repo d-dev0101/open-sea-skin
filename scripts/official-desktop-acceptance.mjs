@@ -20,6 +20,8 @@ try {
     await route.fulfill({ response })
   })
   await page.goto(`${server.url}/tests/fixtures/official-desktop/index.html`)
+  const composerSeatBackground = () => page.locator('[data-composer-seat]').evaluate(el => getComputedStyle(el).backgroundImage)
+  assert.match(await composerSeatBackground(), /^linear-gradient\(/, 'fixture includes the host sticky composer fade before skinning')
   await page.evaluate(() => {
     localStorage.setItem('ossAutoCycle', 'false')
     localStorage.setItem('ossGlass', '40')
@@ -34,7 +36,7 @@ try {
 
   for (const platform of ['darwin', 'windows']) {
     for (const dark of [true, false]) {
-      for (const glass of [40, 90]) {
+      for (const glass of [40, 72, 90]) {
       await setRange(page.locator('#__open-sea-skin-panel__-glass-range'), glass)
       await page.evaluate(({ platform, dark }) => {
         document.documentElement.toggleAttribute('data-windows-titlebar', platform === 'windows')
@@ -72,7 +74,7 @@ try {
           return (values[0] + .05) / (values[1] + .05)
         }
         return {
-          columns: ['.sidebar-root', '.conversation', '[data-dockkit-content]', '[data-shell-bottom]'].map(effective),
+          columns: ['.sidebar-root', '.conversation', '[data-composer-seat]', '[data-dockkit-content]', '[data-shell-bottom]'].map(effective),
           cards: ['[data-composer-card]', '.conversation .message-bubble', '.conversation .tool-details', '.conversation .md-code-block', '.conversation pre', '[data-code-block-banner]'].map(alpha),
           otherPluginCards: ['.plugin-dialog .composer', '.plugin-dialog .message-bubble', '.plugin-dialog .tool-details'].map(alpha),
           composerRadius: getComputedStyle(document.querySelector('[data-composer-card]')).borderRadius,
@@ -92,6 +94,7 @@ try {
       for (const value of paints.cards) assert.ok(Math.abs(value - expected) < .005,
         `${platform}/${dark ? 'dark' : 'light'}: conversation cards ${JSON.stringify(paints.cards)} expected ${expected}`)
       assert.deepEqual(paints.otherPluginCards, [1, 1, 1], 'conversation tokens do not change other plugins')
+      assert.equal(await composerSeatBackground(), 'none', 'composer seat does not paint another gradient over the desktop glass')
       assert.equal(paints.composerRadius, '22px', 'keep the host composer radius')
       assert.equal(paints.syntaxColor, 'rgb(90, 140, 220)', 'keep host syntax highlighting')
       assert.ok(paints.settings >= .96, 'settings stays legible over the ocean')
@@ -113,8 +116,9 @@ try {
   }
   await page.evaluate(() => window.stopOpenSea())
   assert.equal(await page.locator('#__open-sea-skin-glass__').count(), 0)
+  assert.match(await composerSeatBackground(), /^linear-gradient\(/, 'disabling the skin restores the host composer fade')
   assert.deepEqual(failures, [])
-  console.log('✓ Official Desktop 0.2.1-rc.5 surface fixture: unified columns, translucent conversation cards and readable independent dialogs in macOS/Windows light/dark modes at 40%/90%')
+  console.log('✓ Official Desktop surface fixture: unified columns and composer seat, translucent cards and readable independent dialogs in macOS/Windows light/dark modes at 40%/72%/90%; host fade restored after cleanup')
 } finally {
   await browser.close()
   await server.close()

@@ -2,7 +2,7 @@
 
 [返回项目首页](../README.md#install) · [官网先看效果](https://d-dev0101.github.io/open-sea-skin/) · [English](dsh-plugin.md)
 
-> 📦 **v1.2.7 已发布：npm 官方源与中国大陆镜像均可安装。** 两个源的下载包均已核对，与 GitHub Release 一致。优先按包名安装；源不可用时再用[本地包安装](#下载本地包备用)。
+> 📦 **npm 推荐安装仍为 v1.2.7**，官方源与中国大陆镜像均可用。**GitHub 修复版 v1.2.8 的 npm 发布待完成**；如需本次已有对话输入区叠色与后台恢复稳定性修复，请按[本地包步骤](#下载本地包备用)安装。不要把 npm 安装包名的版本改为尚未发布的 `1.2.8`。
 
 ## 1. 官方客户端：Windows / Mac
 
@@ -17,10 +17,10 @@
 
 | 系统 | 安装入口 | 验证情况 |
 | --- | --- | --- |
-| macOS | 客户端「插件 → 添加插件」 | 官方 0.2.1-rc.5 包内运行时：隔离安装、真实 Web 页面、卸载重启；不是本次完整原生窗口实测 |
+| macOS | 客户端「插件 → 添加插件」 | 官方 0.2.2-rc.1：隔离安装、启用、真实 Web 页面加载、卸载重启；不是完整原生窗口实测 |
 | Windows | 相同入口、相同包名 | 官方文档与实际前端安装器已核对；Windows 页面结构回归通过，尚无原生 Windows 完整安装实测 |
 
-2026-11-01 核对的官方最新发布通道为 **0.2.1-rc.5**；完整证据和测试边界见[兼容性记录](compatibility.md)。
+上述测试记录于 **2026-11-08**。官方 **0.2.2-rc.1** 也已支持 npm 安装的第三方插件更新；完整证据和测试边界见[兼容性记录](compatibility.md)。
 
 ### 三种安装源如何填写？
 
@@ -64,7 +64,8 @@ dsh plugin --profile web add open-sea-skin@1.2.7 --registry=https://registry.npm
 
 ### 更新、停用、卸载
 
-- **更新 Open Sea：** 先在「插件」中卸载旧版，再输入准确的新版本包名安装。已核对的安装器暂不提供第三方插件原地升级。
+- **npm 安装的 Open Sea：** Harness **0.2.2-rc.1 起**，打开「插件 → Open Sea 详情」，点击 **「更新到…」** 后确认更新；「版本」栏目也可「重新检查」。无需先卸载。入口只查找安装源中已发布的版本，**目前是 1.2.7**。
+- **旧版 Harness / Git、URL、本地包安装：** 没有 npm 版本更新入口时，才使用卸载重装。要立即使用尚未发布到 npm 的 **1.2.8**，按[本地包步骤](#下载本地包备用)手动替换。[官方更新说明](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-rc.1)。
 - **临时关闭：** 在皮肤面板关闭海洋，或在「插件」中停用。
 - **卸载：** 在「插件」页找到 Open Sea，选择卸载。不要删除整个 `.dsh` 配置或会话目录。
 - **升级 Harness：** 无需例行卸载皮肤。更新后检查明暗模式、设置弹窗与左右栏；如异常，先在「插件」里停用 Open Sea，再反馈版本及截图。
@@ -79,6 +80,7 @@ dsh plugin --profile web add open-sea-skin@1.2.7 --registry=https://registry.npm
 | 大陆镜像找不到新版本 | 切换官方 npm 源；镜像同步有延迟，不要改成 GitHub URL |
 | 安装后没有海洋 | 先确认已「启用」；按客户端提示重启；检查是否把插件装在 Web 而不是客户端里 |
 | 左右栏深浅不一、设置看不清 | v1.2.7 修复皮肤面板白底白字、侧栏叠色及新聊天卡片透明度；广场二级弹窗修复始于 v1.2.6。按上方步骤更新到 1.2.7，再试玻璃 40% |
+| 已有对话的输入区仍叠着黑 / 白块 | v1.2.8 修复该区域的额外渐变叠层；npm 发布待完成，急需修复可按下方步骤安装 GitHub 本地包 |
 | 夕阳时输入框仍是浅色 | 当前昼夜循环控制海面光照；输入框与文字主题跟随 Harness 外观设置，不自动切换明暗模式 |
 | `git ls-remote` 或 SSH 报错 | 使用 npm 包名；若日志指向另一个插件，先解决该依赖的下载问题 |
 
@@ -86,21 +88,21 @@ dsh plugin --profile web add open-sea-skin@1.2.7 --registry=https://registry.npm
 
 ### 下载本地包（备用）
 
-npm 源不可用，或需要从本地文件安装时：
+**v1.2.8 尚未发布到 npm，需要本次修复时使用本地包。** 本流程也适用于 npm 源不可用的情况；已有 npm 版本且不急于使用本次修复，可以继续使用 1.2.7，待 npm 发布后通过插件管理更新。
 
-1. [下载 v1.2.7 本地压缩包](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.7/open-sea-skin-1.2.7.tgz)，**保留 `.tgz`，不要解压**。
-2. 已装旧版时，先在「插件」中卸载旧版 Open Sea。
+1. [下载 v1.2.8 本地压缩包](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.8/open-sea-skin-1.2.8.tgz)，**保留 `.tgz`，不要解压**。
+2. 首次安装跳过这一步。只有在无法通过插件管理更新、需要手动替换本地包时，才先卸载旧版 Open Sea。
 3. 复制文件的完整路径：Mac 在 Finder 选中文件后按 **⌥⌘C**；Windows 在资源管理器中右键文件，选择 **「复制文件地址」**。
 4. 在 Harness **「插件 → 添加插件」**粘贴该本地路径，去掉路径两端的引号，点击「安装」，完成后启用。路径中的空格可以保留。
 
 示例格式（请粘贴自己电脑上的实际路径）：
 
 ```text
-/Users/你的用户名/Downloads/open-sea-skin-1.2.7.tgz
-C:\Users\你的用户名\Downloads\open-sea-skin-1.2.7.tgz
+/Users/你的用户名/Downloads/open-sea-skin-1.2.8.tgz
+C:\Users\你的用户名\Downloads\open-sea-skin-1.2.8.tgz
 ```
 
-📌 **粘贴下载完成的本地文件路径，不是 GitHub 下载网址。** rc.5 的官方安装器支持本地 `.tgz`；Windows 支持来自源码核对，原生 Windows 安装仍未实测。新版本安装器的路径处理见[官方源码](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-rc.5/packages/boot/plugin-manager/src/install-spec.ts)。
+📌 **粘贴下载完成的本地文件路径，不是 GitHub 下载网址。** 官方安装器支持本地 `.tgz`；Windows 路径支持已核对源码，原生 Windows 安装仍未实测。详见[兼容性记录](compatibility.md)。
 
 ## 3. Harness Web
 

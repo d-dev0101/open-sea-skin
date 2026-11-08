@@ -22,9 +22,11 @@
 
 ## 🛠️ Maintenance status
 
-**✅ v1.2.7 is available from npm and the mainland China mirror.** It fixes the light-mode controls, stacked sidebar fill and newer conversation surfaces. Copy the package name below to install. If an older version is installed, remove it in **Plugins** before installing the update.
+**🛠️ GitHub fix release v1.2.8 — npm publication pending.** This release fixes stacked composer backgrounds in existing conversations and improves stability when returning from the background. To get these fixes now, follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback).
 
-🔎 Checked official Harness **0.2.1-rc.5** using the packaged Mac runtime and actual Web client, including install/remove and both themes. **Native Windows Desktop remains untested.** [Compatibility evidence & known issues →](docs/compatibility.md)
+**📦 The recommended npm package remains v1.2.7**, available from both the official registry and mainland China mirror. It includes the light controls, stacked sidebar and conversation-surface fixes. Copy the package name below; do not replace its version with `1.2.8` until that version is published to npm.
+
+🔎 **Official Harness 0.2.2-rc.1 checked on November 8, 2026:** installation, enablement, actual Web client loading, removal and restart in an isolated profile. **This is not a full native Desktop GUI test; native Windows Desktop remains untested.** [Compatibility evidence & known issues →](docs/compatibility.md)
 
 ## 🚀 Official Desktop in three steps
 
@@ -140,9 +142,12 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 | **🇨🇳 Mainland China mirror** | `https://registry.npmmirror.com` | An alternative for mainland networks; new versions may arrive later. |
 | **🏢 Custom address** | Your npm registry URL; `https://registry.npmjs.org` also works as a custom value | For a company/private proxy. This is an input option, not a third predefined public mirror; it must serve or proxy this package. |
 
-Verified on **November 1, 2026**: both public sources serve **1.2.7**, with archive bytes matching the GitHub Release. Use the [local-package fallback](docs/dsh-plugin.md#local-package-fallback) if registries are unavailable. Registry selection does not redirect a GitHub URL. For custom-registry 401/403 errors, follow that registry's authentication requirements.
+Both public registries currently serve **1.2.7**; its archive bytes were verified against the GitHub v1.2.7 Release. **v1.2.8 is available as a GitHub package while npm publication is pending.** Use the [local-package steps](docs/dsh-plugin.md#local-package-fallback) for the new fixes. Registry selection does not redirect a GitHub URL. For custom-registry 401/403 errors, follow that registry's authentication requirements.
 
-**Update:** uninstall the older Open Sea version in Plugins, then install the version above. The reviewed official installer does not update third-party bundles in place.
+**Update an npm installation:** On Harness **0.2.2-rc.1 and later**, open **Plugins → Open Sea details → Update to…**; the **Versions** section also offers a check action. Confirm the update without uninstalling first. It only finds versions published to the selected registry: **currently 1.2.7**.
+
+**Older Harness or local-package installation:** If no update action is available, or you need the GitHub-only **1.2.8** fixes, remove the older package and follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback). Git, URL and local-package installations do not use the npm version-update action. [Official release notes](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-rc.1).
+
 **Disable:** turn off the ocean in the skin controls, or disable Open Sea in Plugins.
 **Uninstall:** remove Open Sea from Plugins. Web-profile commands do not remove Desktop plugins.
 
@@ -168,7 +173,7 @@ Restart your running `dsh web` process and reload the browser. This installs int
 
 For local Harness pages in a browser, on Windows or Mac.
 
-1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.7/open-sea-skin-extension-v1.2.7.zip) and unzip it.
+1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.8/open-sea-skin-extension-v1.2.8.zip) and unzip it.
 2. Open `chrome://extensions` or `edge://extensions`; enable **Developer mode**.
 3. Choose **Load unpacked** and select the extracted folder containing `manifest.json`.
 4. Reload your Harness page on `127.0.0.1` or `localhost`.
@@ -244,7 +249,7 @@ Then restart Harness. The static installer removes its own marked loader/assets,
 <details>
 <summary><strong>Is every latest Harness/Desktop version tested?</strong></summary>
 
-The current release channel, **0.2.1-rc.5**, was checked with the official packaged macOS runtime in an isolated profile: package installation, actual Web client loading, skin controls, uninstall and restart. Browser regressions cover macOS/Windows shell structures, both themes and 40%/90% glass. **This is not native Windows Desktop E2E testing or a promise of compatibility with every future release.** [Exact scope, historical baselines and known issues](docs/compatibility.md).
+**Official Harness 0.2.2-rc.1 was checked on November 8, 2026** in an isolated profile: installation, enablement, actual Web client loading, removal and restart. Detailed appearance regressions and historical baselines are documented below. **This is not full native Desktop GUI or Windows E2E testing, or a promise of compatibility with every future release.** [Exact scope, historical baselines and known issues](docs/compatibility.md).
 
 If an update breaks the skin, [report your Harness version, installation method and a redacted screenshot/log](https://github.com/d-dev0101/open-sea-skin/issues).
 

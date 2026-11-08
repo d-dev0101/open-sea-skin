@@ -2,6 +2,22 @@
 
 All notable changes to Open Sea Skin are documented here.
 
+## 1.2.8 — 2026-11-08
+
+### 修复 / Fixed
+
+- 修复官方桌面端进入已有对话后，输入框外层渐变与工作区玻璃重复叠加造成的深色条/白色块（#25，也覆盖 #27 的同类输入区反馈）。仅清理 `main.conversation` 内的 `data-composer-seat`，保留输入卡片圆角、气泡与代码卡片的可读背景。
+- 从后台恢复时重置帧率采样窗口，避免把隐藏时间误判为 GPU 掉帧；首次初始化完成时也重新开始采样。低帧率模式的清晰度恢复阈值不再高于自身帧率上限。
+- WebGL2 回退不再把系统“减少动态效果”的 20 FPS / 0.9 像素比预算提高到 30 FPS / 1.0。
+- Remove the duplicated sticky-composer fade on official Desktop layouts; preserve card radii and restore the host fade on disposal. Reset timing on resume, make resolution recovery reachable at capped frame rates, and retain reduced-motion budgets on fallback.
+
+### 兼容与说明 / Compatibility and docs
+
+- 核对官方 Harness **0.2.2-rc.1**；使用校验过的官方 macOS 包内运行时，在隔离 profile 完成安装、真实 Web 客户端加载、皮肤调节、卸载及重启。原生 Windows 窗口尚未实测，详见[验证边界](docs/compatibility.md)。
+- 补充真实 sticky gradient 回归，覆盖 macOS/Windows 页面结构、浅深色及 40%/72%/90% 玻璃，共 12 组；保留 24 组社区桌面布局回归。
+- 中文优先的 README、官网和安装指南跟进官方新增的插件更新入口，区分新版更新与旧版卸载重装流程，继续说明 npm 官方源、大陆镜像及用户自定义源。
+- Windows 原生标题栏色块（#27）、Mac GPU 占用与节能档（#28）、远景闪烁（#19）和独立波浪速度（#22）仍在跟进。本版不宣称这些问题全部解决，也不承诺固定耗电下降比例。
+
 ## 1.2.7 — 2026-11-01
 
 ### 修复 / Fixed
