@@ -6,7 +6,7 @@ The repository root is a self-contained DeepSeek Harness bundle. It adds one
 Host row (`open-sea-skin`), one Web client module, and a read-only local asset
 route. It does not modify the Harness checkout.
 
-> **The recommended npm package remains v1.2.7**, available from the official registry and mainland China mirror. **GitHub fix release v1.2.8 is pending npm publication.** For the existing-conversation composer and background-resume fixes, use the [local-package steps](#local-package-fallback). Do not change the npm package version to `1.2.8` before it is published.
+> **The recommended npm package remains v1.2.7**, available from the official registry and mainland China mirror. **GitHub fix release v1.2.9 is pending npm publication.** For panel update controls, the existing-conversation composer and background-resume fixes, use the [local-package steps](#local-package-fallback). Do not change the npm package version to `1.2.9` before it is published.
 
 ## Install a release
 
@@ -48,7 +48,7 @@ the selected registry are available here: **currently 1.2.7**.
 
 Older Harness versions and Git, URL or local-package installations do not use
 that npm version-update action. If it is unavailable, or you need the GitHub-only
-**1.2.8** fixes now, remove the older package and follow the
+**1.2.9** fixes now, remove the older package and follow the
 [local-package steps](#local-package-fallback). See the [official release notes](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-rc.1).
 
 If the selected mainland China mirror has not yet
@@ -74,25 +74,25 @@ The installer offers **two public registries and a custom-registry input**:
 2. **Mainland China mirror:** `https://registry.npmmirror.com`. Synchronization can lag.
 3. **Custom address:** enter your npm registry URL. For a working public example, enter `https://registry.npmjs.org`; enterprise proxies must serve or proxy the package. A private source may require authentication in the local `.npmrc` (the installer points to `~/.npmrc`). Public-registry installation does not require an npm account.
 
-Enter `open-sea-skin@1.2.7` in the package field. Both public registries serve this version; 1.2.8 is pending npm publication. Registry URLs belong in the separate source field, not the package field. A custom registry is not another public mirror we can publish to on your behalf.
+Enter `open-sea-skin@1.2.7` in the package field. Both public registries serve this version; 1.2.9 is pending npm publication. Registry URLs belong in the separate source field, not the package field. A custom registry is not another public mirror we can publish to on your behalf.
 
 For Harness Web, append `--registry=https://registry.npmjs.org` or `--registry=https://registry.npmmirror.com` to the install command. Use your own registry URL for a custom source. A selected mirror does not redirect remote GitHub downloads. For 404, check the published version; for custom-source 401/403, follow the source's authentication requirements without embedding secrets in URLs or issue reports.
 
 ### Local-package fallback
 
-**Use a local package for the v1.2.8 fixes while npm publication is pending.**
+**Use a local package for the v1.2.9 fixes while npm publication is pending.**
 This also works when registries are unavailable. Existing npm users who do not
 need these fixes immediately can keep 1.2.7, then use the plugin manager to update
 after the new version reaches npm.
 
-1. [Download the v1.2.8 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.8/open-sea-skin-1.2.8.tgz). Keep it as `.tgz`; do not extract it.
+1. [Download the v1.2.9 tarball](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.9/open-sea-skin-1.2.9.tgz). Keep it as `.tgz`; do not extract it.
 2. Skip this step for a first installation. Only uninstall the older package if the plugin manager cannot update it and you need to replace it manually with a local package.
 3. Copy the downloaded file's absolute path: **Option–Command–C** in macOS Finder, or **Copy as path** in Windows Explorer.
 4. Paste the local path into **Plugins → Add plugin**, removing surrounding quotation marks. Install and enable it.
 
 ```text
-/Users/your-name/Downloads/open-sea-skin-1.2.8.tgz
-C:\Users\your-name\Downloads\open-sea-skin-1.2.8.tgz
+/Users/your-name/Downloads/open-sea-skin-1.2.9.tgz
+C:\Users\your-name\Downloads\open-sea-skin-1.2.9.tgz
 ```
 
 The official installer accepts absolute `.tgz` paths, avoiding the remote GitHub URL resolution path. Windows path support is source-checked, not a native Windows installation claim. Use the path on your own computer, not either example literally. See the [verification scope](compatibility.md).
@@ -123,6 +123,8 @@ If the launcher does not appear, confirm the command used the same profile as
 `dsh web`, restart the Web process, then perform one normal page reload.
 
 ## Update or remove
+
+From **Open Sea 1.2.9**, opening Skin settings shows the installed version and checks for updates. A compatible newer release adds an **Update** action that opens the host plugin details for confirmation. The panel distinguishes up-to-date for the selected source, unavailable compatible updates, manual installations and network errors. Earlier Open Sea versions need one manual upgrade to gain these controls.
 
 Install a newer published npm version with the same `add` command. To remove
 the package and its profile row:

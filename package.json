@@ -1,6 +1,6 @@
 {
   "name": "open-sea-skin",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "type": "module",
   "description": "实时海洋皮肤 · Realtime ocean theme for DeepSeek Harness Desktop and Web",
   "repository": {
@@ -62,7 +62,8 @@
     "test:browser": "node scripts/browser-acceptance.mjs",
     "test:desktop": "node scripts/desktop-acceptance.mjs && node scripts/official-desktop-acceptance.mjs",
     "test:website": "node scripts/website-acceptance.mjs && node scripts/website-loading-acceptance.mjs",
-    "capture": "node scripts/capture-gallery.mjs"
+    "capture": "node scripts/capture-gallery.mjs",
+    "test:updates": "node scripts/update-controls-acceptance.mjs"
   },
   "engines": {
     "node": ">=20"

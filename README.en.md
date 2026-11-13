@@ -22,9 +22,9 @@
 
 ## 🛠️ Maintenance status
 
-**🛠️ GitHub fix release v1.2.8 — npm publication pending.** This release fixes stacked composer backgrounds in existing conversations and improves stability when returning from the background. To get these fixes now, follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback).
+**🛠️ GitHub fix release v1.2.9 — npm publication pending.** Adds version checks and update notices to the skin panel, including the existing composer-background and scheduler fixes. To get these fixes now, follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback).
 
-**📦 The recommended npm package remains v1.2.7**, available from both the official registry and mainland China mirror. It includes the light controls, stacked sidebar and conversation-surface fixes. Copy the package name below; do not replace its version with `1.2.8` until that version is published to npm.
+**📦 The recommended npm package remains v1.2.7**, available from both the official registry and mainland China mirror. It includes the light controls, stacked sidebar and conversation-surface fixes. Copy the package name below; do not replace its version with `1.2.9` until that version is published to npm.
 
 🔎 **Official Harness 0.2.2-rc.1 checked on November 8, 2026:** installation, enablement, actual Web client loading, removal and restart in an isolated profile. **This is not a full native Desktop GUI test; native Windows Desktop remains untested.** [Compatibility evidence & known issues →](docs/compatibility.md)
 
@@ -142,11 +142,11 @@ Wave size stays at 56 while the light moves from Midday to Dusk.
 | **🇨🇳 Mainland China mirror** | `https://registry.npmmirror.com` | An alternative for mainland networks; new versions may arrive later. |
 | **🏢 Custom address** | Your npm registry URL; `https://registry.npmjs.org` also works as a custom value | For a company/private proxy. This is an input option, not a third predefined public mirror; it must serve or proxy this package. |
 
-Both public registries currently serve **1.2.7**; its archive bytes were verified against the GitHub v1.2.7 Release. **v1.2.8 is available as a GitHub package while npm publication is pending.** Use the [local-package steps](docs/dsh-plugin.md#local-package-fallback) for the new fixes. Registry selection does not redirect a GitHub URL. For custom-registry 401/403 errors, follow that registry's authentication requirements.
+Both public registries currently serve **1.2.7**; its archive bytes were verified against the GitHub v1.2.7 Release. **v1.2.9 is available as a GitHub package while npm publication is pending.** Use the [local-package steps](docs/dsh-plugin.md#local-package-fallback) for the new fixes. Registry selection does not redirect a GitHub URL. For custom-registry 401/403 errors, follow that registry's authentication requirements.
 
 **Update an npm installation:** On Harness **0.2.2-rc.1 and later**, open **Plugins → Open Sea details → Update to…**; the **Versions** section also offers a check action. Confirm the update without uninstalling first. It only finds versions published to the selected registry: **currently 1.2.7**.
 
-**Older Harness or local-package installation:** If no update action is available, or you need the GitHub-only **1.2.8** fixes, remove the older package and follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback). Git, URL and local-package installations do not use the npm version-update action. [Official release notes](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-rc.1).
+**Older Harness or local-package installation:** If no update action is available, or you need the GitHub-only **1.2.9** fixes, remove the older package and follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback). Git, URL and local-package installations do not use the npm version-update action. [Official release notes](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-rc.1).
 
 **Disable:** turn off the ocean in the skin controls, or disable Open Sea in Plugins.
 **Uninstall:** remove Open Sea from Plugins. Web-profile commands do not remove Desktop plugins.
@@ -173,12 +173,14 @@ Restart your running `dsh web` process and reload the browser. This installs int
 
 For local Harness pages in a browser, on Windows or Mac.
 
-1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.8/open-sea-skin-extension-v1.2.8.zip) and unzip it.
+1. [Download the extension ZIP](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.9/open-sea-skin-extension-v1.2.9.zip) and unzip it.
 2. Open `chrome://extensions` or `edge://extensions`; enable **Developer mode**.
 3. Choose **Load unpacked** and select the extracted folder containing `manifest.json`.
 4. Reload your Harness page on `127.0.0.1` or `localhost`.
 
 🏠 Your homepage and new-tab extension stay unchanged. This extension does not install into the desktop app.
+
+**Extension updates:** Download and extract the new ZIP, replace the files in your original loaded extension directory, click **Reload** in the extension manager, then refresh Harness. The panel update guide links here.
 
 <a id="static-installer"></a>
 
@@ -199,6 +201,8 @@ This is **not a Windows PowerShell command or a way to patch Official Desktop's 
 📖 [Paths, backups and recovery](native-dist/README.md)
 
 </details>
+
+**Static-install updates:** Stop Harness, rerun the installer above to replace the assets, then start Harness and reload the page.
 
 <a id="source-integration"></a>
 
@@ -302,3 +306,9 @@ Made for people who want a more personal DeepSeek Harness workspace. Feedback, b
 Project code is [MIT licensed](LICENSE). third-party code and fonts retain their own licenses; see [Third-party notices](THIRD_PARTY_NOTICES.md).
 
 <p align="center"><a href="https://d-dev0101.github.io/open-sea-skin/"><strong>🌊 Find your sea — try the live demo</strong></a></p>
+
+## 🔔 Update checks (v1.2.9+)
+
+Open the skin panel to see the installed version and **Check updates**. A new-version dot appears on the settings button when an update is available. **Update** opens the official plugin details for confirmation. Local packages and older clients use the linked guide. Install 1.2.9 once to get this new entry.
+
+Checks run when the panel opens, with a six-hour cache and manual refresh. Network failures never report “up to date.” No polling, silent installation or chat upload. [Network details](docs/privacy.md).

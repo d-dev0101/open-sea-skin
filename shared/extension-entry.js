@@ -21,6 +21,7 @@
 
     const controller = globalThis.OpenSeaSkinCore.createController({
       assetUrl: (path) => chrome.runtime.getURL(path),
+      updates: globalThis.OpenSeaUpdateChecker.create({ currentVersion: OPEN_SEA_VERSION, kind: 'extension' }),
       storage: {
         get: async (defaults) => {
           const stored = await chrome.storage.sync.get({

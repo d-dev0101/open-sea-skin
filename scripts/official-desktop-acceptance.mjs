@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
 import { chromiumArgs, findChromeForTesting, serveDirectory, setRange, waitForOcean, watchPageErrors } from './browser-support.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const version = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8')).version
 const server = await serveDirectory(root)
 const browser = await chromium.launch({
   executablePath: await findChromeForTesting(chromium.executablePath()),
@@ -14,7 +16,11 @@ const browser = await chromium.launch({
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
   const failures = watchPageErrors(page, 'official desktop')
-  await page.route('**/open-sea-skin/**', async route => {
+  // Keep registry metadata separate from this fixture's local asset route.
+  await page.route('https://registry.npmjs.org/open-sea-skin/latest', route => route.fulfill({
+    json: { name: 'open-sea-skin', version },
+  }))
+  await page.route(`${server.url}/open-sea-skin/**`, async route => {
     const url = new URL(route.request().url())
     const response = await route.fetch({ url: `${server.url}/extension/${url.pathname.split('/open-sea-skin/')[1]}${url.search}` })
     await route.fulfill({ response })

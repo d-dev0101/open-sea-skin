@@ -1,4 +1,6 @@
-// GENERATED from shared/skin-core.js. Run npm run build after editing shared sources.
+// GENERATED from shared sources. Run npm run build after editing shared sources.
+{
+const OPEN_SEA_VERSION = "1.2.9";
 // Open Sea Skin shared host-page controller.
 //
 // This file intentionally has no import/export statements: the release build
@@ -35,6 +37,13 @@
       reset: '恢复默认',
       resetNote: '恢复全部默认设置（波浪 45 / 日光 55 / 玻璃 72 / 自动循环开）',
       note: '调节即时生效并自动保存；手动设定「日光」后会停止自动昼夜循环。',
+      version: '当前版本', check: '检查更新', checking: '正在检查…',
+      updateIdle: '打开面板时检查更新', updateCurrent: '已是当前安装源的最新版',
+      updateAvailable: '发现新版本', updateAhead: '当前版本高于安装源版本',
+      updateError: '暂时无法检查更新，请重试', updateUnsupported: '此安装方式请查看更新指南', updateUnavailable: '暂无兼容的新版',
+      updateRestart: '新版本已安装，刷新页面或重启 Harness 后生效',
+      updateAction: '去更新', updateGuide: '更新指南',
+      updateManual: '在「插件」中打开 Open Sea 详情，检查可用更新。',
       times: ['黄昏', '金色时刻', '下午', '正午'],
     },
     en: {
@@ -48,6 +57,13 @@
       reset: 'Reset to defaults',
       resetNote: 'Restore all defaults (sea 45 / daylight 55 / glass 72 / auto cycle on)',
       note: 'Changes apply immediately and save automatically. Setting daylight manually stops the automatic day cycle.',
+      version: 'Installed', check: 'Check updates', checking: 'Checking…',
+      updateIdle: 'Checks when this panel opens', updateCurrent: 'Up to date for this source',
+      updateAvailable: 'Update available', updateAhead: 'Installed version is newer than the source',
+      updateError: 'Could not check for updates. Try again.', updateUnsupported: 'See the guide for this installation', updateUnavailable: 'No compatible update available',
+      updateRestart: 'New version installed. Reload the page or restart Harness to apply.',
+      updateAction: 'Update', updateGuide: 'Update guide',
+      updateManual: 'Open Open Sea in Plugins to review available updates.',
       times: ['Dusk', 'Golden hour', 'Afternoon', 'Midday'],
     },
   });
@@ -216,7 +232,7 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
   background:rgba(10,14,20,.82); backdrop-filter:blur(22px) saturate(140%);
   box-shadow:0 18px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.1);
   color:#eef4f6; font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
-  display:none;
+  display:none; box-sizing:border-box; max-width:calc(100vw - 24px); overflow-y:auto;
 }
 #${IDS.panel}.open { display:block; }
 #${IDS.panel} .oss-title { display:flex; align-items:center; justify-content:space-between; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:14px; }
@@ -237,6 +253,19 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
 #${IDS.panel} .oss-switch input[type='checkbox'] { width:15px; height:15px; margin:0; accent-color:#8fe9e4; cursor:pointer; }
 #${IDS.panel} .oss-reset { width:100%; margin-top:4px; padding:7px 0; border-radius:8px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:#eef4f6; font-size:11px; cursor:pointer; transition:background .15s ease, border-color .15s ease; }
 #${IDS.panel} .oss-reset:hover { background:rgba(143,233,228,.12); border-color:rgba(143,233,228,.4); }
+#${IDS.panel} .oss-updates { border-top:1px solid rgba(255,255,255,.14); margin-top:14px; padding-top:12px; font-size:11px; line-height:1.6; }
+#${IDS.panel} .oss-version-row { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+#${IDS.panel} .oss-version { color:rgba(255,255,255,.7); font-variant-numeric:tabular-nums; }
+#${IDS.panel} .oss-check, #${IDS.panel} .oss-update-action { border:1px solid rgba(143,233,228,.3); border-radius:7px; padding:6px 10px; background:rgba(143,233,228,.08); color:#b6f2ee; cursor:pointer; font:inherit; }
+#${IDS.panel} .oss-check:hover, #${IDS.panel} .oss-update-action:hover { background:rgba(143,233,228,.16); }
+#${IDS.panel} .oss-check:disabled { cursor:wait; opacity:.7; }
+#${IDS.panel} .oss-update-status { margin:8px 0 0; color:rgba(255,255,255,.7); overflow-wrap:anywhere; }
+#${IDS.panel} .oss-updates[data-state="available"] .oss-update-status { color:#b6f2ee; }
+#${IDS.panel} .oss-update-action { margin-top:8px; }
+#${IDS.panel} .oss-update-guide { margin-left:8px; color:#b6f2ee; text-underline-offset:3px; }
+#${IDS.panel} [hidden] { display:none !important; }
+#${IDS.button}[data-update-available]::after { content:""; position:absolute; right:-3px; top:-3px; width:7px; height:7px; border-radius:50%; border:2px solid #17252a; background:#8fe9e4; }
+#${IDS.panel} a:focus-visible { outline:2px solid #8fe9e4; outline-offset:3px; }
 @media (prefers-reduced-motion: reduce) {
   #${IDS.button}, #${IDS.panel}, #${IDS.panel} * { transition:none !important; }
 }`;
@@ -254,6 +283,10 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
     let previousFocus = null;
     let placementObserver = null;
     let placementFrame = 0;
+    let updateView = () => {};
+    let checkUpdates = () => {};
+    let updateAbort = null;
+    let updateSequence = 0;
     const surfaceCleanups = [];
     const controllerCleanups = [];
 
@@ -311,6 +344,17 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
       placementFrame = requestAnimationFrame(placeButton);
     };
 
+    const placePanel = () => {
+      const button = document.getElementById(IDS.button);
+      const panel = document.getElementById(IDS.panel);
+      if (!panelOpen || !button || !panel) return;
+      const rect = button.getBoundingClientRect();
+      const bottom = Math.min(Math.max(12, window.innerHeight - rect.top + 10), window.innerHeight - 140);
+      panel.style.bottom = `${Math.max(12, bottom)}px`;
+      panel.style.maxHeight = `${Math.max(120, window.innerHeight - bottom - 12)}px`;
+      panel.style.left = `${Math.max(12, Math.min(rect.left - panel.offsetWidth + 34, window.innerWidth - panel.offsetWidth - 12))}px`;
+    };
+
     const setPanelOpen = (open) => {
       const button = document.getElementById(IDS.button);
       const panel = document.getElementById(IDS.panel);
@@ -321,10 +365,9 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
       button.setAttribute('aria-expanded', String(open));
       if (open) {
         previousFocus = document.activeElement;
-        const rect = button.getBoundingClientRect();
-        panel.style.left = `${Math.min(Math.max(12, rect.left - panel.offsetWidth + 34), window.innerWidth - panel.offsetWidth - 12)}px`;
-        panel.style.bottom = `${Math.max(12, window.innerHeight - rect.top + 10)}px`;
+        placePanel();
         panel.querySelector('input')?.focus();
+        void checkUpdates(false);
       } else if (previousFocus instanceof HTMLElement) {
         previousFocus.focus();
       }
@@ -412,6 +455,71 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
       };
       syncUi();
 
+      if (options.updates) {
+        const updates = options.updates;
+        const section = document.createElement('section');
+        section.className = 'oss-updates';
+        section.innerHTML = `<div class="oss-version-row"><span class="oss-version"></span><button class="oss-check" type="button"></button></div><p class="oss-update-status" role="status" aria-live="polite"></p><button class="oss-update-action" type="button" hidden></button><a class="oss-update-guide" target="_blank" rel="noopener noreferrer" hidden></a>`;
+        panel.appendChild(section);
+        const version = section.querySelector('.oss-version');
+        const check = section.querySelector('.oss-check');
+        const message = section.querySelector('.oss-update-status');
+        const action = section.querySelector('.oss-update-action');
+        const guide = section.querySelector('.oss-update-guide');
+        let result = { status: 'idle' };
+        let manual = false;
+        updateView = () => {
+          section.dataset.state = result.status;
+          version.textContent = `${copy.version} v${updates.currentVersion}`;
+          check.textContent = result.status === 'checking' ? copy.checking : copy.check;
+          check.disabled = result.status === 'checking';
+          const keys = { idle:'updateIdle', checking:'checking', current:'updateCurrent', available:'updateAvailable', ahead:'updateAhead', error:'updateError', unsupported:'updateUnsupported', unavailable:'updateUnavailable', restart:'updateRestart' };
+          message.textContent = manual ? copy.updateManual : copy[keys[result.status] || 'updateError'];
+          if (result.latest && ['available', 'ahead', 'restart'].includes(result.status)) message.textContent += ` · v${result.latest}`;
+          const external = updates.kind === 'extension' || updates.kind === 'native';
+          action.hidden = result.status !== 'available' || external;
+          action.textContent = copy.updateAction;
+          guide.hidden = !manual && !(external && result.status === 'available') && !['unsupported', 'ahead', 'unavailable'].includes(result.status);
+          guide.textContent = copy.updateGuide;
+          const language = copy === COPY.zh ? 'zh' : 'en';
+          guide.href = external
+            ? `https://github.com/d-dev0101/open-sea-skin/blob/main/README.${language}.md#${updates.kind === 'extension' ? 'browser-extension' : 'static-installer'}`
+            : `https://github.com/d-dev0101/open-sea-skin/blob/main/docs/${language === 'zh' ? 'install.zh.md#更新停用卸载' : 'dsh-plugin.md#update-or-remove'}`;
+          const available = result.status === 'available';
+          button.toggleAttribute('data-update-available', available);
+          button.title = available ? `${copy.button} · ${copy.updateAvailable} v${result.latest}` : copy.button;
+          button.setAttribute('aria-label', button.title);
+          placePanel();
+        };
+        checkUpdates = async (force) => {
+          if (result.status === 'checking') return;
+          const sequence = ++updateSequence;
+          updateAbort?.abort();
+          updateAbort = new AbortController();
+          result = { status:'checking' };
+          manual = false;
+          updateView();
+          try {
+            const next = await updates.check({ force, signal:updateAbort.signal });
+            if (sequence !== updateSequence || !section.isConnected) return;
+            result = next;
+          } catch {
+            if (sequence !== updateSequence || !section.isConnected) return;
+            result = { status:'error' };
+          }
+          updateView();
+        };
+        on(check, 'click', () => { void checkUpdates(true); });
+        on(action, 'click', () => {
+          try {
+            if (updates.open?.() === true) { setPanelOpen(false); return; }
+          } catch { /* Older hosts use the explicit guide instead. */ }
+          manual = true;
+          updateView();
+        });
+        updateView();
+      }
+
       // Harness may set lang after boot. Update only our own UI, in both
       // directions, without replacing controls or losing focus/listeners.
       const syncLocale = () => {
@@ -426,6 +534,7 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
         resetBtn.textContent = copy.reset;
         panel.querySelector('.oss-note').replaceChildren(copy.resetNote, document.createElement('br'), copy.note);
         timeOut.textContent = timeLabel(copy, state.time);
+        updateView();
       };
       syncLocale();
       const localeObserver = new MutationObserver(syncLocale);
@@ -487,14 +596,14 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
           return;
         }
         if (event.key !== 'Tab') return;
-        const focusable = [...panel.querySelectorAll('button, input')].filter((element) => !element.disabled);
+        const focusable = [...panel.querySelectorAll('button, input, a[href]')].filter((element) => !element.disabled && !element.hidden && element.getClientRects().length > 0);
         if (focusable.length === 0) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       });
-      on(window, 'resize', () => { if (!panelOpen) schedulePlace(); });
+      on(window, 'resize', () => { placeButton(); placePanel(); });
 
       placementObserver = new MutationObserver(schedulePlace);
       placementObserver.observe(host, { childList: true, subtree: true });
@@ -502,6 +611,10 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
     };
 
     const unmount = () => {
+      updateSequence++;
+      updateAbort?.abort();
+      updateView = () => {};
+      checkUpdates = () => {};
       panelOpen = false;
       placementObserver?.disconnect();
       placementObserver = null;
@@ -576,6 +689,199 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
   global.OpenSeaSkinCore = Object.freeze({ createController, DEFAULTS, IDS });
 })(globalThis);
 
+// Optional metadata checks. The ocean renderer and settings never depend on them.
+(() => {
+  'use strict';
+
+  const PACKAGE = 'open-sea-skin';
+  const NPM_LATEST = 'https://registry.npmjs.org/open-sea-skin/latest';
+  const GITHUB_LATEST = 'https://api.github.com/repos/d-dev0101/open-sea-skin/releases/latest';
+  const CACHE_MS = 6 * 60 * 60 * 1000;
+
+  function parseVersion(value) {
+    if (typeof value !== 'string' || value.length > 128) return null;
+    const match = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/.exec(value);
+    if (!match) return null;
+    const parts = match.slice(1, 4).map(Number);
+    const pre = match[4] ? match[4].split('.') : [];
+    if (!parts.every(Number.isSafeInteger) || pre.some(part => /^0\d+$/.test(part))) return null;
+    return { parts, pre };
+  }
+
+  function compareVersion(a, b) {
+    const left = parseVersion(a), right = parseVersion(b);
+    if (!left || !right) throw new Error('Invalid update version');
+    for (let index = 0; index < 3; index++) {
+      if (left.parts[index] !== right.parts[index]) return left.parts[index] > right.parts[index] ? 1 : -1;
+    }
+    if (!left.pre.length || !right.pre.length) return left.pre.length === right.pre.length ? 0 : left.pre.length ? -1 : 1;
+    for (let index = 0; index < Math.max(left.pre.length, right.pre.length); index++) {
+      const x = left.pre[index], y = right.pre[index];
+      if (x === y) continue;
+      if (x === undefined || y === undefined) return x === undefined ? -1 : 1;
+      const xn = /^\d+$/.test(x), yn = /^\d+$/.test(y);
+      if (xn !== yn) return xn ? -1 : 1;
+      if (xn && x.length !== y.length) return x.length > y.length ? 1 : -1;
+      return x > y ? 1 : -1;
+    }
+    return 0;
+  }
+
+  // ctx.get is Cordis's optional service lookup. Direct ctx.someService access
+  // requires inject and would prevent older hosts from loading the skin.
+  function service(ctx, name) {
+    try { return typeof ctx?.get === 'function' ? ctx.get(name) : undefined; }
+    catch { return undefined; }
+  }
+
+  function bounded(operation, signal, timeoutMs) {
+    return new Promise((resolve, reject) => {
+      const controller = new AbortController();
+      let timer;
+      let settled = false;
+      const finish = (callback, value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        signal?.removeEventListener('abort', cancel);
+        callback(value);
+      };
+      const cancel = () => {
+        controller.abort();
+        const error = new Error('Update check cancelled');
+        error.name = 'AbortError';
+        finish(reject, error);
+      };
+      if (signal?.aborted) { cancel(); return; }
+      signal?.addEventListener('abort', cancel, { once: true });
+      timer = setTimeout(() => {
+        controller.abort();
+        finish(reject, new Error('Update check timed out'));
+      }, timeoutMs);
+      Promise.resolve().then(() => {
+        if (controller.signal.aborted) throw new Error('Update check cancelled');
+        return operation(controller.signal);
+      }).then(
+        value => finish(resolve, value), error => finish(reject, error),
+      );
+    });
+  }
+
+  function create(options) {
+    const currentVersion = options.currentVersion;
+    const fetchMetadata = options.fetch || globalThis.fetch?.bind(globalThis);
+    const now = options.now || Date.now;
+    const timeoutMs = Math.max(1, Math.min(10000, options.timeoutMs || 10000));
+    const kind = options.kind || 'plugin';
+    let cache;
+    let sequence = 0;
+
+    function publishedVersion(latest, source) {
+      const parsed = parseVersion(latest);
+      if (!parsed) throw new Error('Invalid published update version');
+      if (parsed.pre.length) return { status: 'unavailable', source };
+      const order = compareVersion(currentVersion, latest);
+      return { status: order < 0 ? 'available' : order > 0 ? 'ahead' : 'current', latest, source };
+    }
+
+    async function json(url, signal) {
+      if (typeof fetchMetadata !== 'function') throw new Error('Update checks are unavailable');
+      const response = await fetchMetadata(url, {
+        method: 'GET', mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer',
+        cache: 'no-store', redirect: 'error', signal,
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) throw new Error('Update metadata request failed');
+      return response.json();
+    }
+
+    async function fromHost(manager, signal) {
+      const answer = await manager.listVersions(PACKAGE, {}, signal);
+      if (answer?.ok !== true) throw new Error('Harness could not check plugin updates');
+      const list = answer.value;
+      if (list?.status === 'refused') {
+        if (list.problem === 'not-updatable') return { status: 'unsupported', source: 'Harness' };
+        throw new Error('The installed source could not check plugin updates');
+      }
+      if (list?.status !== 'listed' || !parseVersion(list.installed) || !Array.isArray(list.versions)) {
+        throw new Error('Invalid Harness version response');
+      }
+      // The manager lists releases newer than the on-disk installation. An
+      // empty list does not mean this still-running page has loaded it yet.
+      if (compareVersion(list.installed, currentVersion) > 0) {
+        return { status: 'restart', latest: list.installed, source: 'Harness' };
+      }
+      // Ignore malformed metadata rather than allowing it into UI or links.
+      // A malformed response is a failure, never evidence of being up to date.
+      if (list.versions.some(item => !parseVersion(item?.version)
+        || typeof item.bundle !== 'boolean' || typeof item.prerelease !== 'boolean')) {
+        throw new Error('Invalid Harness version metadata');
+      }
+      const newer = list.versions.filter(item => compareVersion(item.version, currentVersion) > 0);
+      const candidates = newer.filter(item => item.bundle && item.incompatible === undefined
+        && item.deprecated === undefined && !item.prerelease && !parseVersion(item.version).pre.length);
+      candidates.sort((a, b) => compareVersion(b.version, a.version));
+      if (candidates.length) return { status: 'available', latest: candidates[0].version, source: 'Harness' };
+      return { status: newer.length ? 'unavailable' : 'current', source: 'Harness' };
+    }
+
+    async function fromNpm(signal) {
+      const metadata = await json(NPM_LATEST, signal);
+      if (metadata?.name !== PACKAGE) throw new Error('Unexpected package metadata');
+      return publishedVersion(metadata.version, 'npm');
+    }
+
+    async function fromRelease(signal) {
+      const release = await json(GITHUB_LATEST, signal);
+      const latest = typeof release?.tag_name === 'string' ? release.tag_name.replace(/^v/, '') : '';
+      if (release?.draft !== false || release.prerelease !== false || !parseVersion(latest)
+        || !Array.isArray(release.assets)) throw new Error('Invalid release metadata');
+      // npm and extension releases can drift. Only offer a release containing
+      // the artifact this installation uses, never just the npm dist-tag.
+      const assetName = kind === 'extension'
+        ? `open-sea-skin-extension-v${latest}.zip` : `open-sea-skin-${latest}.tgz`;
+      const artifact = release.assets.some(asset => asset?.name === assetName
+        && asset.state === 'uploaded' && Number.isFinite(asset.size) && asset.size > 0);
+      if (!artifact) return { status: 'unavailable', source: 'GitHub' };
+      return publishedVersion(latest, 'GitHub');
+    }
+
+    return Object.freeze({
+      currentVersion,
+      kind,
+      async check({ force = false, signal } = {}) {
+        if (signal?.aborted) {
+          const error = new Error('Update check cancelled'); error.name = 'AbortError'; throw error;
+        }
+        if (!parseVersion(currentVersion)) throw new Error('Invalid installed update version');
+        const manager = kind === 'plugin' ? service(options.ctx, 'remote.pluginManager') : undefined;
+        const hasManager = typeof manager?.listVersions === 'function';
+        // Cordis may return a fresh tracing proxy on each ctx.get call, so
+        // cache by capability rather than service object identity.
+        const driver = hasManager ? 'Harness' : kind === 'plugin' ? 'npm' : 'GitHub';
+        if (!force && cache?.driver === driver && now() - cache.at >= 0 && now() - cache.at < CACHE_MS) {
+          return { ...cache.result };
+        }
+        const request = ++sequence;
+        cache = undefined;
+        const result = await bounded(checkSignal => hasManager ? fromHost(manager, checkSignal)
+          : kind === 'plugin' ? fromNpm(checkSignal) : fromRelease(checkSignal), signal, timeoutMs);
+        if (request === sequence) cache = { driver, at: now(), result };
+        return { ...result };
+      },
+      open() {
+        // The official manager owns confirmation, registry selection and
+        // installation. This feature never runs installs or shell commands.
+        const navigation = kind === 'plugin' ? service(options.ctx, 'pluginNavigation') : undefined;
+        if (typeof navigation?.openBundle !== 'function') return false;
+        try { navigation.openBundle(PACKAGE); return true; } catch { return false; }
+      },
+    });
+  }
+
+  globalThis.OpenSeaUpdateChecker = Object.freeze({ create });
+})();
+
 // Chrome/Edge MV3 adapter for the shared skin controller.
 (() => {
   'use strict';
@@ -599,6 +905,7 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
 
     const controller = globalThis.OpenSeaSkinCore.createController({
       assetUrl: (path) => chrome.runtime.getURL(path),
+      updates: globalThis.OpenSeaUpdateChecker.create({ currentVersion: OPEN_SEA_VERSION, kind: 'extension' }),
       storage: {
         get: async (defaults) => {
           const stored = await chrome.storage.sync.get({
@@ -644,3 +951,5 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
 
   void start();
 })();
+
+}

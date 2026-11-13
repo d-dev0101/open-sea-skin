@@ -6,6 +6,8 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const check = process.argv.includes('--check')
 const target = resolve(root, 'plugin/client.js')
 const core = readFileSync(resolve(root, 'shared/skin-core.js'), 'utf8')
+const checker = readFileSync(resolve(root, 'shared/update-checker.js'), 'utf8')
+const version = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')).version
 
 const adapter = String.raw`
   const KEYS = Object.freeze({
@@ -32,6 +34,7 @@ const adapter = String.raw`
   exports.apply = function apply(ctx) {
     const controller = globalThis.OpenSeaSkinCore.createController({
       assetUrl: (path) => '/open-sea-skin/' + path,
+      updates: globalThis.OpenSeaUpdateChecker.create({ currentVersion: OPEN_SEA_VERSION, kind: 'plugin', ctx }),
       storage: {
         get: async (defaults) => ({
           enabled: readSetting('enabled', defaults.enabled),
@@ -59,7 +62,7 @@ const adapter = String.raw`
 }});
 `
 
-const expected = `// GENERATED from shared/skin-core.js. Run npm run build after editing shared sources.\nwindow.__ModuleLoader__.load({ id: "open-sea-skin", factory: (require) => {\n  var module = { exports: {} };\n  var exports = module.exports;\n${core}\n${adapter}`
+const expected = `// GENERATED from shared sources. Run npm run build after editing shared sources.\nwindow.__ModuleLoader__.load({ id: "open-sea-skin", factory: (require) => {\n  var module = { exports: {} };\n  var exports = module.exports;\n  const OPEN_SEA_VERSION = ${JSON.stringify(version)};\n${core}\n${checker}\n${adapter}`
 
 if (check) {
   if (!existsSync(target) || readFileSync(target, 'utf8') !== expected) {

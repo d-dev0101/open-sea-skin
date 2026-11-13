@@ -14,6 +14,7 @@
   };
   const controller = globalThis.OpenSeaSkinCore.createController({
     assetUrl: (path) => `/open-sea-skin/${path}`,
+    updates: globalThis.OpenSeaUpdateChecker.create({ currentVersion: OPEN_SEA_VERSION, kind: 'native' }),
     storage: {
       get: async (defaults) => ({
         enabled: read('enabled', defaults.enabled),
