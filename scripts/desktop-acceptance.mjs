@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
-import { mkdir } from 'node:fs/promises'
+import { mkdir, readFile } from 'node:fs/promises'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
 import { chromiumArgs, findChromeForTesting, serveDirectory, setRange, waitForOcean, watchPageErrors } from './browser-support.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const version = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8')).version
 const server = await serveDirectory(root)
 const browser = await chromium.launch({
   executablePath: await findChromeForTesting(chromium.executablePath()),
@@ -18,7 +19,12 @@ await mkdir(output, { recursive: true })
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
   const failures = watchPageErrors(page, 'desktop')
-  await page.route('**/open-sea-skin/**', async route => {
+  // Rewrite only local skin assets; the package name also appears in registry
+  // URLs. Style regressions use deterministic metadata instead of the network.
+  await page.route('https://registry.npmjs.org/open-sea-skin/latest', route => route.fulfill({
+    json: { name: 'open-sea-skin', version },
+  }))
+  await page.route(`${server.url}/open-sea-skin/**`, async route => {
     const url = new URL(route.request().url())
     const response = await route.fetch({ url: `${server.url}/extension/${url.pathname.split('/open-sea-skin/')[1]}${url.search}` })
     await route.fulfill({ response })

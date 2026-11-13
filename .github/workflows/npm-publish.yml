@@ -6,7 +6,7 @@ on:
       tag:
         description: Existing GitHub Release whose verified package should be published
         required: true
-        default: v1.2.8
+        default: v1.2.9
 
 permissions:
   contents: read

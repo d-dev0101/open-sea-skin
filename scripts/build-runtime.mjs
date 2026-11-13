@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const check = process.argv.includes('--check')
+const version = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version
 
 function bytes(path) {
   return readFileSync(join(root, path))
@@ -49,8 +50,9 @@ function emitTree(source, targets) {
 }
 
 function emitLoader(adapter, target) {
-  const banner = Buffer.from('// GENERATED from shared/skin-core.js. Run npm run build after editing shared sources.\n')
-  const expected = Buffer.concat([banner, bytes('shared/skin-core.js'), Buffer.from('\n'), bytes(adapter)])
+  const banner = Buffer.from(`// GENERATED from shared sources. Run npm run build after editing shared sources.\n{\nconst OPEN_SEA_VERSION = ${JSON.stringify(version)};\n`)
+  const expected = Buffer.concat([banner, bytes('shared/skin-core.js'), Buffer.from('\n'),
+    bytes('shared/update-checker.js'), Buffer.from('\n'), bytes(adapter), Buffer.from('\n}\n')])
   if (check) assertSame(expected, target)
   else writeFileSync(join(root, target), expected)
 }

@@ -86,6 +86,16 @@ try {
   })
   await page.goto(url)
   await waitForOcean(page)
+  const installedPackage = JSON.parse(await readFile(join(home, 'profiles/web/node_modules/open-sea-skin/package.json'), 'utf8'))
+  const updateState = page.locator('#__open-sea-skin-panel__ .oss-updates')
+  // The local candidate must use the real host API and report manual updating;
+  // a public-registry fallback here would fail to validate the optional service.
+  await page.locator('#__open-sea-skin-btn__').evaluate(button => button.click())
+  await updateState.locator('.oss-version').filter({ hasText: installedPackage.version }).waitFor()
+  await page.waitForFunction(() => document.querySelector('.oss-updates')?.dataset.state === 'unsupported', null, { timeout: 15000 })
+  assert.ok(await updateState.locator('.oss-update-guide').isVisible())
+  const updates = { version: installedPackage.version, status: await updateState.getAttribute('data-state'), realHostApi: true }
+  await page.locator('#__open-sea-skin-btn__').evaluate(button => button.click())
   const content = await page.request.get(new URL('/open-sea-skin/ocean.js', url).href)
   assert.equal(content.status(), 200)
   assert.ok((await content.text()).includes('WebGPURenderer'))
@@ -167,7 +177,7 @@ try {
   await command(['plugin', '--profile', 'web', 'remove', 'open-sea-skin'])
   const result = { harness: version, pluginSpec: spec, evidence, isolation: 'fresh DSH_HOME; no user data',
     coverage: 'Official packaged macOS runtime, fresh web profile: CLI install, host, actual Web client, WebGPU, dark/light and emulated platform attributes, uninstall/restart, graphical Add Plugin install/enable. Not native Desktop profile/UI or Windows E2E.',
-    slots, paints, errors, installed: true, rendererLoaded: true, uninstallRestarted: true, webGuiInstalledAndEnabled: true }
+    slots, paints, updates, errors, installed: true, rendererLoaded: true, uninstallRestarted: true, webGuiInstalledAndEnabled: true }
   await writeFile(join(evidence, 'result.json'), JSON.stringify(result, null, 2) + '\n')
   console.log(JSON.stringify({ harness: version, installed: true, rendererLoaded: true, uninstallRestarted: true, webGuiInstalledAndEnabled: true, evidence }))
 } finally {
