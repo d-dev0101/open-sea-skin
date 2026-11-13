@@ -260,7 +260,14 @@ try {
     await panel.locator('.oss-update-action').click();
     assert.equal(await panel.locator('.oss-update-guide').isVisible(), true);
     await page.setViewportSize({ width: 320, height: 360 });
-    await page.waitForFunction(() => document.querySelector('#__open-sea-skin-panel__').getBoundingClientRect().bottom <= window.innerHeight - 11);
+    // Chromium can acknowledge the viewport before delivering its resize event.
+    // The old max-height can leave the top outside the viewport even when the
+    // bottom already fits, so wait for all four edges (RAF polling, no sleep).
+    await page.waitForFunction(() => {
+      const box = document.querySelector('#__open-sea-skin-panel__').getBoundingClientRect();
+      return box.top >= 11 && box.left >= 11
+        && box.right <= window.innerWidth - 11 && box.bottom <= window.innerHeight - 11;
+    });
     await withinViewport();
     await panel.locator('.oss-update-guide').scrollIntoViewIfNeeded();
     await screenshot(page, 'compact-panel');

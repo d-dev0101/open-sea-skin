@@ -224,7 +224,7 @@ body[data-ds-dark-theme] :is([data-shortcut-modal="settings"], [role="dialog"], 
 #${IDS.button}:active { transform:scale(.94); }
 #${IDS.button}:focus-visible, #${IDS.panel} button:focus-visible, #${IDS.panel} input:focus-visible { outline:2px solid rgba(143,233,228,.7); outline-offset:2px; }
 #${IDS.panel} {
-  position:fixed; z-index:6001; width:250px; padding:16px;
+  position:fixed; z-index:6001; width:284px; padding:16px;
   border-radius:16px; border:1px solid rgba(255,255,255,.14);
   background:rgba(10,14,20,.82); backdrop-filter:blur(22px) saturate(140%);
   box-shadow:0 18px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.1);
