@@ -1,18 +1,17 @@
 # 🔎 兼容性记录 / Compatibility
 
-最后核对：**2026-11-13**。本次 GitHub 版本：**1.2.9**；npm / 中国大陆镜像的已验证版本仍为 **1.2.7**，发布状态见 [README](../README.md)。
+最后核对：**2026-11-21**。本次 GitHub 版本：**1.2.9**；npm / 中国大陆镜像的已验证版本仍为 **1.2.7**，发布状态见 [README](../README.md)。
 
 ## 官方 Harness 更新了吗？
 
-更新了。本次查询 `@deepseek-ai/dsh` 的 `latest` 与 `next` 均为 **0.2.2-rc.1**；官方 macOS arm64 桌面更新源也指向该版本。它仍是预发布版本，本次没有将实验性的 alpha 通道当作日常兼容基线。
+截至 2026-11-21，官方 [Harness 0.2.2-rc.5](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-rc.5) 已发布，`@deepseek-ai/dsh` 的 `latest` 和 `next` 均为 0.2.2-rc.5。本机官方 macOS 包也是该版本。其他平台请以客户端显示的实际版本为准。
 
-平台分发并非完全同步：11 月 8 日核对的 Windows x64 更新源同为 0.2.2-rc.1，macOS Intel x64 更新源仍为 0.2.1-rc.4。请以客户端显示的实际版本为准，较旧版本继续使用文档中的备用更新步骤。
+## 2026-11-21 官方 0.2.2-rc.5 回归
 
-- [官方 0.2.2-rc.1 发布记录](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-rc.1)（2026-11-04，提交 `66491b0`）
-- [该版本插件管理说明](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.2-rc.1/packages/client/ui-plugin-manager/README.zh.md)
-- [npm 官方包元数据](https://registry.npmjs.org/@deepseek-ai%2fdsh/latest)
-
-该版本支持更新从 npm registry 安装的第三方插件，并在热更新失败时回滚旧版本。本地 `.tgz`、Git 或 URL 安装不属于这一更新通道。安装指南已同步区分这两种情况。
+- 校验并使用 GitHub Release 的原始 1.2.9 压缩包。在官方 macOS 包内的隔离 Web 配置中验证命令行安装、海洋渲染、40% 玻璃、版本面板、本地包更新指引、卸载和重启。
+- 通过 Web 插件页安装并启用同一压缩包。插件已写入配置，刷新页面后仍未加载。重启 `dsh web`、打开新启动地址后，海洋正常显示。
+- npm 官方源和中国大陆镜像当前仍提供 1.2.7。需要 1.2.9 时使用[本地包安装](install.zh.md#下载本地包备用)。
+- 本次实测范围为官方 macOS 包内运行时和真实 Web 界面。Windows 原生标题栏、本机原生桌面窗口及 M3 功耗仍待各自验证。
 
 ## 2026-11-13 更新面板验证（1.2.9）
 
@@ -43,7 +42,7 @@
 - **[#26 浅色面板白底白字](https://github.com/d-dev0101/open-sea-skin/issues/26)：** 报告使用 1.2.6；1.2.7 已排除皮肤面板被宿主 dialog 样式覆盖。建议先更新至已发布的 1.2.7，保留问题等待反馈。默认不透明度建议已记录，不自动改写用户已保存的值。
 - **[#27 Windows 标题栏色块](https://github.com/d-dev0101/open-sea-skin/issues/27)：** 其输入区叠色与 #25 一起处理；原生窗口按钮底色仍待 Windows 实机验证。没有采用固定海洋 RGB 猜测或广泛覆盖所有子元素的方案。
 - **[#28 Mac GPU 占用 / 节能模式](https://github.com/d-dev0101/open-sea-skin/issues/28)：** 已修复调度和预算中的可确定问题，但用户报告的 GPU 数值并非维护者复测结果。本版尚未新增节能档，不声称已解决发热或固定降低多少功耗。
-- **[#29 天文 / 星空模块建议](https://github.com/d-dev0101/open-sea-skin/issues/29)：** 属于贡献提议，尚不是待合并 PR；本轮优先兼容性与能耗，未加入新特效或重写海洋。
+- **[#29 天文 / 星空模块建议](https://github.com/d-dev0101/open-sea-skin/issues/29)：** 提议者已将实验版本作为独立插件发布并关闭该 Issue。Open Sea 仍以兼容性和能耗为优先。
 
 下一轮优先考虑可独立选择的节能档及不同硬件实测；再精简新版插件详情页中的安装后帮助（当前会展开整篇 README）。保持动态海洋和现有视觉风格，避免把性能调节与波浪速度、系统减少动态效果混在一起。
 
@@ -103,4 +102,4 @@ OSS_HEADLESS=1 npm run test:website
 
 ## English scope
 
-Harness **0.2.2-rc.1** is the November 8 checked release-channel baseline. The official packaged macOS runtime was exercised in an isolated `web` profile with npm 1.2.7, including CLI and graphical install/enable, actual Web client rendering, controls, uninstall and restart. The 1.2.8 fixes add sticky-composer gradient regressions and deterministic scheduling tests. **Native Windows Desktop E2E, native caption color correctness and a new complete native macOS GUI run are not claimed.** Registry-installed plugins can now update in the official manager; local archives still require manual replacement. Windows caption blocks, Mac GPU usage, distant highlight aliasing and independent wave speed remain tracked separately.
+Harness **0.2.2-rc.5** was checked on November 21 with the exact GitHub 1.2.9 archive in the official macOS Web runtime. GUI installation persisted the enabled plugin, which started rendering after a Web host restart. The November 8 checks used **0.2.2-rc.1**. The official packaged macOS runtime was exercised in an isolated `web` profile with npm 1.2.7, including CLI and graphical install/enable, actual Web client rendering, controls, uninstall and restart. The 1.2.8 fixes add sticky-composer gradient regressions and deterministic scheduling tests. **Native Windows Desktop E2E, native caption color correctness and a new complete native macOS GUI run are not claimed.** Registry-installed plugins can now update in the official manager; local archives still require manual replacement. Windows caption blocks, Mac GPU usage, distant highlight aliasing and independent wave speed remain tracked separately.

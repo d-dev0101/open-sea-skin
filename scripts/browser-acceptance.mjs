@@ -17,6 +17,24 @@ const existingNewTabExtension = resolve(root, 'tests/fixtures/existing-newtab-ex
 const chrome = await findChromeForTesting(chromium.executablePath())
 const headless = process.env.OSS_HEADLESS === '1'
 
+const { version } = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'))
+const releaseMetadataUrl = 'https://api.github.com/repos/d-dev0101/open-sea-skin/releases/latest'
+
+function routeReleaseMetadata(context) {
+  // Opening the panel checks for updates. The fixture should work even when
+  // GitHub's anonymous API rate limit is exhausted on a shared runner.
+  return context.route(releaseMetadataUrl, route => route.fulfill({
+    headers: { 'access-control-allow-origin': '*' },
+    json: {
+      tag_name: `v${version}`,
+      draft: false,
+      prerelease: false,
+      assets: [`open-sea-skin-extension-v${version}.zip`, `open-sea-skin-${version}.tgz`]
+        .map(name => ({ name, state: 'uploaded', size: 1 })),
+    },
+  }))
+}
+
 async function extensionAcceptance() {
   const server = await serveDirectory(fixture)
   const genericServer = await serveDirectory(genericFixture)
@@ -33,6 +51,7 @@ async function extensionAcceptance() {
     ],
   })
   try {
+    await routeReleaseMetadata(context)
     const page = context.pages()[0] ?? await context.newPage()
     const failures = watchPageErrors(page, 'extension')
     await page.goto(server.url, { waitUntil: 'domcontentloaded' })
@@ -43,6 +62,7 @@ async function extensionAcceptance() {
     await page.locator('#__open-sea-skin-btn__').click()
     const panel = page.locator('#__open-sea-skin-panel__.open')
     await panel.waitFor()
+    await panel.locator('.oss-updates[data-state="current"]').waitFor()
     for (const [lang, title, label] of [['zh-CN', '海洋皮肤设置', '波浪大小'], ['en', 'Open Sea skin settings', 'Sea state']]) {
       await page.evaluate((lang) => { document.documentElement.lang = lang }, lang)
       await page.waitForFunction((title) => document.querySelector('#__open-sea-skin-btn__').title === title, title)
@@ -105,12 +125,15 @@ async function staticDistAcceptance() {
     args: chromiumArgs(),
   })
   try {
-    const page = await browser.newPage({ viewport: { width: 1280, height: 800 } })
+    const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
+    await routeReleaseMetadata(context)
+    const page = await context.newPage()
     const failures = watchPageErrors(page, 'native-dist')
     await page.goto(server.url, { waitUntil: 'domcontentloaded' })
     const ocean = await waitForOcean(page)
     assert.equal(await page.locator('#__open-sea-skin__').count(), 1)
     await page.locator('#__open-sea-skin-btn__').click()
+    await page.locator('#__open-sea-skin-panel__ .oss-updates[data-state="current"]').waitFor()
     await setRange(page.locator('#__open-sea-skin-panel__-sea-range'), 24)
     await setRange(page.locator('#__open-sea-skin-panel__-time-range'), 72)
     await page.waitForTimeout(200)

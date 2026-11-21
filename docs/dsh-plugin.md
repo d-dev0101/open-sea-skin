@@ -122,6 +122,8 @@ these same-origin URLs with HTTP 200 responses:
 If the launcher does not appear, confirm the command used the same profile as
 `dsh web`, restart the Web process, then perform one normal page reload.
 
+On the official 0.2.2-rc.5 Web runtime, the local package installed and enabled successfully through the plugin UI. In our test, the ocean appeared after restarting `dsh web` and reopening its new URL. A browser refresh alone did not load it.
+
 ## Update or remove
 
 From **Open Sea 1.2.9**, opening Skin settings shows the installed version and checks for updates. A compatible newer release adds an **Update** action that opens the host plugin details for confirmation. The panel distinguishes up-to-date for the selected source, unavailable compatible updates, manual installations and network errors. Earlier Open Sea versions need one manual upgrade to gain these controls.
