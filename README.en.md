@@ -26,7 +26,9 @@
 
 **📦 The recommended npm package remains v1.2.7**, available from both the official registry and mainland China mirror. It includes the light controls, stacked sidebar and conversation-surface fixes. Copy the package name below; do not replace its version with `1.2.9` until that version is published to npm.
 
-🔎 **Official Harness 0.2.2-rc.1 checked on November 8, 2026:** installation, enablement, actual Web client loading, removal and restart in an isolated profile. **This is not a full native Desktop GUI test; native Windows Desktop remains untested.** [Compatibility evidence & known issues →](docs/compatibility.md)
+🔎 **Official Harness 0.2.2-rc.5 checked on November 21, 2026.** The GitHub 1.2.9 package passed installation, live ocean rendering, controls and removal in an isolated Web profile using the official macOS runtime. After enabling through the Web UI, restart the Web host if the ocean does not appear. [Compatibility details →](docs/compatibility.md)
+
+🔔 Want the update button or the conversation input fix now? [Download the 1.2.9 archive](https://github.com/d-dev0101/open-sea-skin/releases/download/v1.2.9/open-sea-skin-1.2.9.tgz), then follow the [local-package steps](docs/dsh-plugin.md#local-package-fallback). Both public npm sources still serve 1.2.7.
 
 ## 🚀 Official Desktop in three steps
 

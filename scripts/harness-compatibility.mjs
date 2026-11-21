@@ -9,7 +9,7 @@ import { once } from 'node:events'
 import { mkdtemp, readFile, writeFile, mkdir } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { resolve, join } from 'node:path'
-import { chromium } from 'playwright'
+import { chromium, errors as playwrightErrors } from 'playwright'
 import { chromiumArgs, findChromeForTesting, setRange, waitForOcean } from './browser-support.mjs'
 
 const app = process.env.OSS_DSH_APP
@@ -149,7 +149,7 @@ try {
   assert.ok(!after.dsh.profile.bundles.includes('open-sea-skin'))
   const restartURL = await start()
   browser = await chromium.launch({ executablePath: await findChromeForTesting(chromium.executablePath()), headless: true, args: chromiumArgs() })
-  const installPage = await browser.newPage()
+  let installPage = await browser.newPage()
   installPage.on('pageerror', error => errors.push(error.message))
   await installPage.goto(restartURL)
   await installPage.locator('[data-slot="main.conversation"]').waitFor()
@@ -167,19 +167,35 @@ try {
   const enableButton = installPage.getByRole('button', { name: '立即启用', exact: true })
   await enableButton.waitFor({ timeout: 180000 })
   await enableButton.click()
-  await waitForOcean(installPage)
+  let webGuiActivation = 'in-current-host'
+  try {
+    await installPage.locator('#__open-sea-skin__').waitFor({ state: 'attached', timeout: 12000 })
+  } catch (error) {
+    if (!(error instanceof playwrightErrors.TimeoutError)) throw error
+    // Some Harness versions persist the enabled bundle without hot-loading it.
+    // Verify rendering after restart, and keep the distinction in the result.
+    webGuiActivation = 'after-host-restart'
+  }
   const guiManifest = JSON.parse(await readFile(manifestPath, 'utf8'))
   assert.ok(guiManifest.dependencies?.['open-sea-skin'])
   assert.ok(guiManifest.dsh.profile.bundles.includes('open-sea-skin'))
+  if (webGuiActivation === 'after-host-restart') {
+    await installPage.close()
+    await stop()
+    installPage = await browser.newPage()
+    installPage.on('pageerror', error => errors.push(error.message))
+    await installPage.goto(await start())
+  }
+  await waitForOcean(installPage)
   assert.deepEqual(errors, [])
   await browser.close(); browser = undefined
   await stop()
   await command(['plugin', '--profile', 'web', 'remove', 'open-sea-skin'])
   const result = { harness: version, pluginSpec: spec, evidence, isolation: 'fresh DSH_HOME; no user data',
-    coverage: 'Official packaged macOS runtime, fresh web profile: CLI install, host, actual Web client, WebGPU, dark/light and emulated platform attributes, uninstall/restart, graphical Add Plugin install/enable. Not native Desktop profile/UI or Windows E2E.',
-    slots, paints, updates, errors, installed: true, rendererLoaded: true, uninstallRestarted: true, webGuiInstalledAndEnabled: true }
+    coverage: 'Official packaged macOS runtime, fresh web profile: CLI install, host, actual Web client, WebGPU, dark/light and emulated platform attributes, uninstall/restart, graphical Add Plugin install/enable with activation mode recorded. Not native Desktop profile/UI or Windows E2E.',
+    slots, paints, updates, errors, installed: true, rendererLoaded: true, uninstallRestarted: true, webGuiInstalledAndEnabled: true, webGuiActivation }
   await writeFile(join(evidence, 'result.json'), JSON.stringify(result, null, 2) + '\n')
-  console.log(JSON.stringify({ harness: version, installed: true, rendererLoaded: true, uninstallRestarted: true, webGuiInstalledAndEnabled: true, evidence }))
+  console.log(JSON.stringify({ harness: version, installed: true, rendererLoaded: true, uninstallRestarted: true, webGuiInstalledAndEnabled: true, webGuiActivation, evidence }))
 } finally {
   await browser?.close()
   await stop()
